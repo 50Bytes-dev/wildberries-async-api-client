@@ -12,26 +12,15 @@
 """  # noqa: E501
 
 import warnings
-from pydantic import (
-    validate_call,
-    Field,
-    StrictFloat,
-    StrictStr,
-    StrictInt,
-    field_validator,
-)
+from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
 from pydantic import Field, StrictBool, StrictBytes, StrictInt, StrictStr
 from typing import List, Optional, Union
 from typing_extensions import Annotated
-from wildberries_async_api_client.models.api_v1_claim_patch_request import (
-    ApiV1ClaimPatchRequest,
-)
-from wildberries_async_api_client.models.api_v1_claims_get200_response import (
-    ApiV1ClaimsGet200Response,
-)
+from wildberries_async_api_client.models.api_v1_claim_patch_request import ApiV1ClaimPatchRequest
+from wildberries_async_api_client.models.api_v1_claims_get200_response import ApiV1ClaimsGet200Response
 from wildberries_async_api_client.models.chats_response import ChatsResponse
 from wildberries_async_api_client.models.events_response import EventsResponse
 from wildberries_async_api_client.models.message_response import MessageResponse
@@ -53,18 +42,18 @@ class DefaultApi:
             api_client = ApiClient.get_default()
         self.api_client = api_client
 
+
     @validate_call
     async def api_v1_claim_patch(
         self,
-        api_v1_claim_patch_request: Annotated[
-            ApiV1ClaimPatchRequest, Field(description="Ответ на заявку")
-        ],
+        api_v1_claim_patch_request: Annotated[ApiV1ClaimPatchRequest, Field(description="Ответ на заявку")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
             Tuple[
-                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
-            ],
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
         ] = None,
         _request_auth: Optional[Dict[StrictStr, Any]] = None,
         _content_type: Optional[StrictStr] = None,
@@ -73,7 +62,7 @@ class DefaultApi:
     ) -> None:
         """Ответ на заявку покупателя
 
-        Отправляет ответ на заявку покупателя на возврат.<br> Максимум 20 запросов в минуту
+        Отправляет ответ на заявку покупателя на возврат.<br> Максимум 20 запросов в минуту 
 
         :param api_v1_claim_patch_request: Ответ на заявку (required)
         :type api_v1_claim_patch_request: ApiV1ClaimPatchRequest
@@ -97,25 +86,26 @@ class DefaultApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """  # noqa: E501
+        """ # noqa: E501
 
         _param = self._api_v1_claim_patch_serialize(
             api_v1_claim_patch_request=api_v1_claim_patch_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index,
+            _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": None,
-            "400": "ApiV1ClaimPatch400Response",
-            "401": "ApiV2HistoryTasksGet401Response",
-            "429": "ApiV1ClaimsGet429Response",
-            "5XX": "ApiV2HistoryTasksGet5XXResponse",
+            '200': None,
+            '400': "ApiV1ClaimPatch400Response",
+            '401': "ApiV2HistoryTasksGet401Response",
+            '429': "ApiV1ClaimsGet429Response",
+            '5XX': "ApiV2HistoryTasksGet5XXResponse",
         }
         response_data = await self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout
+            *_param,
+            _request_timeout=_request_timeout
         )
         await response_data.read()
         return self.api_client.response_deserialize(
@@ -123,18 +113,18 @@ class DefaultApi:
             response_types_map=_response_types_map,
         ).data
 
+
     @validate_call
     async def api_v1_claim_patch_with_http_info(
         self,
-        api_v1_claim_patch_request: Annotated[
-            ApiV1ClaimPatchRequest, Field(description="Ответ на заявку")
-        ],
+        api_v1_claim_patch_request: Annotated[ApiV1ClaimPatchRequest, Field(description="Ответ на заявку")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
             Tuple[
-                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
-            ],
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
         ] = None,
         _request_auth: Optional[Dict[StrictStr, Any]] = None,
         _content_type: Optional[StrictStr] = None,
@@ -143,7 +133,7 @@ class DefaultApi:
     ) -> ApiResponse[None]:
         """Ответ на заявку покупателя
 
-        Отправляет ответ на заявку покупателя на возврат.<br> Максимум 20 запросов в минуту
+        Отправляет ответ на заявку покупателя на возврат.<br> Максимум 20 запросов в минуту 
 
         :param api_v1_claim_patch_request: Ответ на заявку (required)
         :type api_v1_claim_patch_request: ApiV1ClaimPatchRequest
@@ -167,25 +157,26 @@ class DefaultApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """  # noqa: E501
+        """ # noqa: E501
 
         _param = self._api_v1_claim_patch_serialize(
             api_v1_claim_patch_request=api_v1_claim_patch_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index,
+            _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": None,
-            "400": "ApiV1ClaimPatch400Response",
-            "401": "ApiV2HistoryTasksGet401Response",
-            "429": "ApiV1ClaimsGet429Response",
-            "5XX": "ApiV2HistoryTasksGet5XXResponse",
+            '200': None,
+            '400': "ApiV1ClaimPatch400Response",
+            '401': "ApiV2HistoryTasksGet401Response",
+            '429': "ApiV1ClaimsGet429Response",
+            '5XX': "ApiV2HistoryTasksGet5XXResponse",
         }
         response_data = await self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout
+            *_param,
+            _request_timeout=_request_timeout
         )
         await response_data.read()
         return self.api_client.response_deserialize(
@@ -193,18 +184,18 @@ class DefaultApi:
             response_types_map=_response_types_map,
         )
 
+
     @validate_call
     async def api_v1_claim_patch_without_preload_content(
         self,
-        api_v1_claim_patch_request: Annotated[
-            ApiV1ClaimPatchRequest, Field(description="Ответ на заявку")
-        ],
+        api_v1_claim_patch_request: Annotated[ApiV1ClaimPatchRequest, Field(description="Ответ на заявку")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
             Tuple[
-                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
-            ],
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
         ] = None,
         _request_auth: Optional[Dict[StrictStr, Any]] = None,
         _content_type: Optional[StrictStr] = None,
@@ -213,7 +204,7 @@ class DefaultApi:
     ) -> RESTResponseType:
         """Ответ на заявку покупателя
 
-        Отправляет ответ на заявку покупателя на возврат.<br> Максимум 20 запросов в минуту
+        Отправляет ответ на заявку покупателя на возврат.<br> Максимум 20 запросов в минуту 
 
         :param api_v1_claim_patch_request: Ответ на заявку (required)
         :type api_v1_claim_patch_request: ApiV1ClaimPatchRequest
@@ -237,27 +228,29 @@ class DefaultApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """  # noqa: E501
+        """ # noqa: E501
 
         _param = self._api_v1_claim_patch_serialize(
             api_v1_claim_patch_request=api_v1_claim_patch_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index,
+            _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": None,
-            "400": "ApiV1ClaimPatch400Response",
-            "401": "ApiV2HistoryTasksGet401Response",
-            "429": "ApiV1ClaimsGet429Response",
-            "5XX": "ApiV2HistoryTasksGet5XXResponse",
+            '200': None,
+            '400': "ApiV1ClaimPatch400Response",
+            '401': "ApiV2HistoryTasksGet401Response",
+            '429': "ApiV1ClaimsGet429Response",
+            '5XX': "ApiV2HistoryTasksGet5XXResponse",
         }
         response_data = await self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout
+            *_param,
+            _request_timeout=_request_timeout
         )
         return response_data.response
+
 
     def _api_v1_claim_patch_serialize(
         self,
@@ -268,10 +261,13 @@ class DefaultApi:
         _host_index,
     ) -> RequestSerialized:
 
-        _hosts = ["https://returns-api.wildberries.ru"]
+        _hosts = [
+            'https://returns-api.wildberries.ru'
+        ]
         _host = _hosts[_host_index]
 
-        _collection_formats: Dict[str, str] = {}
+        _collection_formats: Dict[str, str] = {
+        }
 
         _path_params: Dict[str, str] = {}
         _query_params: List[Tuple[str, str]] = []
@@ -288,27 +284,37 @@ class DefaultApi:
         if api_v1_claim_patch_request is not None:
             _body_params = api_v1_claim_patch_request
 
+
         # set the HTTP header `Accept`
-        _header_params["Accept"] = self.api_client.select_header_accept(
-            ["application/json", "text/plain"]
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            [
+                'application/json', 
+                'text/plain'
+            ]
         )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params["Content-Type"] = _content_type
+            _header_params['Content-Type'] = _content_type
         else:
-            _default_content_type = self.api_client.select_header_content_type(
-                ["application/json"]
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
             )
             if _default_content_type is not None:
-                _header_params["Content-Type"] = _default_content_type
+                _header_params['Content-Type'] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = ["HeaderApiKey"]
+        _auth_settings: List[str] = [
+            'HeaderApiKey'
+        ]
 
         return self.api_client.param_serialize(
-            method="PATCH",
-            resource_path="/api/v1/claim",
+            method='PATCH',
+            resource_path='/api/v1/claim',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -318,39 +324,27 @@ class DefaultApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth,
+            _request_auth=_request_auth
         )
+
+
+
 
     @validate_call
     async def api_v1_claims_get(
         self,
-        is_archive: Annotated[
-            StrictBool,
-            Field(
-                description="Состояние заявки:   * `false` — на рассмотрении   * `true` — в архиве "
-            ),
-        ],
-        limit: Annotated[
-            int,
-            Field(
-                le=200,
-                strict=True,
-                ge=1,
-                description="Сколько элементов вывести на одной странице (пагинация). Максимум 1 000 элементов",
-            ),
-        ],
+        is_archive: Annotated[StrictBool, Field(description="Состояние заявки:   * `false` — на рассмотрении   * `true` — в архиве ")],
+        limit: Annotated[int, Field(le=200, strict=True, ge=1, description="Сколько элементов вывести на одной странице (пагинация). Максимум 1 000 элементов")],
         id: Annotated[Optional[StrictStr], Field(description="ID заявки")] = None,
-        offset: Annotated[
-            Optional[Annotated[int, Field(strict=True, ge=0)]],
-            Field(description="Сколько элементов пропустить"),
-        ] = None,
+        offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Сколько элементов пропустить")] = None,
         nm_id: Annotated[Optional[StrictInt], Field(description="Артикул WB")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
             Tuple[
-                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
-            ],
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
         ] = None,
         _request_auth: Optional[Dict[StrictStr, Any]] = None,
         _content_type: Optional[StrictStr] = None,
@@ -359,7 +353,7 @@ class DefaultApi:
     ) -> ApiV1ClaimsGet200Response:
         """Заявки покупателей на возврат
 
-        Возвращает заявки покупателей на возврат товаров за текущие 14 дней.<br> Максимум 20 запросов в минуту
+        Возвращает заявки покупателей на возврат товаров за текущие 14 дней.<br> Максимум 20 запросов в минуту 
 
         :param is_archive: Состояние заявки:   * `false` — на рассмотрении   * `true` — в архиве  (required)
         :type is_archive: bool
@@ -391,7 +385,7 @@ class DefaultApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """  # noqa: E501
+        """ # noqa: E501
 
         _param = self._api_v1_claims_get_serialize(
             is_archive=is_archive,
@@ -402,18 +396,19 @@ class DefaultApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index,
+            _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "ApiV1ClaimsGet200Response",
-            "400": "ApiV1ClaimsGet400Response",
-            "401": "ApiV2HistoryTasksGet401Response",
-            "429": "ApiV1ClaimsGet429Response",
-            "5XX": "ApiV2HistoryTasksGet5XXResponse",
+            '200': "ApiV1ClaimsGet200Response",
+            '400': "ApiV1ClaimsGet400Response",
+            '401': "ApiV2HistoryTasksGet401Response",
+            '429': "ApiV1ClaimsGet429Response",
+            '5XX': "ApiV2HistoryTasksGet5XXResponse",
         }
         response_data = await self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout
+            *_param,
+            _request_timeout=_request_timeout
         )
         await response_data.read()
         return self.api_client.response_deserialize(
@@ -421,36 +416,22 @@ class DefaultApi:
             response_types_map=_response_types_map,
         ).data
 
+
     @validate_call
     async def api_v1_claims_get_with_http_info(
         self,
-        is_archive: Annotated[
-            StrictBool,
-            Field(
-                description="Состояние заявки:   * `false` — на рассмотрении   * `true` — в архиве "
-            ),
-        ],
-        limit: Annotated[
-            int,
-            Field(
-                le=200,
-                strict=True,
-                ge=1,
-                description="Сколько элементов вывести на одной странице (пагинация). Максимум 1 000 элементов",
-            ),
-        ],
+        is_archive: Annotated[StrictBool, Field(description="Состояние заявки:   * `false` — на рассмотрении   * `true` — в архиве ")],
+        limit: Annotated[int, Field(le=200, strict=True, ge=1, description="Сколько элементов вывести на одной странице (пагинация). Максимум 1 000 элементов")],
         id: Annotated[Optional[StrictStr], Field(description="ID заявки")] = None,
-        offset: Annotated[
-            Optional[Annotated[int, Field(strict=True, ge=0)]],
-            Field(description="Сколько элементов пропустить"),
-        ] = None,
+        offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Сколько элементов пропустить")] = None,
         nm_id: Annotated[Optional[StrictInt], Field(description="Артикул WB")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
             Tuple[
-                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
-            ],
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
         ] = None,
         _request_auth: Optional[Dict[StrictStr, Any]] = None,
         _content_type: Optional[StrictStr] = None,
@@ -459,7 +440,7 @@ class DefaultApi:
     ) -> ApiResponse[ApiV1ClaimsGet200Response]:
         """Заявки покупателей на возврат
 
-        Возвращает заявки покупателей на возврат товаров за текущие 14 дней.<br> Максимум 20 запросов в минуту
+        Возвращает заявки покупателей на возврат товаров за текущие 14 дней.<br> Максимум 20 запросов в минуту 
 
         :param is_archive: Состояние заявки:   * `false` — на рассмотрении   * `true` — в архиве  (required)
         :type is_archive: bool
@@ -491,7 +472,7 @@ class DefaultApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """  # noqa: E501
+        """ # noqa: E501
 
         _param = self._api_v1_claims_get_serialize(
             is_archive=is_archive,
@@ -502,18 +483,19 @@ class DefaultApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index,
+            _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "ApiV1ClaimsGet200Response",
-            "400": "ApiV1ClaimsGet400Response",
-            "401": "ApiV2HistoryTasksGet401Response",
-            "429": "ApiV1ClaimsGet429Response",
-            "5XX": "ApiV2HistoryTasksGet5XXResponse",
+            '200': "ApiV1ClaimsGet200Response",
+            '400': "ApiV1ClaimsGet400Response",
+            '401': "ApiV2HistoryTasksGet401Response",
+            '429': "ApiV1ClaimsGet429Response",
+            '5XX': "ApiV2HistoryTasksGet5XXResponse",
         }
         response_data = await self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout
+            *_param,
+            _request_timeout=_request_timeout
         )
         await response_data.read()
         return self.api_client.response_deserialize(
@@ -521,36 +503,22 @@ class DefaultApi:
             response_types_map=_response_types_map,
         )
 
+
     @validate_call
     async def api_v1_claims_get_without_preload_content(
         self,
-        is_archive: Annotated[
-            StrictBool,
-            Field(
-                description="Состояние заявки:   * `false` — на рассмотрении   * `true` — в архиве "
-            ),
-        ],
-        limit: Annotated[
-            int,
-            Field(
-                le=200,
-                strict=True,
-                ge=1,
-                description="Сколько элементов вывести на одной странице (пагинация). Максимум 1 000 элементов",
-            ),
-        ],
+        is_archive: Annotated[StrictBool, Field(description="Состояние заявки:   * `false` — на рассмотрении   * `true` — в архиве ")],
+        limit: Annotated[int, Field(le=200, strict=True, ge=1, description="Сколько элементов вывести на одной странице (пагинация). Максимум 1 000 элементов")],
         id: Annotated[Optional[StrictStr], Field(description="ID заявки")] = None,
-        offset: Annotated[
-            Optional[Annotated[int, Field(strict=True, ge=0)]],
-            Field(description="Сколько элементов пропустить"),
-        ] = None,
+        offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Сколько элементов пропустить")] = None,
         nm_id: Annotated[Optional[StrictInt], Field(description="Артикул WB")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
             Tuple[
-                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
-            ],
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
         ] = None,
         _request_auth: Optional[Dict[StrictStr, Any]] = None,
         _content_type: Optional[StrictStr] = None,
@@ -559,7 +527,7 @@ class DefaultApi:
     ) -> RESTResponseType:
         """Заявки покупателей на возврат
 
-        Возвращает заявки покупателей на возврат товаров за текущие 14 дней.<br> Максимум 20 запросов в минуту
+        Возвращает заявки покупателей на возврат товаров за текущие 14 дней.<br> Максимум 20 запросов в минуту 
 
         :param is_archive: Состояние заявки:   * `false` — на рассмотрении   * `true` — в архиве  (required)
         :type is_archive: bool
@@ -591,7 +559,7 @@ class DefaultApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """  # noqa: E501
+        """ # noqa: E501
 
         _param = self._api_v1_claims_get_serialize(
             is_archive=is_archive,
@@ -602,20 +570,22 @@ class DefaultApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index,
+            _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "ApiV1ClaimsGet200Response",
-            "400": "ApiV1ClaimsGet400Response",
-            "401": "ApiV2HistoryTasksGet401Response",
-            "429": "ApiV1ClaimsGet429Response",
-            "5XX": "ApiV2HistoryTasksGet5XXResponse",
+            '200': "ApiV1ClaimsGet200Response",
+            '400': "ApiV1ClaimsGet400Response",
+            '401': "ApiV2HistoryTasksGet401Response",
+            '429': "ApiV1ClaimsGet429Response",
+            '5XX': "ApiV2HistoryTasksGet5XXResponse",
         }
         response_data = await self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout
+            *_param,
+            _request_timeout=_request_timeout
         )
         return response_data.response
+
 
     def _api_v1_claims_get_serialize(
         self,
@@ -630,10 +600,13 @@ class DefaultApi:
         _host_index,
     ) -> RequestSerialized:
 
-        _hosts = ["https://returns-api.wildberries.ru"]
+        _hosts = [
+            'https://returns-api.wildberries.ru'
+        ]
         _host = _hosts[_host_index]
 
-        _collection_formats: Dict[str, str] = {}
+        _collection_formats: Dict[str, str] = {
+        }
 
         _path_params: Dict[str, str] = {}
         _query_params: List[Tuple[str, str]] = []
@@ -645,40 +618,47 @@ class DefaultApi:
         # process the path parameters
         # process the query parameters
         if is_archive is not None:
-
-            _query_params.append(("is_archive", is_archive))
-
+            
+            _query_params.append(('is_archive', is_archive))
+            
         if id is not None:
-
-            _query_params.append(("id", id))
-
+            
+            _query_params.append(('id', id))
+            
         if limit is not None:
-
-            _query_params.append(("limit", limit))
-
+            
+            _query_params.append(('limit', limit))
+            
         if offset is not None:
-
-            _query_params.append(("offset", offset))
-
+            
+            _query_params.append(('offset', offset))
+            
         if nm_id is not None:
-
-            _query_params.append(("nm_id", nm_id))
-
+            
+            _query_params.append(('nm_id', nm_id))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
 
+
         # set the HTTP header `Accept`
-        _header_params["Accept"] = self.api_client.select_header_accept(
-            ["application/json", "text/plain"]
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            [
+                'application/json', 
+                'text/plain'
+            ]
         )
 
+
         # authentication setting
-        _auth_settings: List[str] = ["HeaderApiKey"]
+        _auth_settings: List[str] = [
+            'HeaderApiKey'
+        ]
 
         return self.api_client.param_serialize(
-            method="GET",
-            resource_path="/api/v1/claims",
+            method='GET',
+            resource_path='/api/v1/claims',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -688,8 +668,11 @@ class DefaultApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth,
+            _request_auth=_request_auth
         )
+
+
+
 
     @validate_call
     async def api_v1_seller_chats_get(
@@ -698,8 +681,9 @@ class DefaultApi:
             None,
             Annotated[StrictFloat, Field(gt=0)],
             Tuple[
-                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
-            ],
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
         ] = None,
         _request_auth: Optional[Dict[StrictStr, Any]] = None,
         _content_type: Optional[StrictStr] = None,
@@ -708,7 +692,7 @@ class DefaultApi:
     ) -> ChatsResponse:
         """Список чатов
 
-        Возвращает список всех чатов продавца.  Максимум 10 запросов за 10 секунд
+        Возвращает список всех чатов продавца.  Максимум 10 запросов за 10 секунд 
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -730,30 +714,32 @@ class DefaultApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """  # noqa: E501
+        """ # noqa: E501
 
         _param = self._api_v1_seller_chats_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index,
+            _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "ChatsResponse",
-            "400": "Error",
-            "403": "Error",
-            "429": "Error429",
-            "500": "Error",
+            '200': "ChatsResponse",
+            '400': "Error",
+            '403': "Error",
+            '429': "Error429",
+            '500': "Error",
         }
         response_data = await self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout
+            *_param,
+            _request_timeout=_request_timeout
         )
         await response_data.read()
         return self.api_client.response_deserialize(
             response_data=response_data,
             response_types_map=_response_types_map,
         ).data
+
 
     @validate_call
     async def api_v1_seller_chats_get_with_http_info(
@@ -762,8 +748,9 @@ class DefaultApi:
             None,
             Annotated[StrictFloat, Field(gt=0)],
             Tuple[
-                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
-            ],
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
         ] = None,
         _request_auth: Optional[Dict[StrictStr, Any]] = None,
         _content_type: Optional[StrictStr] = None,
@@ -772,7 +759,7 @@ class DefaultApi:
     ) -> ApiResponse[ChatsResponse]:
         """Список чатов
 
-        Возвращает список всех чатов продавца.  Максимум 10 запросов за 10 секунд
+        Возвращает список всех чатов продавца.  Максимум 10 запросов за 10 секунд 
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -794,30 +781,32 @@ class DefaultApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """  # noqa: E501
+        """ # noqa: E501
 
         _param = self._api_v1_seller_chats_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index,
+            _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "ChatsResponse",
-            "400": "Error",
-            "403": "Error",
-            "429": "Error429",
-            "500": "Error",
+            '200': "ChatsResponse",
+            '400': "Error",
+            '403': "Error",
+            '429': "Error429",
+            '500': "Error",
         }
         response_data = await self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout
+            *_param,
+            _request_timeout=_request_timeout
         )
         await response_data.read()
         return self.api_client.response_deserialize(
             response_data=response_data,
             response_types_map=_response_types_map,
         )
+
 
     @validate_call
     async def api_v1_seller_chats_get_without_preload_content(
@@ -826,8 +815,9 @@ class DefaultApi:
             None,
             Annotated[StrictFloat, Field(gt=0)],
             Tuple[
-                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
-            ],
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
         ] = None,
         _request_auth: Optional[Dict[StrictStr, Any]] = None,
         _content_type: Optional[StrictStr] = None,
@@ -836,7 +826,7 @@ class DefaultApi:
     ) -> RESTResponseType:
         """Список чатов
 
-        Возвращает список всех чатов продавца.  Максимум 10 запросов за 10 секунд
+        Возвращает список всех чатов продавца.  Максимум 10 запросов за 10 секунд 
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -858,26 +848,28 @@ class DefaultApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """  # noqa: E501
+        """ # noqa: E501
 
         _param = self._api_v1_seller_chats_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index,
+            _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "ChatsResponse",
-            "400": "Error",
-            "403": "Error",
-            "429": "Error429",
-            "500": "Error",
+            '200': "ChatsResponse",
+            '400': "Error",
+            '403': "Error",
+            '429': "Error429",
+            '500': "Error",
         }
         response_data = await self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout
+            *_param,
+            _request_timeout=_request_timeout
         )
         return response_data.response
+
 
     def _api_v1_seller_chats_get_serialize(
         self,
@@ -887,10 +879,13 @@ class DefaultApi:
         _host_index,
     ) -> RequestSerialized:
 
-        _hosts = ["https://buyer-chat-api.wildberries.ru"]
+        _hosts = [
+            'https://buyer-chat-api.wildberries.ru'
+        ]
         _host = _hosts[_host_index]
 
-        _collection_formats: Dict[str, str] = {}
+        _collection_formats: Dict[str, str] = {
+        }
 
         _path_params: Dict[str, str] = {}
         _query_params: List[Tuple[str, str]] = []
@@ -905,17 +900,23 @@ class DefaultApi:
         # process the form parameters
         # process the body parameter
 
+
         # set the HTTP header `Accept`
-        _header_params["Accept"] = self.api_client.select_header_accept(
-            ["application/json"]
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            [
+                'application/json'
+            ]
         )
 
+
         # authentication setting
-        _auth_settings: List[str] = ["HeaderApiKey"]
+        _auth_settings: List[str] = [
+            'HeaderApiKey'
+        ]
 
         return self.api_client.param_serialize(
-            method="GET",
-            resource_path="/api/v1/seller/chats",
+            method='GET',
+            resource_path='/api/v1/seller/chats',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -925,24 +926,23 @@ class DefaultApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth,
+            _request_auth=_request_auth
         )
+
+
+
 
     @validate_call
     async def api_v1_seller_events_get(
         self,
-        next: Annotated[
-            Optional[StrictInt],
-            Field(
-                description="Пагинатор. С какого момента получить следующий пакет данных.<br>Формат Unix timestamp **с миллисекундами** "
-            ),
-        ] = None,
+        next: Annotated[Optional[StrictInt], Field(description="Пагинатор. С какого момента получить следующий пакет данных.<br>Формат Unix timestamp **с миллисекундами** ")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
             Tuple[
-                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
-            ],
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
         ] = None,
         _request_auth: Optional[Dict[StrictStr, Any]] = None,
         _content_type: Optional[StrictStr] = None,
@@ -951,9 +951,9 @@ class DefaultApi:
     ) -> EventsResponse:
         """События чатов
 
-        Возвращает список событий всех чатов. Чтобы получить все события: <br>1. Сделайте первый запрос без параметра `next`. <br>2. Повторяйте запрос со значением параметра `next` из ответа на предыдущий запрос, пока `totalEvents` не станет равным `0`. Это будет означать, что вы получили все события. <br>Чтобы получать только новые события, укажите параметр `next` со значением поля `addTimestamp` из последнего полученного события. <br> Максимум 10 запросов за 10 секунд
+        Возвращает список событий всех чатов. Чтобы получить все события: <br>1. Сделайте первый запрос без параметра `next`. <br>2. Повторяйте запрос со значением параметра `next` из ответа на предыдущий запрос, пока `totalEvents` не станет равным `0`. Это будет означать, что вы получили все события. <br>Чтобы получать только новые события, укажите параметр `next` со значением поля `addTimestamp` из последнего полученного события. <br> Максимум 10 запросов за 10 секунд 
 
-        :param next: Пагинатор. С какого момента получить следующий пакет данных.<br>Формат Unix timestamp **с миллисекундами**
+        :param next: Пагинатор. С какого момента получить следующий пакет данных.<br>Формат Unix timestamp **с миллисекундами** 
         :type next: int
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -975,25 +975,26 @@ class DefaultApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """  # noqa: E501
+        """ # noqa: E501
 
         _param = self._api_v1_seller_events_get_serialize(
             next=next,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index,
+            _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "EventsResponse",
-            "400": "Error",
-            "403": "Error",
-            "429": "Error429",
-            "500": "Error",
+            '200': "EventsResponse",
+            '400': "Error",
+            '403': "Error",
+            '429': "Error429",
+            '500': "Error",
         }
         response_data = await self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout
+            *_param,
+            _request_timeout=_request_timeout
         )
         await response_data.read()
         return self.api_client.response_deserialize(
@@ -1001,21 +1002,18 @@ class DefaultApi:
             response_types_map=_response_types_map,
         ).data
 
+
     @validate_call
     async def api_v1_seller_events_get_with_http_info(
         self,
-        next: Annotated[
-            Optional[StrictInt],
-            Field(
-                description="Пагинатор. С какого момента получить следующий пакет данных.<br>Формат Unix timestamp **с миллисекундами** "
-            ),
-        ] = None,
+        next: Annotated[Optional[StrictInt], Field(description="Пагинатор. С какого момента получить следующий пакет данных.<br>Формат Unix timestamp **с миллисекундами** ")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
             Tuple[
-                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
-            ],
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
         ] = None,
         _request_auth: Optional[Dict[StrictStr, Any]] = None,
         _content_type: Optional[StrictStr] = None,
@@ -1024,9 +1022,9 @@ class DefaultApi:
     ) -> ApiResponse[EventsResponse]:
         """События чатов
 
-        Возвращает список событий всех чатов. Чтобы получить все события: <br>1. Сделайте первый запрос без параметра `next`. <br>2. Повторяйте запрос со значением параметра `next` из ответа на предыдущий запрос, пока `totalEvents` не станет равным `0`. Это будет означать, что вы получили все события. <br>Чтобы получать только новые события, укажите параметр `next` со значением поля `addTimestamp` из последнего полученного события. <br> Максимум 10 запросов за 10 секунд
+        Возвращает список событий всех чатов. Чтобы получить все события: <br>1. Сделайте первый запрос без параметра `next`. <br>2. Повторяйте запрос со значением параметра `next` из ответа на предыдущий запрос, пока `totalEvents` не станет равным `0`. Это будет означать, что вы получили все события. <br>Чтобы получать только новые события, укажите параметр `next` со значением поля `addTimestamp` из последнего полученного события. <br> Максимум 10 запросов за 10 секунд 
 
-        :param next: Пагинатор. С какого момента получить следующий пакет данных.<br>Формат Unix timestamp **с миллисекундами**
+        :param next: Пагинатор. С какого момента получить следующий пакет данных.<br>Формат Unix timestamp **с миллисекундами** 
         :type next: int
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1048,25 +1046,26 @@ class DefaultApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """  # noqa: E501
+        """ # noqa: E501
 
         _param = self._api_v1_seller_events_get_serialize(
             next=next,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index,
+            _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "EventsResponse",
-            "400": "Error",
-            "403": "Error",
-            "429": "Error429",
-            "500": "Error",
+            '200': "EventsResponse",
+            '400': "Error",
+            '403': "Error",
+            '429': "Error429",
+            '500': "Error",
         }
         response_data = await self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout
+            *_param,
+            _request_timeout=_request_timeout
         )
         await response_data.read()
         return self.api_client.response_deserialize(
@@ -1074,21 +1073,18 @@ class DefaultApi:
             response_types_map=_response_types_map,
         )
 
+
     @validate_call
     async def api_v1_seller_events_get_without_preload_content(
         self,
-        next: Annotated[
-            Optional[StrictInt],
-            Field(
-                description="Пагинатор. С какого момента получить следующий пакет данных.<br>Формат Unix timestamp **с миллисекундами** "
-            ),
-        ] = None,
+        next: Annotated[Optional[StrictInt], Field(description="Пагинатор. С какого момента получить следующий пакет данных.<br>Формат Unix timestamp **с миллисекундами** ")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
             Tuple[
-                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
-            ],
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
         ] = None,
         _request_auth: Optional[Dict[StrictStr, Any]] = None,
         _content_type: Optional[StrictStr] = None,
@@ -1097,9 +1093,9 @@ class DefaultApi:
     ) -> RESTResponseType:
         """События чатов
 
-        Возвращает список событий всех чатов. Чтобы получить все события: <br>1. Сделайте первый запрос без параметра `next`. <br>2. Повторяйте запрос со значением параметра `next` из ответа на предыдущий запрос, пока `totalEvents` не станет равным `0`. Это будет означать, что вы получили все события. <br>Чтобы получать только новые события, укажите параметр `next` со значением поля `addTimestamp` из последнего полученного события. <br> Максимум 10 запросов за 10 секунд
+        Возвращает список событий всех чатов. Чтобы получить все события: <br>1. Сделайте первый запрос без параметра `next`. <br>2. Повторяйте запрос со значением параметра `next` из ответа на предыдущий запрос, пока `totalEvents` не станет равным `0`. Это будет означать, что вы получили все события. <br>Чтобы получать только новые события, укажите параметр `next` со значением поля `addTimestamp` из последнего полученного события. <br> Максимум 10 запросов за 10 секунд 
 
-        :param next: Пагинатор. С какого момента получить следующий пакет данных.<br>Формат Unix timestamp **с миллисекундами**
+        :param next: Пагинатор. С какого момента получить следующий пакет данных.<br>Формат Unix timestamp **с миллисекундами** 
         :type next: int
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1121,27 +1117,29 @@ class DefaultApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """  # noqa: E501
+        """ # noqa: E501
 
         _param = self._api_v1_seller_events_get_serialize(
             next=next,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index,
+            _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "EventsResponse",
-            "400": "Error",
-            "403": "Error",
-            "429": "Error429",
-            "500": "Error",
+            '200': "EventsResponse",
+            '400': "Error",
+            '403': "Error",
+            '429': "Error429",
+            '500': "Error",
         }
         response_data = await self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout
+            *_param,
+            _request_timeout=_request_timeout
         )
         return response_data.response
+
 
     def _api_v1_seller_events_get_serialize(
         self,
@@ -1152,10 +1150,13 @@ class DefaultApi:
         _host_index,
     ) -> RequestSerialized:
 
-        _hosts = ["https://buyer-chat-api.wildberries.ru"]
+        _hosts = [
+            'https://buyer-chat-api.wildberries.ru'
+        ]
         _host = _hosts[_host_index]
 
-        _collection_formats: Dict[str, str] = {}
+        _collection_formats: Dict[str, str] = {
+        }
 
         _path_params: Dict[str, str] = {}
         _query_params: List[Tuple[str, str]] = []
@@ -1167,24 +1168,30 @@ class DefaultApi:
         # process the path parameters
         # process the query parameters
         if next is not None:
-
-            _query_params.append(("next", next))
-
+            
+            _query_params.append(('next', next))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
 
+
         # set the HTTP header `Accept`
-        _header_params["Accept"] = self.api_client.select_header_accept(
-            ["application/json"]
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            [
+                'application/json'
+            ]
         )
 
+
         # authentication setting
-        _auth_settings: List[str] = ["HeaderApiKey"]
+        _auth_settings: List[str] = [
+            'HeaderApiKey'
+        ]
 
         return self.api_client.param_serialize(
-            method="GET",
-            resource_path="/api/v1/seller/events",
+            method='GET',
+            resource_path='/api/v1/seller/events',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1194,36 +1201,25 @@ class DefaultApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth,
+            _request_auth=_request_auth
         )
+
+
+
 
     @validate_call
     async def api_v1_seller_message_post(
         self,
-        reply_sign: Annotated[
-            str,
-            Field(
-                strict=True,
-                max_length=255,
-                description='Подпись чата. Можно получить из [информации по чату](./#/paths/~1api~1v1~1seller~1chats/get) или [данных события](./#/paths/~1api~1v1~1seller~1events/get), если в событии есть поле `\\"isNewChat\\": true`. ',
-            ),
-        ],
-        message: Annotated[
-            Optional[Annotated[str, Field(strict=True, max_length=1000)]],
-            Field(description="Текст сообщения. Максимум 1000 символов."),
-        ] = None,
-        file: Annotated[
-            Optional[List[Union[StrictBytes, StrictStr]]],
-            Field(
-                description="Файлы, формат JPEG, PDF или PNG, максимальный размер — 5 Мб каждый. Максимальный суммарный размер файлов — 30 Мб. "
-            ),
-        ] = None,
+        reply_sign: Annotated[str, Field(strict=True, max_length=255, description="Подпись чата. Можно получить из [информации по чату](./#/paths/~1api~1v1~1seller~1chats/get) или [данных события](./#/paths/~1api~1v1~1seller~1events/get), если в событии есть поле `\\\"isNewChat\\\": true`. ")],
+        message: Annotated[Optional[Annotated[str, Field(strict=True, max_length=1000)]], Field(description="Текст сообщения. Максимум 1000 символов.")] = None,
+        file: Annotated[Optional[List[Union[StrictBytes, StrictStr]]], Field(description="Файлы, формат JPEG, PDF или PNG, максимальный размер — 5 Мб каждый. Максимальный суммарный размер файлов — 30 Мб. ")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
             Tuple[
-                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
-            ],
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
         ] = None,
         _request_auth: Optional[Dict[StrictStr, Any]] = None,
         _content_type: Optional[StrictStr] = None,
@@ -1232,13 +1228,13 @@ class DefaultApi:
     ) -> MessageResponse:
         """Отправить сообщение
 
-        Отправляет сообщения покупателю. Максимум 10 запросов за 10 секунд
+        Отправляет сообщения покупателю. Максимум 10 запросов за 10 секунд 
 
         :param reply_sign: Подпись чата. Можно получить из [информации по чату](./#/paths/~1api~1v1~1seller~1chats/get) или [данных события](./#/paths/~1api~1v1~1seller~1events/get), если в событии есть поле `\\\"isNewChat\\\": true`.  (required)
         :type reply_sign: str
         :param message: Текст сообщения. Максимум 1000 символов.
         :type message: str
-        :param file: Файлы, формат JPEG, PDF или PNG, максимальный размер — 5 Мб каждый. Максимальный суммарный размер файлов — 30 Мб.
+        :param file: Файлы, формат JPEG, PDF или PNG, максимальный размер — 5 Мб каждый. Максимальный суммарный размер файлов — 30 Мб. 
         :type file: List[bytearray]
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1260,7 +1256,7 @@ class DefaultApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """  # noqa: E501
+        """ # noqa: E501
 
         _param = self._api_v1_seller_message_post_serialize(
             reply_sign=reply_sign,
@@ -1269,18 +1265,19 @@ class DefaultApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index,
+            _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "MessageResponse",
-            "400": "Error",
-            "403": "Error",
-            "429": "Error429",
-            "500": "Error",
+            '200': "MessageResponse",
+            '400': "Error",
+            '403': "Error",
+            '429': "Error429",
+            '500': "Error",
         }
         response_data = await self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout
+            *_param,
+            _request_timeout=_request_timeout
         )
         await response_data.read()
         return self.api_client.response_deserialize(
@@ -1288,33 +1285,20 @@ class DefaultApi:
             response_types_map=_response_types_map,
         ).data
 
+
     @validate_call
     async def api_v1_seller_message_post_with_http_info(
         self,
-        reply_sign: Annotated[
-            str,
-            Field(
-                strict=True,
-                max_length=255,
-                description='Подпись чата. Можно получить из [информации по чату](./#/paths/~1api~1v1~1seller~1chats/get) или [данных события](./#/paths/~1api~1v1~1seller~1events/get), если в событии есть поле `\\"isNewChat\\": true`. ',
-            ),
-        ],
-        message: Annotated[
-            Optional[Annotated[str, Field(strict=True, max_length=1000)]],
-            Field(description="Текст сообщения. Максимум 1000 символов."),
-        ] = None,
-        file: Annotated[
-            Optional[List[Union[StrictBytes, StrictStr]]],
-            Field(
-                description="Файлы, формат JPEG, PDF или PNG, максимальный размер — 5 Мб каждый. Максимальный суммарный размер файлов — 30 Мб. "
-            ),
-        ] = None,
+        reply_sign: Annotated[str, Field(strict=True, max_length=255, description="Подпись чата. Можно получить из [информации по чату](./#/paths/~1api~1v1~1seller~1chats/get) или [данных события](./#/paths/~1api~1v1~1seller~1events/get), если в событии есть поле `\\\"isNewChat\\\": true`. ")],
+        message: Annotated[Optional[Annotated[str, Field(strict=True, max_length=1000)]], Field(description="Текст сообщения. Максимум 1000 символов.")] = None,
+        file: Annotated[Optional[List[Union[StrictBytes, StrictStr]]], Field(description="Файлы, формат JPEG, PDF или PNG, максимальный размер — 5 Мб каждый. Максимальный суммарный размер файлов — 30 Мб. ")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
             Tuple[
-                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
-            ],
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
         ] = None,
         _request_auth: Optional[Dict[StrictStr, Any]] = None,
         _content_type: Optional[StrictStr] = None,
@@ -1323,13 +1307,13 @@ class DefaultApi:
     ) -> ApiResponse[MessageResponse]:
         """Отправить сообщение
 
-        Отправляет сообщения покупателю. Максимум 10 запросов за 10 секунд
+        Отправляет сообщения покупателю. Максимум 10 запросов за 10 секунд 
 
         :param reply_sign: Подпись чата. Можно получить из [информации по чату](./#/paths/~1api~1v1~1seller~1chats/get) или [данных события](./#/paths/~1api~1v1~1seller~1events/get), если в событии есть поле `\\\"isNewChat\\\": true`.  (required)
         :type reply_sign: str
         :param message: Текст сообщения. Максимум 1000 символов.
         :type message: str
-        :param file: Файлы, формат JPEG, PDF или PNG, максимальный размер — 5 Мб каждый. Максимальный суммарный размер файлов — 30 Мб.
+        :param file: Файлы, формат JPEG, PDF или PNG, максимальный размер — 5 Мб каждый. Максимальный суммарный размер файлов — 30 Мб. 
         :type file: List[bytearray]
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1351,7 +1335,7 @@ class DefaultApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """  # noqa: E501
+        """ # noqa: E501
 
         _param = self._api_v1_seller_message_post_serialize(
             reply_sign=reply_sign,
@@ -1360,18 +1344,19 @@ class DefaultApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index,
+            _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "MessageResponse",
-            "400": "Error",
-            "403": "Error",
-            "429": "Error429",
-            "500": "Error",
+            '200': "MessageResponse",
+            '400': "Error",
+            '403': "Error",
+            '429': "Error429",
+            '500': "Error",
         }
         response_data = await self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout
+            *_param,
+            _request_timeout=_request_timeout
         )
         await response_data.read()
         return self.api_client.response_deserialize(
@@ -1379,33 +1364,20 @@ class DefaultApi:
             response_types_map=_response_types_map,
         )
 
+
     @validate_call
     async def api_v1_seller_message_post_without_preload_content(
         self,
-        reply_sign: Annotated[
-            str,
-            Field(
-                strict=True,
-                max_length=255,
-                description='Подпись чата. Можно получить из [информации по чату](./#/paths/~1api~1v1~1seller~1chats/get) или [данных события](./#/paths/~1api~1v1~1seller~1events/get), если в событии есть поле `\\"isNewChat\\": true`. ',
-            ),
-        ],
-        message: Annotated[
-            Optional[Annotated[str, Field(strict=True, max_length=1000)]],
-            Field(description="Текст сообщения. Максимум 1000 символов."),
-        ] = None,
-        file: Annotated[
-            Optional[List[Union[StrictBytes, StrictStr]]],
-            Field(
-                description="Файлы, формат JPEG, PDF или PNG, максимальный размер — 5 Мб каждый. Максимальный суммарный размер файлов — 30 Мб. "
-            ),
-        ] = None,
+        reply_sign: Annotated[str, Field(strict=True, max_length=255, description="Подпись чата. Можно получить из [информации по чату](./#/paths/~1api~1v1~1seller~1chats/get) или [данных события](./#/paths/~1api~1v1~1seller~1events/get), если в событии есть поле `\\\"isNewChat\\\": true`. ")],
+        message: Annotated[Optional[Annotated[str, Field(strict=True, max_length=1000)]], Field(description="Текст сообщения. Максимум 1000 символов.")] = None,
+        file: Annotated[Optional[List[Union[StrictBytes, StrictStr]]], Field(description="Файлы, формат JPEG, PDF или PNG, максимальный размер — 5 Мб каждый. Максимальный суммарный размер файлов — 30 Мб. ")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
             Tuple[
-                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
-            ],
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
         ] = None,
         _request_auth: Optional[Dict[StrictStr, Any]] = None,
         _content_type: Optional[StrictStr] = None,
@@ -1414,13 +1386,13 @@ class DefaultApi:
     ) -> RESTResponseType:
         """Отправить сообщение
 
-        Отправляет сообщения покупателю. Максимум 10 запросов за 10 секунд
+        Отправляет сообщения покупателю. Максимум 10 запросов за 10 секунд 
 
         :param reply_sign: Подпись чата. Можно получить из [информации по чату](./#/paths/~1api~1v1~1seller~1chats/get) или [данных события](./#/paths/~1api~1v1~1seller~1events/get), если в событии есть поле `\\\"isNewChat\\\": true`.  (required)
         :type reply_sign: str
         :param message: Текст сообщения. Максимум 1000 символов.
         :type message: str
-        :param file: Файлы, формат JPEG, PDF или PNG, максимальный размер — 5 Мб каждый. Максимальный суммарный размер файлов — 30 Мб.
+        :param file: Файлы, формат JPEG, PDF или PNG, максимальный размер — 5 Мб каждый. Максимальный суммарный размер файлов — 30 Мб. 
         :type file: List[bytearray]
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1442,7 +1414,7 @@ class DefaultApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """  # noqa: E501
+        """ # noqa: E501
 
         _param = self._api_v1_seller_message_post_serialize(
             reply_sign=reply_sign,
@@ -1451,20 +1423,22 @@ class DefaultApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index,
+            _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "MessageResponse",
-            "400": "Error",
-            "403": "Error",
-            "429": "Error429",
-            "500": "Error",
+            '200': "MessageResponse",
+            '400': "Error",
+            '403': "Error",
+            '429': "Error429",
+            '500': "Error",
         }
         response_data = await self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout
+            *_param,
+            _request_timeout=_request_timeout
         )
         return response_data.response
+
 
     def _api_v1_seller_message_post_serialize(
         self,
@@ -1477,11 +1451,13 @@ class DefaultApi:
         _host_index,
     ) -> RequestSerialized:
 
-        _hosts = ["https://buyer-chat-api.wildberries.ru"]
+        _hosts = [
+            'https://buyer-chat-api.wildberries.ru'
+        ]
         _host = _hosts[_host_index]
 
         _collection_formats: Dict[str, str] = {
-            "file": "csv",
+            'file': 'csv',
         }
 
         _path_params: Dict[str, str] = {}
@@ -1496,34 +1472,43 @@ class DefaultApi:
         # process the header parameters
         # process the form parameters
         if reply_sign is not None:
-            _form_params.append(("replySign", reply_sign))
+            _form_params.append(('replySign', reply_sign))
         if message is not None:
-            _form_params.append(("message", message))
+            _form_params.append(('message', message))
         if file is not None:
-            _files["file"] = file
+            _files['file'] = file
         # process the body parameter
 
+
         # set the HTTP header `Accept`
-        _header_params["Accept"] = self.api_client.select_header_accept(
-            ["application/json"]
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            [
+                'application/json'
+            ]
         )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params["Content-Type"] = _content_type
+            _header_params['Content-Type'] = _content_type
         else:
-            _default_content_type = self.api_client.select_header_content_type(
-                ["multipart/form-data"]
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'multipart/form-data'
+                    ]
+                )
             )
             if _default_content_type is not None:
-                _header_params["Content-Type"] = _default_content_type
+                _header_params['Content-Type'] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = ["HeaderApiKey"]
+        _auth_settings: List[str] = [
+            'HeaderApiKey'
+        ]
 
         return self.api_client.param_serialize(
-            method="POST",
-            resource_path="/api/v1/seller/message",
+            method='POST',
+            resource_path='/api/v1/seller/message',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1533,5 +1518,7 @@ class DefaultApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth,
+            _request_auth=_request_auth
         )
+
+
