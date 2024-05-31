@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from wb_client.models.trbx_stickers import TrbxStickers
+from wildberries_async_api_client.models.trbx_stickers import TrbxStickers
 
 # TODO update the JSON string below
 json = "{}"

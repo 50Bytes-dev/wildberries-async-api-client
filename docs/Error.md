@@ -8,11 +8,12 @@ Name | Type | Description | Notes
 **code** | **str** | Код ошибки | [optional] 
 **message** | **str** | Описание ошибки | [optional] 
 **data** | **object** | Дополнительные данные, обогащающие ошибку | [optional] 
+**error** | **str** |  | [optional] 
 
 ## Example
 
 ```python
-from wb_client.models.error import Error
+from wildberries_async_api_client.models.error import Error
 
 # TODO update the JSON string below
 json = "{}"

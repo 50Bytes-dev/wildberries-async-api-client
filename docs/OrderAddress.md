@@ -20,7 +20,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from wb_client.models.order_address import OrderAddress
+from wildberries_async_api_client.models.order_address import OrderAddress
 
 # TODO update the JSON string below
 json = "{}"

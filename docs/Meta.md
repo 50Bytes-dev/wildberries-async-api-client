@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from wb_client.models.meta import Meta
+from wildberries_async_api_client.models.meta import Meta
 
 # TODO update the JSON string below
 json = "{}"

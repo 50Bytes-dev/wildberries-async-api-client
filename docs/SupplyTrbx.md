@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from wb_client.models.supply_trbx import SupplyTrbx
+from wildberries_async_api_client.models.supply_trbx import SupplyTrbx
 
 # TODO update the JSON string below
 json = "{}"

@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from wb_client.models.pass_office import PassOffice
+from wildberries_async_api_client.models.pass_office import PassOffice
 
 # TODO update the JSON string below
 json = "{}"

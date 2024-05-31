@@ -19,7 +19,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from wb_client.models.model_pass import ModelPass
+from wildberries_async_api_client.models.model_pass import ModelPass
 
 # TODO update the JSON string below
 json = "{}"

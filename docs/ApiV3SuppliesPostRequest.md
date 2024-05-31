@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from wb_client.models.api_v3_supplies_post_request import ApiV3SuppliesPostRequest
+from wildberries_async_api_client.models.api_v3_supplies_post_request import ApiV3SuppliesPostRequest
 
 # TODO update the JSON string below
 json = "{}"

@@ -19,7 +19,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from wb_client.models.office import Office
+from wildberries_async_api_client.models.office import Office
 
 # TODO update the JSON string below
 json = "{}"

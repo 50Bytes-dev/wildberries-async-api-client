@@ -1,0 +1,40 @@
+openapi: 3.0.1
+info:
+  title: Wildberries API
+  version: ""
+tags:
+  $include#content: https://openapi.wildberries.ru/content/swagger/api/ru/swagger.yaml#/tags
+  $include#prices: https://openapi.wildberries.ru/prices/swagger/api/ru/swagger.yaml#/x-tags
+  $include#supplies: https://openapi.wildberries.ru/supplies/swagger/api/ru/swagger.yaml#/tags
+  $include#marketplace: https://openapi.wildberries.ru/marketplace/swagger/api/ru/swagger.yaml#/tags
+  $include#statistics: https://openapi.wildberries.ru/statistics/swagger/api/ru/swagger.yaml#/x-tags
+  $include#analytics: https://openapi.wildberries.ru/analytics/swagger/api/ru/swagger.yaml#/tags
+  $include#promotion: https://openapi.wildberries.ru/promotion/swagger/api/ru/swagger.yaml#/tags
+  $include#recommendations: https://openapi.wildberries.ru/recommendations/swagger/api/ru/swagger.yaml#/tags
+  $include#feedbacksquestions: https://openapi.wildberries.ru/feedbacks-questions/swagger/api/ru/swagger.yaml#/tags
+paths:
+  $include#content: https://openapi.wildberries.ru/content/swagger/api/ru/swagger.yaml#/paths
+  $include#prices: https://openapi.wildberries.ru/prices/swagger/api/ru/swagger.yaml#/paths
+  $include#supplies: https://openapi.wildberries.ru/supplies/swagger/api/ru/swagger.yaml#/paths
+  $include#marketplace: https://openapi.wildberries.ru/marketplace/swagger/api/ru/swagger.yaml#/paths
+  $include#statistics: https://openapi.wildberries.ru/statistics/swagger/api/ru/swagger.yaml#/paths
+  $include#analytics: https://openapi.wildberries.ru/analytics/swagger/api/ru/swagger.yaml#/paths
+  $include#promotion: https://openapi.wildberries.ru/promotion/swagger/api/ru/swagger.yaml#/paths
+  $include#recommendations: https://openapi.wildberries.ru/recommendations/swagger/api/ru/swagger.yaml#/paths
+  $include#feedbacksquestions: https://openapi.wildberries.ru/feedbacks-questions/swagger/api/ru/swagger.yaml#/paths
+  $include#tariffs: https://openapi.wildberries.ru/tariffs/swagger/api/ru/swagger.yaml#/paths
+  $include#buyerschat: https://openapi.wildberries.ru/buyers-chat/swagger/api/ru/swagger.yaml#/paths
+  $include#returns: https://openapi.wildberries.ru/returns/swagger/api/ru/swagger.yaml#/paths
+components:
+  $include#content: https://openapi.wildberries.ru/content/swagger/api/ru/swagger.yaml#/components
+  $include#prices: https://openapi.wildberries.ru/prices/swagger/api/ru/swagger.yaml#/components
+  $include#supplies: https://openapi.wildberries.ru/supplies/swagger/api/ru/swagger.yaml#/components
+  $include#marketplace: https://openapi.wildberries.ru/marketplace/swagger/api/ru/swagger.yaml#/components
+  $include#statistics: https://openapi.wildberries.ru/statistics/swagger/api/ru/swagger.yaml#/components
+  $include#analytics: https://openapi.wildberries.ru/analytics/swagger/api/ru/swagger.yaml#/components
+  $include#promotion: https://openapi.wildberries.ru/promotion/swagger/api/ru/swagger.yaml#/components
+  $include#recommendations: https://openapi.wildberries.ru/recommendations/swagger/api/ru/swagger.yaml#/components
+  $include#feedbacksquestions: https://openapi.wildberries.ru/feedbacks-questions/swagger/api/ru/swagger.yaml#/components
+  $include#tariffs: https://openapi.wildberries.ru/tariffs/swagger/api/ru/swagger.yaml#/components
+  $include#buyerschat: https://openapi.wildberries.ru/buyers-chat/swagger/api/ru/swagger.yaml#/components
+  $include#returns: https://openapi.wildberries.ru/returns/swagger/api/ru/swagger.yaml#/components

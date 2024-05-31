@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from wb_client.models.supply import Supply
+from wildberries_async_api_client.models.supply import Supply
 
 # TODO update the JSON string below
 json = "{}"

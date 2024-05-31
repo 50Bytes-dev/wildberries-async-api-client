@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from wb_client.models.api_v3_passes_pass_id_put_request import ApiV3PassesPassIdPutRequest
+from wildberries_async_api_client.models.api_v3_passes_pass_id_put_request import ApiV3PassesPassIdPutRequest
 
 # TODO update the JSON string below
 json = "{}"

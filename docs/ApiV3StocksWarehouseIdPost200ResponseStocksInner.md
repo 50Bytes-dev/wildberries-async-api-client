@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from wb_client.models.api_v3_stocks_warehouse_id_post200_response_stocks_inner import ApiV3StocksWarehouseIdPost200ResponseStocksInner
+from wildberries_async_api_client.models.api_v3_stocks_warehouse_id_post200_response_stocks_inner import ApiV3StocksWarehouseIdPost200ResponseStocksInner
 
 # TODO update the JSON string below
 json = "{}"
