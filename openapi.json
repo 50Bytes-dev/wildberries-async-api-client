@@ -1,0 +1,4715 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Описание API Marketplace",
+    "version": ""
+  },
+  "security": [
+    {
+      "HeaderApiKey": []
+    }
+  ],
+  "x-tagGroups": [
+    {
+      "name": "Marketplace",
+      "tags": [
+        "Сборочные задания",
+        "Поставки",
+        "Остатки",
+        "Склады",
+        "Пропуска"
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "Сборочные задания",
+      "description": "Публичный API Marketplace создано для синхронизации данных между серверами Wildberries и серверами продавцов.\n<br>Вы загружаете данные на свои носители, работаете с ними на своих мощностях и синхронизируетесь с нашими серверами по мере необходимости.\n<br>\n<br>Ограничения по запросам:\n<br>Метод <b>PATCH</b> `api/v3/supplies/{supplyId}/orders/{orderId}` \"Добавить сборочное задание к поставке\" - 1 000 запросов в минуту.\n<br>Методы\n<br><b>PUT</b> `/api/v3/orders/{orderId}/meta/uin` \"Закрепить за сборочным заданием УИН\"\n<br><b>PUT</b> `/api/v3/orders/{orderId}/meta/imei` \"Закрепить за сборочным заданием IMEI\"\n<br><b>PUT</b> `/api/v3/orders/{orderId}/meta/gtin` \"Закрепить за сборочным заданием GTIN\"\n<br><b>PUT</b> `/api/v3/orders/{orderId}/meta/sgtin` \"Закрепить за сборочным заданием КиЗ (маркировку Честного знака)\"\n<br> - суммарно 1 000 запросов в минуту.\n<br>Остальные методы - 300 запросов в минуту, в целом.\n<br>`Не допускается использование API Marketplace в качестве внешней базы данных.`\n\n<dl>\n<dt>Словарь сокращений:</dt>\n<dd>ПВЗ - пункт выдачи заказов</dd>\n<dd>КИЗ - контрольный идентификационный знак</dd>\n<dd>ИС \"МДЛП\" - информационная система мониторинга движения лекарственных препаратов</dd>\n<dd>СЦ - сортировочный центр</dd>\n</dl>\n\n\nОписание основных ошибок в Marketplace:\n<table>\n  <tr>\n    <td>Код</td>\n    <td>Описание</td>\n  </tr>\n  <tr>\n    <td>InternalServerError</td>\n    <td>Внутренняя ошибка сервера</td>\n  </tr>\n  <tr>\n    <td>Unauthorized</td>\n    <td>Пользователь не авторизован</td>\n  </tr>\n  <tr>\n    <td>AccessDenied</td>\n    <td>Доступ запрещён</td>\n  </tr>\n  <tr>\n    <td>IncorrectRequestBody</td>\n    <td>Некорректное тело запроса</td>\n  </tr>\n  <tr>\n    <td>IncorrectRequest</td>\n    <td>Переданы некорректные данные</td>\n  </tr>\n  <tr>\n    <td>NotFound</td>\n    <td>Не найдено</td>\n  </tr>\n  <tr>\n    <td>UploadDataLimit</td>\n    <td>Превышен лимит загружаемых данных</td>\n  </tr>\n  <tr>\n    <td>SubjectDBSRestriction</td>\n    <td>Категория товара недоступна для продажи по схеме 'Везу на склад Wildberries'</td>\n  </tr>\n  <tr>\n    <td>SubjectFBSRestriction</td>\n    <td>Категория товара недоступна для продажи по схеме 'Везу самостоятельно до покупателя'</td>\n  </tr>\n  <tr>\n    <td>CargoWarehouseRestriction</td>\n    <td>Выбранный склад не предназначен для крупногабаритных товаров. Добавьте их на соответствующий склад</td>\n  </tr>\n  <tr>\n    <td>IncorrectParameter</td>\n    <td>Передан некорректный параметр</td>\n  </tr>\n  <tr>\n    <td>SupplyHasOrders</td>\n    <td>Не удалось обработать поставку. Убедитесь, что за ней не осталось закреплённых сборочных заданий</td>\n  </tr>\n  <tr>\n    <td>SupplyHasZeroOrders</td>\n    <td>Не удалось обработать поставку. Убедитесь, что за ней закреплено хотя бы одно сборочное задание</td>\n  </tr>\n  <tr>\n    <td>SupplyHasEmptyTrbx</td>\n    <td>В поставке есть пустые короба. Удалите их или вернитесь к распределению товаров</td>\n  </tr>\n  <tr>\n    <td>FailedToAddSupplyOrder</td>\n    <td>Не удалось закрепить сборочное задание за поставкой. Убедитесь, что сборочное задание и поставка удовлетворяют всем необходимым требованиям</td>\n  </tr>\n  <tr>\n    <td>StatusChangeNotAllowed</td>\n    <td>Задание перейдёт в завершенные после сканирования на ПВЗ</td>\n  </tr>\n  <tr>\n    <td>StatusMismatch</td>\n    <td>Несоответствие статусов, проверьте их правильность</td>\n  </tr>\n  <tr>\n    <td>SupplyNotClosed</td>\n    <td>Поставка не передана в доставку</td>\n  </tr>\n  <tr>\n    <td>PassValidationError</td>\n    <td>*причина*</td>\n  </tr>\n  <tr>\n    <td>SupplierBanned</td>\n    <td>Пользователь заблокирован: *причина*</td>\n  </tr>\n</table>\n"
+    },
+    {
+      "name": "Поставки",
+      "description": "<b>Порядок работы</b>:\n\n<br>1. Создайте новую поставку с помощью метода **POST** */api/v3/supplies*. В ответ вернется идентификатор созданной поставки в формате \"WB-GI-1234567\".\n<br>2. В текущую новую поставку нужно добавить сборочные задания, которые вы повезёте на склад или ПВЗ, методом **PATCH** */api/v3/supplies/{supplyId}/orders/{orderId}*. Обратите внимание, что при добавлении сборочных заданий к поставке они будут переведены в статус confirm (\"На сборке\").\n<br>`Примечание`: пункты 3 - 8 обязательны к выполнению при доставке поставки на ПВЗ.\n<br>3. В поставке создайте короб методом **POST** */api/v3/supplies/{supplyId}/trbx*.\n<br>4. Добавьте заказы в короб методом **PATCH** */api/v3/supplies/{supplyId}/trbx/{trbxId}*.\n<br>5. Список коробов с заказами можно получить методом **GET** */api/v3/supplies/{supplyId}/trbx*.\n<br>6. Получите стикеры коробов методом **POST** */api/v3/supplies/{supplyId}/trbx/stickers*, распечатайте и наклейте стикеры на короба согласно распределённым в них заказам.\n<br>7. Вы можете удалить короба из поставки методом **DELETE** */api/v3/supplies/{supplyId}/trbx*. Обратите внимание, что удалить короба из поставки можно, только пока поставка находится на сборке.\n<br>8. Вы можете удалить заказы из короба методом **DELETE** */api/v3/supplies/{supplyId}/trbx/{trbxId}/orders/{orderId}*. Обратите внимание, что удалить заказы из короба можно, только пока поставка находится на сборке.\n<br>9. После того как поставка будет укомплектована нужными сборочными заданиями, необходимо ее передать в доставку с помощью метода **PATCH** */api/v3/supplies/{supplyId}/deliver*. Обратите внимание, что при передаче сборочных заданий в доставку они будут автоматически собраны, т.е. переведены в статус complete (\"В доставке\").\n<br>10. Список сборочных заданий, добавленных к поставке, можно получить методом **GET** */api/v3/supplies/{supplyId}/orders*.\n<br>11. Все поставки, имеющиеся у продавца, можно получить методом **GET** */api/v3/supplies*.\n<br>12. Детализацию конкретной поставки можно получить методом **GET** */api/v3/supplies/{supplyId}*.\n<br>13. С помощью метода **DELETE** */api/v3/supplies/{supplyId}* можно удалить поставку при условии, что она активна и за ней не закреплено ни одно сборочное задание.\n<br>14. Если поставка была отсканирована в пункте приёмки, но при этом в ней имеются ещё неотсканированные товары, то спустя определенное время необходимо доставить их повторно. Все сборочные задания, требующие повторной отгрузки на данный момент, можно получить с помощью метода <b>GET</b> /api/v3/supplies/orders/reshipment. При помощи метода <b>PATCH</b> /api/v3/supplies/{id поставки}/orders/{id сборочного задания} данные сборочные задания можно перевести в другую активную поставку (сборочное задание также будет переведено в статус confirm (\"На сборке\")). \n<br>15. Метод **PATCH** */api/v3/supplies/{supplyId}/orders/{orderId}* также позволяет перемещать сборочные задания между активными поставками. Обратите внимание, что нельзя перемещать сборочное задание из уже закрытой поставки, только если оно не требует повторной отгрузки.\n<br>16. QR-код поставки можно получить методом **GET** */api/v3/supplies/{supplyId}/barcode* в формате svg, zpl или png. Доступно только после передачи поставки в доставку.\n"
+    },
+    {
+      "name": "Остатки",
+      "description": "Допускается <b>максимум 300 запросов в минуту</b> на методы Marketplace в целом"
+    },
+    {
+      "name": "Склады",
+      "description": "Допускается <b>максимум 300 запросов в минуту</b> на методы Marketplace в целом"
+    },
+    {
+      "name": "Пропуска",
+      "description": "Допускается <b>максимум 300 запросов в минуту</b> на методы Marketplace в целом"
+    }
+  ],
+  "paths": {
+    "/api/v3/orders/new": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "get": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Сборочные задания"
+        ],
+        "summary": "Получить список новых сборочных заданий",
+        "description": "Возвращает список всех новых сборочных заданий у продавца на данный момент.\n",
+        "responses": {
+          "200": {
+            "description": "Список сборочных заданий",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "nullable": false,
+                  "properties": {
+                    "orders": {
+                      "type": "array",
+                      "nullable": false,
+                      "description": "Список новых сборочных заданий",
+                      "items": {
+                        "$ref": "#/components/schemas/OrderNew"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/orders": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "get": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Сборочные задания"
+        ],
+        "summary": "Получить информацию по сборочным заданиям",
+        "description": "Возвращает информацию по сборочным заданиям без их актуального статуса. <br> Данные по сборочному заданию, возвращающиеся в данном методе, не меняются. <br> Рекомендуется использовать для получения исторических данных.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/Next"
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Дата начала периода в формате Unix timestamp. Необязательный параметр."
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Дата конца периода в формате Unix timestamp. Необязательный параметр."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список сборочных заданий",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "nullable": false,
+                  "properties": {
+                    "next": {
+                      "$ref": "#/components/schemas/Next"
+                    },
+                    "orders": {
+                      "type": "array",
+                      "nullable": false,
+                      "items": {
+                        "$ref": "#/components/schemas/Order"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/orders/status": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "post": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Сборочные задания"
+        ],
+        "summary": "Получить статусы сборочных заданий",
+        "description": "Возвращает статусы сборочных заданий по переданному списку идентификаторов сборочных заданий.\n\n**supplierStatus** - статус сборочного задания, триггером изменения которого является сам продавец.<br>\nВозможны следующие значения данного поля:\n| Статус   | Описание            | Как перевести сборочное задание в данный статус |\n| -------  | ---------           | --------------------------------------|\n| new      | Новое сборочное задание |          \n| confirm  | На сборке            | При добавлении сборочного задания к поставке **PATCH** */api/v3/supplies/{supplyId}/orders/{orderId}*\n| complete | В доставке           | При переводе в доставку соответствующей поставки **PATCH** */api/v3/supplies/{supplyId}/deliver*\n| cancel   | Отменено продавцом   | **PATCH** */api/v3/orders/{orderId}/cancel*\n\n\n**wbStatus** - статус сборочного задания в системе Wildberries.<br>\nВозможны следующие значения данного поля:\n- **waiting** - сборочное задание в работе\n- **sorted** - сборочное задание отсортировано\n- **sold** - сборочное задание получено покупателем\n- **canceled** - отмена сборочного задания\n- **canceled_by_client** - покупатель отменил заказ при получении\n- **declined_by_client** - покупатель отменил заказ в первый чаc <span class=\"newM\">new</span> <br> Отмена доступна покупателю в первый час с момента заказа, если заказ не переведён на сборку\n- **defect** - отмена сборочного задания по причине брака\n- **ready_for_pickup** - сборочное задание прибыло на ПВЗ\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "orders"
+                ],
+                "properties": {
+                  "orders": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1000,
+                    "description": "Список идентификаторов сборочных заданий",
+                    "items": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": 5632423
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Список статусов сборочных заданий",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "orders": {
+                      "type": "array",
+                      "nullable": false,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "format": "int64",
+                            "nullable": false,
+                            "description": "Идентификатор сборочного задания",
+                            "example": 5632423
+                          },
+                          "supplierStatus": {
+                            "type": "string",
+                            "nullable": false,
+                            "description": "Статус сборочного задания продавца (устанавливается продавцом)",
+                            "enum": [
+                              "new",
+                              "confirm",
+                              "complete",
+                              "cancel"
+                            ],
+                            "example": "new"
+                          },
+                          "wbStatus": {
+                            "type": "string",
+                            "nullable": false,
+                            "description": "Статус сборочного задания в системе Wildberries",
+                            "enum": [
+                              "waiting",
+                              "sorted",
+                              "sold",
+                              "canceled",
+                              "canceled_by_client"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  },
+                  "IncorrectRequestBody": {
+                    "$ref": "#/components/examples/IncorrectRequestBody"
+                  },
+                  "IncorrectRequest": {
+                    "$ref": "#/components/examples/IncorrectRequest"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/supplies/orders/reshipment": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "get": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Сборочные задания"
+        ],
+        "summary": "Получить все сборочные задания на повторную отгрузку",
+        "description": "Возвращает все сборочные задания, требующие повторной отгрузки. <span class=\"newM\">new</span>",
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "orders": {
+                      "description": "Список заказов",
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "supplyID": {
+                            "description": "Идентификатор поставки"
+                          },
+                          "orderID": {
+                            "description": "Идентификатор сборочного задания"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "orders": [
+                    {
+                      "supplyID": "WB-GI-1234567",
+                      "orderID": 5632423
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/orders/{orderId}/cancel": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "patch": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Сборочные задания"
+        ],
+        "summary": "Отменить сборочное задание",
+        "description": "Переводит сборочное задание в статус **cancel** (\"Отменено продавцом\").",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Order"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Отменено"
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Ошибка обновления статуса",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "StatusMismatch": {
+                    "$ref": "#/components/examples/StatusMismatch"
+                  },
+                  "StatusChangeNotAllowed": {
+                    "$ref": "#/components/examples/StatusChangeNotAllowed"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/orders/{orderId}/meta/sgtin": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "put": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Сборочные задания"
+        ],
+        "summary": "Закрепить за сборочным заданием КиЗ (маркировку Честного знака)",
+        "description": "Метод позволяет закрепить за сборочным заданием КиЗ (маркировку Честного знака). <span class=\"newM\">new</span> <br>  Закрепление КиЗ за сборочным заданием возможно только в случае, если это поле возвращается в ответе метода **Получить метаданные сборочного задания**, а сборочное задание находится в статусе `confirm`. <br> <br> Получить загруженные КиЗ можно методом <b>Получить метаданные сборочного задания</b> <br> С правилами работы с КиЗ можно ознакомиться тут: https://честныйзнак.рф <br> <br>\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Order"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sgtins": {
+                    "type": "array",
+                    "description": "Массив КиЗов. Допускается от 16 до 135 символов для кода одной маркировки.",
+                    "minItems": 1,
+                    "maxItems": 24,
+                    "items": {
+                      "type": "string",
+                      "description": "Код маркировки на упаковке. От 16 до 135 символов.",
+                      "example": "1234567890123456"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Отправлено"
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectRequestBody": {
+                    "$ref": "#/components/examples/IncorrectRequestBody"
+                  },
+                  "IncorrectRequest": {
+                    "$ref": "#/components/examples/IncorrectRequest"
+                  },
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  },
+                  "FailedToUpdateMeta": {
+                    "$ref": "#/components/examples/FailedToUpdateMeta"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Ошибка добавления маркировки.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/orders/stickers": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "post": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Сборочные задания"
+        ],
+        "summary": "Получить этикетки для сборочных заданий",
+        "description": "Возвращает список этикеток по переданному массиву сборочных заданий.\nМожно запросить этикетку в формате svg, zplv (вертикальный), zplh (горизонтальный), png.\n\n**Ограничения при работе с методом**:\n- Нельзя запросить больше 100 этикеток за раз (не более 100 идентификаторов сборочных заданий в запросе).\n- Метод возвращает этикетки только для сборочных заданий, находящихся на сборке (в статусе **confirm**).\n- Доступные размеры:\n<dd>580x400 пикселей, при параметрах width = 58, height = 40</dd>\n<dd>400x300 пикселей, при параметрах width = 40, height = 30</dd>\n",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "description": "Тип этикетки",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "svg",
+                "zplv",
+                "zplh",
+                "png"
+              ]
+            }
+          },
+          {
+            "name": "width",
+            "in": "query",
+            "required": true,
+            "description": "Ширина этикетки",
+            "schema": {
+              "type": "integer",
+              "enum": [
+                58,
+                40
+              ]
+            }
+          },
+          {
+            "name": "height",
+            "in": "query",
+            "required": true,
+            "description": "Высота этикетки",
+            "schema": {
+              "type": "integer",
+              "enum": [
+                40,
+                30
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "orders": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 100,
+                    "description": "Массив идентификаторов сборочных заданий",
+                    "items": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": 5346346
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Список этикеток",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stickers": {
+                      "type": "array",
+                      "nullable": false,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "orderId": {
+                            "type": "integer",
+                            "format": "int64",
+                            "nullable": false,
+                            "description": "Идентификатор сборочного задания",
+                            "example": 5346346
+                          },
+                          "partA": {
+                            "type": "integer",
+                            "nullable": false,
+                            "description": "Первая часть идентификатора этикетки (для печати подписи)",
+                            "example": 231648
+                          },
+                          "partB": {
+                            "type": "integer",
+                            "nullable": false,
+                            "description": "Вторая часть идентификатора этикетки",
+                            "example": 9753
+                          },
+                          "barcode": {
+                            "type": "string",
+                            "nullable": false,
+                            "description": "Закодированное значение этикетки",
+                            "example": "!uKEtQZVx"
+                          },
+                          "file": {
+                            "type": "string",
+                            "format": "byte",
+                            "nullable": false,
+                            "description": "Полное представление этикетки в заданном формате. (кодировка base64)",
+                            "example": "PD94bWwgdmVyc2lvbj0iMS4wIj8+CjwhLS0gR2VuZXJhdGVkIGJ5IFNWR28gLS0+Cjxzdmcgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiCiAgICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICAgIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjQwMCIgaGVpZQiIGhlaWdodD0iMTcwIiBzdHlsZT0iZmlsbDpibGFjayIgLz4KPHJlY3QgeD0iMzE4IiB5PSIyMCIgd2lkdGg9IjYiIGhlaWdodD0iMTcwIiBzdHlsZT0iZmlsbDpibGFjayIgLz4KPHJlY3QgeD0iMzI2IiB5PSIyMCIgd2lkdGg9IjIiIGhlaWdodD0iMTcwIiBzdHlsZT0iZmlsbDpibGFjayIgLz4KPHJlY3QgeD0iMzMwIiB5PSIyMCIgd2lkdGg9IjQiIGhlaWdodD0iMTcwIiBzdHlsZT0iZmlsbDpibGFjayIgLz4KPHJlY3QgeD0iMjAiIHk9IjIwMCIgd2lkdGg9IjM1MCIgaGVpZ2h0PSI5MCIgc3R5bGU9ImZpbGw6YmxhY2siIC8+Cjx0ZXh0IHg9IjMwIiB5PSIyNDAiIHN0eWxlPSJmaWxsOndoaXRlO2ZvbnQtc2l6ZTozMHB0O3RleHQtYW5jaG9yOnN0YXJ0IiA+MjMxNjQ4PC90ZXh0Pgo8dGV4dCB4PSIzNTAiIHk9IjI3MCIgc3R5bGU9ImZpbGw6d2hpdGU7Zm9udC1zaXplOjUwcHQ7dGV4dC1hbmNob3I6ZW5kIiA+OTc1MzwvdGV4dD4KPC9zdmc+Cg=="
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectRequestBody": {
+                    "$ref": "#/components/examples/IncorrectRequestBody"
+                  },
+                  "IncorrectRequest": {
+                    "$ref": "#/components/examples/IncorrectRequest"
+                  },
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/orders/{orderId}/meta": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "get": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Сборочные задания"
+        ],
+        "summary": "Получить метаданные сборочного задания",
+        "description": "Возвращает метаданные заказа. <br> Возможные метаданные: <br> **imei** <br> **uin** <br> **gtin** <br> **sgtin**   <br> В ответе метода возвращаются метаданные, доступные для сборочного задания. Если ответ вернулся с пустой структурой **meta**, значит у сборочного задания нет метаданных, и добавление их не доступно.  \n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Метаданные заказа",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "nullable": false,
+                  "properties": {
+                    "meta": {
+                      "$ref": "#/components/schemas/Meta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Сборочные задания"
+        ],
+        "summary": "Удалить метаданные сборочного задания",
+        "description": "Удаляет значение метаданных заказа для переданного ключа.  <br> Возможные метаданные: <br> **imei** <br> **uin** <br> **gtin** <br> **sgtin** <span class=\"newM\">new</span><br> Передается только одно значение. \n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Order"
+          },
+          {
+            "name": "key",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Название метаданных для удаления (**imei**, **uin**, **gtin**, **sgtin**). Передается только одно значение."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Удалено"
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectRequest": {
+                    "$ref": "#/components/examples/IncorrectRequest"
+                  },
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "409": {
+            "description": "Ошибка удаления метаданных",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/orders/{orderId}/meta/uin": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "put": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Сборочные задания"
+        ],
+        "summary": "Закрепить за сборочным заданием УИН (уникальный идентификационный номер)",
+        "description": "Обновляет УИН сборочного задания. У одного сборочного задания может быть только один УИН. Добавлять маркировку можно только для заказов в статусе `confirm` и доставка которых осуществляется силами Wildberries.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Order"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uin": {
+                    "type": "string",
+                    "minLength": 16,
+                    "maxLength": 16,
+                    "description": "УИН",
+                    "example": "1234567890123456"
+                  }
+                },
+                "required": [
+                  "uin"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Обновлено"
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectRequestBody": {
+                    "$ref": "#/components/examples/IncorrectRequestBody"
+                  },
+                  "IncorrectRequest": {
+                    "$ref": "#/components/examples/IncorrectRequest"
+                  },
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  },
+                  "FailedToUpdateMeta": {
+                    "$ref": "#/components/examples/FailedToUpdateMeta"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "409": {
+            "description": "Ошибка обновления метаданных.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/orders/{orderId}/meta/imei": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "put": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Сборочные задания"
+        ],
+        "summary": "Закрепить за сборочным заданием IMEI",
+        "description": "Обновляет IMEI сборочного задания. У одного сборочного задания может быть только один IMEI. Добавлять маркировку можно только для заказов в статусе `confirm` и доставка которых осуществляется силами Wildberries.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Order"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "imei": {
+                    "type": "string",
+                    "minLength": 15,
+                    "maxLength": 15,
+                    "description": "IMEI",
+                    "example": "123456789012345"
+                  }
+                },
+                "required": [
+                  "imei"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Обновлено"
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectRequestBody": {
+                    "$ref": "#/components/examples/IncorrectRequestBody"
+                  },
+                  "IncorrectRequest": {
+                    "$ref": "#/components/examples/IncorrectRequest"
+                  },
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  },
+                  "FailedToUpdateMeta": {
+                    "$ref": "#/components/examples/FailedToUpdateMeta"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "409": {
+            "description": "Ошибка обновления метаданных.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/orders/{orderId}/meta/gtin": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "put": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Сборочные задания"
+        ],
+        "summary": "Закрепить за сборочным заданием GTIN",
+        "description": "Обновляет GTIN сборочного задания. У одного сборочного задания может быть только один GTIN. Добавлять маркировку можно только для заказов в статусе `confirm` и доставка которых осуществляется силами Wildberries.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Order"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "gtin": {
+                    "type": "string",
+                    "minLength": 13,
+                    "maxLength": 13,
+                    "description": "GTIN",
+                    "example": "1234567890123"
+                  }
+                },
+                "required": [
+                  "gtin"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Обновлено"
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectRequestBody": {
+                    "$ref": "#/components/examples/IncorrectRequestBody"
+                  },
+                  "IncorrectRequest": {
+                    "$ref": "#/components/examples/IncorrectRequest"
+                  },
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  },
+                  "FailedToUpdateMeta": {
+                    "$ref": "#/components/examples/FailedToUpdateMeta"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "409": {
+            "description": "Ошибка обновления метаданных.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/files/orders/external-stickers": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "post": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Сборочные задания"
+        ],
+        "summary": "Получить список ссылок на этикетки для сборочных заданий, которые требуются при кроссбордере",
+        "description": "Возвращает список ссылок на этикетки для сборочных заданий, которые требуются при кроссбордере.\n\n**Ограничения при работе с методом**:\n- Нельзя запросить больше 100 этикеток за раз (не более 100 идентификаторов сборочных заданий в запросе).\n- Метод возвращает этикетки только для сборочных заданий, находящихся в доставке (в статусе **complete**).\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "orders": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 100,
+                    "description": "Массив идентификаторов сборочных заданий",
+                    "items": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": 5346346
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Список ссылок на этикетки",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stickers": {
+                      "type": "array",
+                      "nullable": false,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "orderID": {
+                            "type": "integer",
+                            "format": "int64",
+                            "nullable": false,
+                            "description": "Идентификатор сборочного задания",
+                            "example": 5346346
+                          },
+                          "url": {
+                            "type": "string",
+                            "nullable": false,
+                            "description": "Ссылка, по которой можно получить этикетку для сборочного задания",
+                            "example": "http://.../some-sticker"
+                          },
+                          "parcelID": {
+                            "type": "string",
+                            "nullable": false,
+                            "description": "Трек-номер в этикетке для отслеживания сборочного задания",
+                            "example": "WB0000000001"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectRequestBody": {
+                    "$ref": "#/components/examples/IncorrectRequestBody"
+                  },
+                  "IncorrectRequest": {
+                    "$ref": "#/components/examples/IncorrectRequest"
+                  },
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/supplies": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "post": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Поставки"
+        ],
+        "summary": "Создать новую поставку",
+        "description": "**Ограничения работы с поставками**:\n\n- Только для сборочных заданий по схеме \"Везу на склад WB\"\n- При добавлении в поставку все передаваемые сборочные задания в статусе **new** (\"Новое\") будут автоматически переведены в статус **confirm** (\"На сборке\").\n- Обратите внимание, что если вы переведёте сборочное задание в статус **cancel** (\"Отмена продавцом\"), то сборочное задание автоматически удалится из поставки, если было прикреплено к ней.\n- Поставку можно собрать только из сборочных заданий (заказов) одного габаритного типа (cargoType). Новая поставка не обладает габаритным признаком. При добавлении первого заказа в поставку она приобретает габаритный признак этого заказа.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128,
+                    "description": "Наименование поставки",
+                    "example": "Тестовая поставка"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Создано",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "nullable": false,
+                      "description": "Идентификатор поставки",
+                      "example": "WB-GI-1234567"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectRequestBody": {
+                    "$ref": "#/components/examples/IncorrectRequestBody"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Поставки"
+        ],
+        "summary": "Получить список поставок",
+        "description": "Возвращает список поставок.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/Next"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список поставок",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "nullable": false,
+                  "properties": {
+                    "next": {
+                      "$ref": "#/components/schemas/Next"
+                    },
+                    "supplies": {
+                      "type": "array",
+                      "nullable": false,
+                      "description": "Список поставок",
+                      "items": {
+                        "$ref": "#/components/schemas/Supply"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/supplies/{supplyId}/orders/{orderId}": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "patch": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Поставки"
+        ],
+        "summary": "Добавить к поставке сборочное задание",
+        "description": "Добавляет к поставке сборочное задание и переводит его в статус **confirm** (\"На сборке\").  <br> Также может перемещать сборочное задание между активными поставками, либо из закрытой в активную при условии, что сборочное задание требует повторной отгрузки. <br> <br> `Важно!` <br> В пустую поставку можно добавить сборочное задание любого габаритного типа. <br> После добавления первого задания поставка приобретает габаритный тип этого задания, см. значение поля `cargoType` в ответе метода <b>\"Получить информацию о поставке\"</b>. <br> После этого добавить в поставку можно только те задания, габаритный тип которых соответствует таковому у поставки.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Supply"
+          },
+          {
+            "$ref": "#/components/parameters/Order"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Задание закреплено за поставкой"
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Ошибка добавления сборочного задания к поставке",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "FailedToAddSupplyOrder": {
+                    "$ref": "#/components/examples/FailedToAddSupplyOrder"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/supplies/{supplyId}": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "get": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Поставки"
+        ],
+        "summary": "Получить информацию о поставке",
+        "description": "Возвращает информацию о поставке.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Supply"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Информация о поставке",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Supply"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Поставки"
+        ],
+        "summary": "Удалить поставку",
+        "description": "Удаляет поставку, если она активна и за ней не закреплено ни одно сборочное задание.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Supply"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Удалено"
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "За поставкой закреплены сборочные задания",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "SupplyHasOrders": {
+                    "$ref": "#/components/examples/SupplyHasOrders"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/supplies/{supplyId}/orders": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "get": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Поставки"
+        ],
+        "summary": "Получить сборочные задания в поставке",
+        "description": "Возвращает сборочные задания, закреплённые за поставкой.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Supply"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список сборочных заданий",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "nullable": false,
+                  "properties": {
+                    "orders": {
+                      "type": "array",
+                      "nullable": false,
+                      "items": {
+                        "$ref": "#/components/schemas/SupplyOrder"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/supplies/{supplyId}/deliver": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "patch": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Поставки"
+        ],
+        "summary": "Передать поставку в доставку",
+        "description": "Закрывает поставку и переводит все сборочные задания в ней в статус **complete** (\"В доставке\").\nПосле закрытия поставки новые сборочные задания к ней добавить будет невозможно.\nПередать поставку в доставку можно только при наличии в ней хотя бы одного сборочного задания и отсутствии пустых коробов.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Supply"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Передано в доставку"
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Ошибка закрытия поставки",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "SupplyHasZeroOrders": {
+                    "$ref": "#/components/examples/SupplyHasZeroOrders"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/supplies/{supplyId}/barcode": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "get": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Поставки"
+        ],
+        "summary": "Получить QR поставки",
+        "description": "Возвращает QR в svg, zplv (вертикальный), zplh (горизонтальный), png. <br>\nМожно получить, только если поставка передана в доставку.\n<dt>Доступные размеры:</dt>\n<dd>580x400 пикселей\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Supply"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "description": "Тип этикетки",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "svg",
+                "zplv",
+                "zplh",
+                "png"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "QR поставки",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "nullable": false,
+                  "properties": {
+                    "barcode": {
+                      "type": "string",
+                      "nullable": false,
+                      "description": "Закодированное значение этикетки (идентификатор поставки)",
+                      "example": "WB-GI-12345678"
+                    },
+                    "file": {
+                      "type": "string",
+                      "format": "byte",
+                      "nullable": false,
+                      "description": "Полное представление этикетки в заданном формате. (кодировка base64)",
+                      "example": "U3dhZ2dlciByb2Nrcw=="
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Ошибка запроса данных",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "SupplyNotClosed": {
+                    "$ref": "#/components/examples/SupplyNotClosed"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/supplies/{supplyId}/trbx": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "get": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Поставки"
+        ],
+        "summary": "Получить список коробов поставки",
+        "description": "Возвращает список коробов и идентификаторы заказов, входящих в них.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Supply"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список коробов",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "trbxes": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/SupplyTrbx"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Поставки"
+        ],
+        "summary": "Добавить короба к поставке",
+        "description": "Добавляет требуемое количество коробов в поставку. Можно добавить, только пока поставка на сборке.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Supply"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "amount"
+                ],
+                "properties": {
+                  "amount": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1000,
+                    "description": "Количество коробов, которые необходимо добавить к поставке.",
+                    "example": 4
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Создано",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "trbxIds": {
+                      "type": "array",
+                      "description": "Список ID коробов, которые были созданы.",
+                      "minItems": 1,
+                      "items": {
+                        "type": "string",
+                        "example": "WB-TRBX-1234567"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/FailedToAddSupplyTrbx"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Поставки"
+        ],
+        "summary": "Удалить короба из поставки",
+        "description": "Убирает заказы из перечисленных коробов поставки и удаляет короба. Можно удалить, только пока поставка на сборке.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Supply"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "trbxIds"
+                ],
+                "properties": {
+                  "trbxIds": {
+                    "type": "array",
+                    "description": "Список ID коробов, которые необходимо удалить.",
+                    "items": {
+                      "type": "string",
+                      "example": "WB-TRBX-1234567"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Удалено"
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/supplies/{supplyId}/trbx/{trbxId}": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "patch": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Поставки"
+        ],
+        "summary": "Добавить заказы к коробу",
+        "description": "Добавляет заказы в короб для выбранной поставки. Можно добавить, только пока поставка на сборке.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Supply"
+          },
+          {
+            "$ref": "#/components/parameters/Trbx"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "orderIds"
+                ],
+                "properties": {
+                  "orderIds": {
+                    "type": "array",
+                    "description": "Список заказов, которые необходимо добавить в короб.",
+                    "items": {
+                      "type": "integer",
+                      "example": 1234567
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Добавлено"
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/supplies/{supplyId}/trbx/{trbxId}/orders/{orderId}": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "delete": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Поставки"
+        ],
+        "summary": "Удалить заказ из короба",
+        "description": "Удаляет заказ из короба выбранной поставки. Можно удалить, только пока поставка на сборке.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Supply"
+          },
+          {
+            "$ref": "#/components/parameters/Trbx"
+          },
+          {
+            "$ref": "#/components/parameters/Order"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Удалено"
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/supplies/{supplyId}/trbx/stickers": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "post": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Поставки"
+        ],
+        "summary": "Получить стикеры коробов поставки",
+        "description": "Возвращает стикеры QR в svg, zplv (вертикальный), zplh (горизонтальный), png.<br>\nМожно получить, только если в коробе есть заказы.\n<dt>Размер стикеров: 580x400 пикселей</dt>\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Supply"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "description": "Тип этикетки",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "svg",
+                "zplv",
+                "zplh",
+                "png"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "trbxIds"
+                ],
+                "properties": {
+                  "trbxIds": {
+                    "type": "array",
+                    "description": "Список ID коробов, по которым необходимо вернуть стикеры.",
+                    "items": {
+                      "type": "string",
+                      "example": "WB-TRBX-1234567"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Стикеры коробов",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "nullable": false,
+                  "properties": {
+                    "stickers": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "$ref": "#/components/schemas/TrbxStickers"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/stocks/{warehouseId}": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "put": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Остатки"
+        ],
+        "summary": "Обновить остатки товаров",
+        "description": "Обновляет остатки товаров. <br> `Важно!` Имена параметров запроса не валидируются. При отправке некорректных имен Вы получите успешный ответ(204), но остатки не обновятся.<br> Тщательнее проверяйте данные перед отправкой.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Warehouse"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "stocks"
+                ],
+                "properties": {
+                  "stocks": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1000,
+                    "description": "Массив баркодов товаров и их остатков",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "sku": {
+                          "type": "string",
+                          "description": "Баркод",
+                          "example": "BarcodeTest123"
+                        },
+                        "amount": {
+                          "type": "integer",
+                          "maximum": 100000,
+                          "description": "Остаток",
+                          "example": 10
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Обновлено"
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectRequestBody": {
+                    "$ref": "#/components/examples/IncorrectRequestBody"
+                  },
+                  "IncorrectRequest": {
+                    "$ref": "#/components/examples/IncorrectRequest"
+                  },
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Ошибка обновления остатков",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": [
+                    {
+                      "code": "SubjectDBSRestriction",
+                      "message": "Категория товара недоступна для продажи по схеме 'Везу на склад Wildberries'.",
+                      "data": [
+                        {
+                          "sku": "skuTest1",
+                          "stock": 0
+                        }
+                      ]
+                    },
+                    {
+                      "code": "SubjectFBSRestriction",
+                      "message": "Категория товара недоступна для продажи по схеме 'Везу самостоятельно до покупателя'.",
+                      "data": [
+                        {
+                          "sku": "skuTest2",
+                          "stock": 1
+                        }
+                      ]
+                    },
+                    {
+                      "code": "UploadDataLimit",
+                      "message": "Превышен лимит загружаемых данных",
+                      "data": [
+                        {
+                          "sku": "skuTest2",
+                          "stock": 100001
+                        }
+                      ]
+                    },
+                    {
+                      "code": "CargoWarehouseRestriction",
+                      "message": "Выбранный склад не предназначен для крупногабаритных товаров. Добавьте их на соответствующий склад",
+                      "data": [
+                        {
+                          "sku": "skuTest3",
+                          "stock": 10
+                        }
+                      ]
+                    },
+                    {
+                      "code": "NotFound",
+                      "message": "Не найдено",
+                      "data": [
+                        {
+                          "sku": "skuTest4",
+                          "stock": 10
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Остатки"
+        ],
+        "summary": "Удалить остатки товаров",
+        "description": "Удаляет остатки товаров. **Внимание! Действие необратимо**. Удаленный остаток будет необходимо загрузить повторно для возобновления продаж.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Warehouse"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "skus": {
+                    "type": "array",
+                    "nullable": false,
+                    "minItems": 1,
+                    "maxItems": 1000,
+                    "description": "Массив баркодов",
+                    "items": {
+                      "type": "string",
+                      "nullable": false,
+                      "example": "BarcodeTest123"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Удалено"
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectRequestBody": {
+                    "$ref": "#/components/examples/IncorrectRequestBody"
+                  },
+                  "IncorrectRequest": {
+                    "$ref": "#/components/examples/IncorrectRequest"
+                  },
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "description": "Не найдены запрашиваемые данные",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "code": "NotFound",
+                  "message": "Не найдено",
+                  "data": [
+                    "skuTest1",
+                    "skuTest2"
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Остатки"
+        ],
+        "summary": "Получить остатки товаров",
+        "description": "Возвращает остатки товаров.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Warehouse"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "nullable": false,
+                "properties": {
+                  "skus": {
+                    "type": "array",
+                    "description": "Массив баркодов",
+                    "minItems": 1,
+                    "maxItems": 1000,
+                    "items": {
+                      "type": "string",
+                      "example": "BarcodeTest123"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Список остатков",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stocks": {
+                      "type": "array",
+                      "nullable": false,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "sku": {
+                            "type": "string",
+                            "nullable": false,
+                            "description": "Баркод",
+                            "example": "BarcodeTest123"
+                          },
+                          "amount": {
+                            "type": "integer",
+                            "nullable": false,
+                            "description": "Остаток",
+                            "example": 10
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectRequestBody": {
+                    "$ref": "#/components/examples/IncorrectRequestBody"
+                  },
+                  "IncorrectRequest": {
+                    "$ref": "#/components/examples/IncorrectRequest"
+                  },
+                  "IncorrectParameter": {
+                    "$ref": "#/components/examples/IncorrectParameter"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/offices": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "get": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Склады"
+        ],
+        "summary": "Получить список складов WB",
+        "description": "Возвращает список всех складов WB для привязки к складам продавца.",
+        "responses": {
+          "200": {
+            "description": "Список складов WB",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "nullable": false,
+                  "description": "Список складов WB",
+                  "items": {
+                    "$ref": "#/components/schemas/Office"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/warehouses": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "get": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Склады"
+        ],
+        "summary": "Получить список складов продавца",
+        "description": "Возвращает список всех складов продавца.",
+        "responses": {
+          "200": {
+            "description": "Список складов продавца",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "nullable": false,
+                  "description": "Список складов продавца",
+                  "items": {
+                    "$ref": "#/components/schemas/Warehouse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Склады"
+        ],
+        "summary": "Создать склад продавца",
+        "description": "Создает склад продавца. Нельзя привязывать склад WB, который уже используется.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "nullable": false,
+                    "minLength": 1,
+                    "maxLength": 200,
+                    "description": "Имя склада продавца",
+                    "example": "Склад Коледино"
+                  },
+                  "officeId": {
+                    "type": "integer",
+                    "nullable": false,
+                    "minimum": 1,
+                    "description": "ID склада WB",
+                    "example": 15
+                  }
+                },
+                "required": [
+                  "name",
+                  "officeId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Создано",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "nullable": false,
+                      "description": "ID склада продавца",
+                      "example": 2
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectRequestBody": {
+                    "$ref": "#/components/examples/IncorrectRequestBody"
+                  },
+                  "WarehouseNameInvalid": {
+                    "$ref": "#/components/examples/WarehouseNameInvalid"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Ошибка создания нового склада",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/warehouses/{warehouseId}": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "put": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Склады"
+        ],
+        "summary": "Обновить склад",
+        "description": "Обновляет склад продавца. Изменение выбранного склада WB допустимо раз в сутки. Нельзя привязывать склад WB, который уже используется.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Warehouse"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "nullable": false,
+                    "minLength": 1,
+                    "maxLength": 200,
+                    "description": "Имя склада продавца",
+                    "example": "Склад Коледино"
+                  },
+                  "officeId": {
+                    "type": "integer",
+                    "nullable": false,
+                    "minimum": 1,
+                    "description": "Идентификатор склада WB",
+                    "example": 15
+                  }
+                },
+                "required": [
+                  "name",
+                  "officeId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Обновлено"
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectRequestBody": {
+                    "$ref": "#/components/examples/IncorrectRequestBody"
+                  },
+                  "WarehouseNameInvalid": {
+                    "$ref": "#/components/examples/WarehouseNameInvalid"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Ошибка обновления склада",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Склады"
+        ],
+        "summary": "Удалить склад продавца",
+        "description": "Удаляет склад продавца.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Warehouse"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Удалено"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError",
+            "/api/v3/passes/offices": {
+              "servers": [
+                {
+                  "url": "https://suppliers-api.wildberries.ru"
+                }
+              ],
+              "get": {
+                "security": [
+                  {
+                    "HeaderApiKey": []
+                  }
+                ],
+                "tags": [
+                  "Пропуска"
+                ],
+                "summary": "Получить список складов, для которых требуется пропуск",
+                "description": "Возвращает список складов для привязки к пропуску продавца. <br> Обратите внимание: данные, которые возвращает метод, могут меняться. Рекомендуем периодически синхронизировать список.\n",
+                "responses": {
+                  "200": {
+                    "description": "Список складов, для которых требуется пропуск.",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "array",
+                          "nullable": false,
+                          "description": "Список складов",
+                          "items": {
+                            "$ref": "#/components/schemas/PassOffice"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "401": {
+                    "$ref": "#/components/responses/Unauthorized"
+                  },
+                  "403": {
+                    "$ref": "#/components/responses/AccessDenied"
+                  },
+                  "429": {
+                    "$ref": "#/components/responses/ExceededLimitRequests"
+                  },
+                  "500": {
+                    "$ref": "#/components/responses/InternalServerError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/passes/offices": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "get": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Пропуска"
+        ],
+        "summary": "Получить список складов, для которых требуется пропуск",
+        "description": "Возвращает список складов для привязки к пропуску продавца. <br> Обратите внимание: данные, которые возвращает метод, могут меняться. Рекомендуем периодически синхронизировать список.\n",
+        "responses": {
+          "200": {
+            "description": "Список складов, для которых требуется пропуск.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "nullable": false,
+                  "description": "Список складов",
+                  "items": {
+                    "$ref": "#/components/schemas/PassOffice"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/passes": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "get": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Пропуска"
+        ],
+        "summary": "Получить список пропусков",
+        "description": "Возвращает список всех пропусков продавца.",
+        "responses": {
+          "200": {
+            "description": "Список пропусков продавца",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "nullable": false,
+                  "description": "Список пропусков продавца",
+                  "items": {
+                    "$ref": "#/components/schemas/Pass"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Пропуска"
+        ],
+        "summary": "Создать пропуск",
+        "description": "Создает пропуск продавца. <br> Пропуск действует 48 часов со времени создания. Метод ограничен одним вызовом в 10 минут.\n",
+        "requestBody": {
+          "required": true,
+          "description": "Общая длина ФИО ограничена от 6 до 100 символов. В номере машины могут быть только буквы и цифры.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "nullable": false,
+                    "minLength": 1,
+                    "description": "Имя водителя",
+                    "example": "Александр"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "nullable": false,
+                    "minLength": 1,
+                    "description": "Фамилия водителя",
+                    "example": "Петров"
+                  },
+                  "carModel": {
+                    "type": "string",
+                    "nullable": false,
+                    "minLength": 1,
+                    "maxLength": 100,
+                    "description": "Марка машины",
+                    "example": "Lamborghini"
+                  },
+                  "carNumber": {
+                    "type": "string",
+                    "nullable": false,
+                    "minLength": 6,
+                    "maxLength": 9,
+                    "description": "Номер машины",
+                    "example": "A456BC123"
+                  },
+                  "officeId": {
+                    "type": "integer",
+                    "format": "int64",
+                    "nullable": false,
+                    "minimum": 1,
+                    "description": "ID склада",
+                    "example": 15
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "carModel",
+                  "carNumber",
+                  "officeId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "nullable": false,
+                      "description": "ID пропуска продавца",
+                      "example": 2
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectRequestBody": {
+                    "$ref": "#/components/examples/IncorrectRequestBody"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v3/passes/{passId}": {
+      "servers": [
+        {
+          "url": "https://suppliers-api.wildberries.ru"
+        }
+      ],
+      "put": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Пропуска"
+        ],
+        "summary": "Обновить пропуск",
+        "description": "Обновляет данные пропуска продавца.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Pass"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Общая длина ФИО ограничена от 6 до 100 символов. В номере машины могут быть только буквы и цифры.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "nullable": false,
+                    "minLength": 1,
+                    "description": "Имя водителя",
+                    "example": "Александр"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "nullable": false,
+                    "minLength": 6,
+                    "description": "Фамилия водителя",
+                    "example": "Петров"
+                  },
+                  "carModel": {
+                    "type": "string",
+                    "nullable": false,
+                    "minLength": 1,
+                    "maxLength": 100,
+                    "description": "Марка машины",
+                    "example": "Lamborghini"
+                  },
+                  "carNumber": {
+                    "type": "string",
+                    "nullable": false,
+                    "minLength": 6,
+                    "maxLength": 9,
+                    "description": "Номер машины",
+                    "example": "A456BC123"
+                  },
+                  "officeId": {
+                    "type": "integer",
+                    "format": "int64",
+                    "nullable": false,
+                    "minimum": 1,
+                    "description": "ID склада",
+                    "example": 15
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "carModel",
+                  "carNumber",
+                  "officeId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Обновлено"
+          },
+          "400": {
+            "description": "Запрос содержит некорректные данные. Проверьте его на соответствие документации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IncorrectRequestBody": {
+                    "$ref": "#/components/examples/IncorrectRequestBody"
+                  },
+                  "WarehouseNameInvalid": {
+                    "$ref": "#/components/examples/WarehouseNameInvalid"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "HeaderApiKey": []
+          }
+        ],
+        "tags": [
+          "Пропуска"
+        ],
+        "summary": "Удалить пропуск",
+        "description": "Удаляет пропуск продавца.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Pass"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Удалено"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/ExceededLimitRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "HeaderApiKey": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    },
+    "parameters": {
+      "Warehouse": {
+        "name": "warehouseId",
+        "in": "path",
+        "required": true,
+        "description": "ID склада продавца",
+        "schema": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        }
+      },
+      "Supply": {
+        "name": "supplyId",
+        "in": "path",
+        "required": true,
+        "description": "ID поставки",
+        "schema": {
+          "type": "string",
+          "example": "WB-GI-1234567"
+        }
+      },
+      "Trbx": {
+        "name": "trbxId",
+        "in": "path",
+        "required": true,
+        "description": "ID короба",
+        "schema": {
+          "type": "string",
+          "example": "WB-TRBX-1234567"
+        }
+      },
+      "Order": {
+        "name": "orderId",
+        "in": "path",
+        "required": true,
+        "description": "ID сборочного задания",
+        "schema": {
+          "type": "integer",
+          "format": "int64",
+          "example": 5632423
+        }
+      },
+      "Pass": {
+        "name": "passId",
+        "in": "path",
+        "required": true,
+        "description": "ID пропуска",
+        "schema": {
+          "type": "integer",
+          "format": "int64",
+          "example": 45
+        }
+      },
+      "Next": {
+        "name": "next",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "description": "Параметр пагинации. Устанавливает значение, с которого надо получить следующий пакет данных. Для получения полного списка данных должен быть равен 0 в первом запросе. Для следующих запросов необходимо брать значения из одноимённого поля в ответе."
+      },
+      "Limit": {
+        "name": "limit",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "description": "Параметр пагинации. Устанавливает предельное количество возвращаемых данных."
+      }
+    },
+    "examples": {
+      "TokenMissing": {
+        "description": "Токен отсутствует",
+        "value": "proxy: unauthorized"
+      },
+      "TokenInvalid": {
+        "description": "Токен недействителен",
+        "value": "proxy: invalid token"
+      },
+      "TokenNotFound": {
+        "description": "Токен удален",
+        "value": "proxy: not found"
+      },
+      "IncorrectRequestBody": {
+        "value": {
+          "code": "IncorrectRequestBody",
+          "message": "Некорректное тело запроса"
+        }
+      },
+      "WarehouseNameInvalid": {
+        "value": {
+          "code": "WarehouseNameInvalid",
+          "message": "Некорректное имя склада"
+        }
+      },
+      "IncorrectRequest": {
+        "value": {
+          "code": "IncorrectRequest",
+          "message": "Переданы некорректные данные"
+        }
+      },
+      "IncorrectParameter": {
+        "value": {
+          "code": "IncorrectParameter",
+          "message": "Передан некорректный параметр"
+        }
+      },
+      "FailedToUpdateMeta": {
+        "value": {
+          "code": "FailedToUpdateMeta",
+          "message": "Не удалось обновить метаданные сборочного задания. Убедитесь, что сборочное задание удовлетворяет всем необходимым требованиям (сборочное задание существует, находится в статусе \"На сборке\", сборочному заданию доступны метаданные см. описание метода **Получить метаданные сборочного задания**)"
+        }
+      },
+      "SupplyHasOrders": {
+        "value": {
+          "code": "SupplyHasOrders",
+          "message": "Не удалось обработать поставку. Убедитесь, что за ней не осталось закреплённых сборочных заданий."
+        }
+      },
+      "SupplyHasZeroOrders": {
+        "value": {
+          "code": "SupplyHasZeroOrders",
+          "message": "Не удалось обработать поставку. Убедитесь, что за ней закреплён хотя бы одно сборочное задание."
+        }
+      },
+      "SupplyNotClosed": {
+        "value": {
+          "code": "SupplyNotClosed",
+          "message": "Поставка не передана в доставку"
+        }
+      },
+      "FailedToAddSupplyOrder": {
+        "value": {
+          "code": "FailedToAddSupplyOrder",
+          "message": "Не удалось закрепить сборочное задание за поставкой. Убедитесь, что сборочное задание и поставка удовлетворяют всем необходимым требованиям."
+        }
+      },
+      "StatusMismatch": {
+        "value": {
+          "code": "StatusMismatch",
+          "message": "Несоответствие статусов, проверьте их правильность"
+        }
+      },
+      "StatusChangeNotAllowed": {
+        "value": {
+          "code": "StatusChangeNotAllowed",
+          "message": "Задание перейдёт в завершенные после сканирования на ПВЗ"
+        }
+      },
+      "FailedToAddSupplyTrbx": {
+        "value": {
+          "code": "FailedToAddSupplyTrbx",
+          "message": "Не удалось добавить коробку. Убедитесь, что поставка удовлетворяет всем необходимым требованиям."
+        }
+      }
+    },
+    "responses": {
+      "NotFound": {
+        "description": "Запрашиваемый ресурс не найден",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "code": "NotFound",
+              "message": "Не найдено"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Пользователь не авторизован",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "TokenMissing": {
+                "$ref": "#/components/examples/TokenMissing"
+              },
+              "TokenInvalid": {
+                "$ref": "#/components/examples/TokenInvalid"
+              },
+              "TokenNotFound": {
+                "$ref": "#/components/examples/TokenNotFound"
+              }
+            }
+          }
+        }
+      },
+      "ExceededLimitRequests": {
+        "description": "Превышен лимит по запросам"
+      },
+      "AccessDenied": {
+        "description": "Доступ запрещён",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "code": "AccessDenied",
+              "message": "Доступ запрещён"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Внутренняя ошибка сервиса",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "code": "InternalServerError",
+              "message": "Внутренняя ошибка сервиса"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "PassOffice": {
+        "type": "object",
+        "description": "Данные о складе, для которого требуется пропуск",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": false,
+            "description": "Название",
+            "example": "Коледино"
+          },
+          "address": {
+            "type": "string",
+            "nullable": false,
+            "description": "Адрес",
+            "example": "г. Подольск, д. Коледино, ул. Троицкая"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": false,
+            "description": "ID",
+            "example": 1
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "nullable": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Код ошибки",
+            "nullable": false
+          },
+          "message": {
+            "type": "string",
+            "description": "Описание ошибки",
+            "nullable": false
+          },
+          "data": {
+            "type": "object",
+            "description": "Дополнительные данные, обогащающие ошибку",
+            "nullable": true
+          }
+        }
+      },
+      "Next": {
+        "type": "integer",
+        "format": "int64",
+        "nullable": false,
+        "description": "Параметр пагинации. Содержит значение, которое необходимо указать в запросе для получения следующего пакета данных"
+      },
+      "Supply": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": false,
+            "description": "Идентификатор поставки",
+            "example": "WB-GI-1234567"
+          },
+          "done": {
+            "type": "boolean",
+            "nullable": false,
+            "description": "Флаг закрытия поставки"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": false,
+            "description": "Дата создания поставки (RFC3339)",
+            "example": "2022-05-04T07:56:29Z"
+          },
+          "closedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": false,
+            "description": "Дата закрытия поставки (RFC3339)",
+            "example": "2022-05-04T07:56:29Z"
+          },
+          "scanDt": {
+            "type": "string",
+            "nullable": false,
+            "format": "date-time",
+            "description": "Дата скана поставки (RFC3339)",
+            "example": "2022-05-04T07:56:29Z"
+          },
+          "name": {
+            "type": "string",
+            "nullable": false,
+            "description": "Наименование поставки",
+            "example": "Тестовая поставка"
+          },
+          "cargoType": {
+            "type": "integer",
+            "nullable": false,
+            "description": "<dl> <dt>Тип поставки:</dt> <dd>0 - признак отсутствует</dd> <dd>1 - обычная</dd> <dd>2 - СГТ (Содержит сверхгабаритные товары)</dd> <dd>3 - КГТ (Содержит крупногабаритные товары). Не используется на данный момент.</dd> </dl>\n",
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ]
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": false,
+            "description": "Идентификатор сборочного задания в Маркетплейсе",
+            "example": 13833711
+          },
+          "rid": {
+            "type": "string",
+            "nullable": false,
+            "description": "Идентификатор сборочного задания в системе Wildberries",
+            "example": "f884001e44e511edb8780242ac120002"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": false,
+            "description": "Дата создания сборочного задания (RFC3339)",
+            "example": "2022-05-04T07:56:29Z"
+          },
+          "warehouseId": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Идентификатор склада продавца, на который поступило сборочное задание",
+            "example": 658434
+          },
+          "supplyId": {
+            "type": "string",
+            "description": "Идентификатор поставки. Возвращается, если заказ закреплён за поставкой"
+          },
+          "offices": {
+            "type": "array",
+            "nullable": true,
+            "description": "Список офисов, куда следует привезти товар",
+            "items": {
+              "type": "string",
+              "example": "Калуга"
+            }
+          },
+          "address": {
+            "type": "object",
+            "nullable": true,
+            "description": "Детализованный адрес покупателя для доставки (если применимо). Некоторые из полей могут прийти пустыми из-за специфики адреса",
+            "properties": {
+              "fullAddress": {
+                "description": "Адрес доставки.",
+                "type": "string",
+                "example": "Челябинская область, г. Челябинск, 51-я улица Арабкира, д. 10А, кв. 42"
+              },
+              "province": {
+                "type": "string",
+                "nullable": false,
+                "description": "Область",
+                "example": "Челябинская область",
+                "deprecated": true
+              },
+              "area": {
+                "type": "string",
+                "nullable": false,
+                "description": "Район",
+                "example": "Челябинск",
+                "deprecated": true
+              },
+              "city": {
+                "type": "string",
+                "nullable": false,
+                "description": "Город",
+                "example": "Город",
+                "deprecated": true
+              },
+              "street": {
+                "type": "string",
+                "nullable": false,
+                "description": "Улица",
+                "example": "51-я улица Арабкира",
+                "deprecated": true
+              },
+              "home": {
+                "type": "string",
+                "nullable": false,
+                "description": "Номер дома",
+                "example": "10А",
+                "deprecated": true
+              },
+              "flat": {
+                "type": "string",
+                "nullable": false,
+                "description": "Номер квартиры",
+                "example": "42",
+                "deprecated": true
+              },
+              "entrance": {
+                "type": "string",
+                "nullable": false,
+                "description": "Подъезд",
+                "example": "3",
+                "deprecated": true
+              },
+              "longitude": {
+                "type": "number",
+                "format": "float64",
+                "nullable": false,
+                "description": "Координата долготы",
+                "example": 44.519068
+              },
+              "latitude": {
+                "type": "number",
+                "format": "float64",
+                "nullable": false,
+                "description": "Координаты широты",
+                "example": 40.20192
+              }
+            }
+          },
+          "user": {
+            "type": "object",
+            "nullable": true,
+            "description": "Информация о покупателе (только для доставки силами продавца)",
+            "properties": {
+              "fio": {
+                "type": "string",
+                "nullable": false,
+                "description": "ФИО"
+              },
+              "phone": {
+                "type": "string",
+                "nullable": false,
+                "description": "Номер телефона"
+              }
+            }
+          },
+          "skus": {
+            "type": "array",
+            "nullable": false,
+            "description": "Массив баркодов товара",
+            "items": {
+              "type": "string",
+              "example": "6665956397512"
+            }
+          },
+          "price": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Цена в валюте продажи с учетом всех скидок, умноженная на 100. Код валюты продажи в поле currencyCode."
+          },
+          "convertedPrice": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Цена в валюте страны продавца с учетом всех скидок, кроме суммы по WB Кошельку, умноженная на 100. Предоставляется в информационных целях."
+          },
+          "currencyCode": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Код валюты продажи (ISO 4217)"
+          },
+          "convertedCurrencyCode": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Код валюты страны продавца (ISO 4217)"
+          },
+          "orderUid": {
+            "type": "string",
+            "description": "Идентификатор транзакции для группировки сборочных заданий. Сборочные задания в одной корзине покупателя будут иметь одинаковый orderUID"
+          },
+          "deliveryType": {
+            "type": "string",
+            "nullable": false,
+            "description": "<dl>\n<dt>Тип доставки:</dt>\n<dd>fbs - доставка на склад Wildberries</dd>\n<dd>dbs - доставка силами продавца</dd>\n<dd>wbgo - доставка курьером WB</dd>\n<dd>edbs - экспресс-доставка силами продавца</dd>\n</dl>\n",
+            "enum": [
+              "dbs",
+              "edbs",
+              "fbs",
+              "wbgo"
+            ]
+          },
+          "nmId": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Артикул WB"
+          },
+          "chrtId": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Идентификатор размера товара в системе Wildberries"
+          },
+          "article": {
+            "type": "string",
+            "nullable": false,
+            "description": "Артикул продавца",
+            "example": "one-ring-7548"
+          },
+          "colorCode": {
+            "type": "string",
+            "nullable": false,
+            "description": "Код цвета (только для колеруемых товаров)",
+            "example": "RAL 3017"
+          },
+          "cargoType": {
+            "type": "integer",
+            "nullable": false,
+            "description": "<dl> <dt>Тип товара:</dt> <dd>1 - обычный</dd> <dd>2 - СГТ (Сверхгабаритный товар)</dd> <dd>3 - КГТ (Крупногабаритный товар). Не используется на данный момент.</dd> </dl>\n",
+            "enum": [
+              1,
+              2,
+              3
+            ]
+          }
+        }
+      },
+      "OrderNew": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": false,
+            "description": "Идентификатор сборочного задания в Маркетплейсе",
+            "example": 13833711
+          },
+          "rid": {
+            "type": "string",
+            "nullable": false,
+            "description": "Идентификатор сборочного задания в системе Wildberries",
+            "example": "f884001e44e511edb8780242ac120002"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": false,
+            "description": "Дата создания сборочного задания (RFC3339)",
+            "example": "2022-05-04T07:56:29Z"
+          },
+          "warehouseId": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Идентификатор склада продавца, на который поступило сборочное задание",
+            "example": 658434
+          },
+          "offices": {
+            "type": "array",
+            "nullable": true,
+            "description": "Список офисов, куда следует привезти товар",
+            "items": {
+              "type": "string",
+              "example": "Калуга"
+            }
+          },
+          "address": {
+            "type": "object",
+            "nullable": true,
+            "description": "Детализованный адрес покупателя для доставки (если применимо). Некоторые из полей могут прийти пустыми из-за специфики адреса",
+            "properties": {
+              "fullAddress": {
+                "description": "Адрес доставки.",
+                "type": "string",
+                "example": "Челябинская область, г. Челябинск, 51-я улица Арабкира, д. 10А, кв. 42"
+              },
+              "province": {
+                "type": "string",
+                "nullable": false,
+                "description": "Область",
+                "example": "Челябинская область",
+                "deprecated": true
+              },
+              "area": {
+                "type": "string",
+                "nullable": false,
+                "description": "Район",
+                "example": "Челябинск",
+                "deprecated": true
+              },
+              "city": {
+                "type": "string",
+                "nullable": false,
+                "description": "Город",
+                "example": "Город",
+                "deprecated": true
+              },
+              "street": {
+                "type": "string",
+                "nullable": false,
+                "description": "Улица",
+                "example": "51-я улица Арабкира",
+                "deprecated": true
+              },
+              "home": {
+                "type": "string",
+                "nullable": false,
+                "description": "Номер дома",
+                "example": "10А",
+                "deprecated": true
+              },
+              "flat": {
+                "type": "string",
+                "nullable": false,
+                "description": "Номер квартиры",
+                "example": "42",
+                "deprecated": true
+              },
+              "entrance": {
+                "type": "string",
+                "nullable": false,
+                "description": "Подъезд",
+                "example": "3",
+                "deprecated": true
+              },
+              "longitude": {
+                "type": "number",
+                "format": "float64",
+                "nullable": false,
+                "description": "Координата долготы",
+                "example": 44.519068
+              },
+              "latitude": {
+                "type": "number",
+                "format": "float64",
+                "nullable": false,
+                "description": "Координаты широты",
+                "example": 40.20192
+              }
+            }
+          },
+          "requiredMeta": {
+            "description": "Перечень метаданных, которые необходимо добавить в сборочное задание.  <br> На данный момент обязательным к добавлению является только UIN, при его наличии в перечне.             \n",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "uin"
+            ]
+          },
+          "user": {
+            "type": "object",
+            "nullable": true,
+            "description": "Информация о покупателе (только для доставки силами продавца)",
+            "properties": {
+              "fio": {
+                "type": "string",
+                "nullable": false,
+                "description": "ФИО"
+              },
+              "phone": {
+                "type": "string",
+                "nullable": false,
+                "description": "Номер телефона"
+              }
+            }
+          },
+          "skus": {
+            "type": "array",
+            "nullable": false,
+            "description": "Массив баркодов товара",
+            "items": {
+              "type": "string",
+              "example": "6665956397512"
+            }
+          },
+          "price": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Цена в валюте продажи с учетом всех скидок, умноженная на 100. Код валюты продажи в поле currencyCode."
+          },
+          "convertedPrice": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Цена в валюте страны продавца с учетом всех скидок, кроме суммы по WB Кошельку, умноженная на 100. Предоставляется в информационных целях."
+          },
+          "currencyCode": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Код валюты продажи (ISO 4217)"
+          },
+          "convertedCurrencyCode": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Код валюты страны продавца (ISO 4217)"
+          },
+          "orderUid": {
+            "type": "string",
+            "description": "Идентификатор транзакции для группировки сборочных заданий. Сборочные задания в одной корзине покупателя будут иметь одинаковый orderUID"
+          },
+          "deliveryType": {
+            "type": "string",
+            "nullable": false,
+            "description": "<dl>\n<dt>Тип доставки:</dt>\n<dd>fbs - доставка на склад Wildberries</dd>\n<dd>dbs - доставка силами продавца</dd>\n<dd>edbs - экспресс-доставка силами продавца</dd>\n<dd>wbgo - доставка курьером WB</dd>\n</dl>\n",
+            "enum": [
+              "dbs",
+              "fbs",
+              "edbs",
+              "wbgo"
+            ]
+          },
+          "nmId": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Артикул WB"
+          },
+          "chrtId": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Идентификатор размера товара в системе Wildberries"
+          },
+          "article": {
+            "type": "string",
+            "nullable": false,
+            "description": "Артикул продавца",
+            "example": "one-ring-7548"
+          },
+          "colorCode": {
+            "type": "string",
+            "nullable": false,
+            "description": "Код цвета (только для колеруемых товаров)",
+            "example": "RAL 3017"
+          },
+          "cargoType": {
+            "type": "integer",
+            "nullable": false,
+            "description": "<dl> <dt>Тип товара:</dt> <dd>1 - обычный</dd> <dd>2 - СГТ (Сверхгабаритный товар)</dd> <dd>3 - КГТ (Крупногабаритный товар). Не используется на данный момент.</dd> </dl>\n",
+            "enum": [
+              1,
+              2,
+              3
+            ]
+          }
+        }
+      },
+      "SupplyOrder": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": false,
+            "description": "Идентификатор сборочного задания в Маркетплейсе",
+            "example": 13833711
+          },
+          "rid": {
+            "type": "string",
+            "nullable": false,
+            "description": "Идентификатор сборочного задания в системе Wildberries",
+            "example": "f884001e44e511edb8780242ac120002"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": false,
+            "description": "Дата создания сборочного задания (RFC3339)",
+            "example": "2022-05-04T07:56:29Z"
+          },
+          "warehouseId": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Идентификатор склада продавца, на который поступило сборочное задание",
+            "example": 658434
+          },
+          "offices": {
+            "type": "array",
+            "nullable": true,
+            "description": "Список офисов, куда следует привезти товар",
+            "items": {
+              "type": "string",
+              "example": "Калуга"
+            }
+          },
+          "user": {
+            "type": "object",
+            "nullable": true,
+            "description": "Информация о покупателе (только для доставки силами продавца)",
+            "properties": {
+              "fio": {
+                "type": "string",
+                "nullable": false,
+                "description": "ФИО"
+              },
+              "phone": {
+                "type": "string",
+                "nullable": false,
+                "description": "Номер телефона"
+              }
+            }
+          },
+          "skus": {
+            "type": "array",
+            "nullable": false,
+            "description": "Массив баркодов товара",
+            "items": {
+              "type": "string",
+              "example": "6665956397512"
+            }
+          },
+          "price": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Цена в валюте продажи с учетом всех скидок, умноженная на 100. Код валюты продажи в поле currencyCode."
+          },
+          "convertedPrice": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Цена в валюте страны продавца с учетом всех скидок, кроме суммы по WB Кошельку, умноженная на 100. Предоставляется в информационных целях."
+          },
+          "currencyCode": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Код валюты продажи (ISO 4217)"
+          },
+          "convertedCurrencyCode": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Код валюты страны продавца (ISO 4217)"
+          },
+          "orderUid": {
+            "type": "string",
+            "description": "Идентификатор транзакции для группировки сборочных заданий. Сборочные задания в одной корзине покупателя будут иметь одинаковый orderUID"
+          },
+          "nmId": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Артикул WB"
+          },
+          "chrtId": {
+            "type": "integer",
+            "nullable": false,
+            "description": "Идентификатор размера товара в системе Wildberries"
+          },
+          "article": {
+            "type": "string",
+            "nullable": false,
+            "description": "Артикул продавца",
+            "example": "one-ring-7548"
+          },
+          "colorCode": {
+            "type": "string",
+            "nullable": false,
+            "description": "Код цвета (только для колеруемых товаров)",
+            "example": "RAL 3017"
+          },
+          "cargoType": {
+            "type": "integer",
+            "nullable": false,
+            "description": "<dl> <dt>Тип товара:</dt> <dd>1 - обычный</dd> <dd>2 - СГТ (Сверхгабаритный товар)</dd> <dd>3 - КГТ (Крупногабаритный товар). Не используется на данный момент.</dd> </dl>\n",
+            "enum": [
+              1,
+              2,
+              3
+            ]
+          }
+        }
+      },
+      "SupplyTrbx": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "ID короба.",
+            "type": "string",
+            "example": "WB-TRBX-1234567"
+          },
+          "orders": {
+            "type": "array",
+            "nullable": false,
+            "description": "Массив идентификаторов заказа.",
+            "items": {
+              "type": "integer",
+              "example": 1234567
+            }
+          }
+        }
+      },
+      "TrbxStickers": {
+        "type": "object",
+        "properties": {
+          "barcode": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Закодированное значение этикетки.",
+            "example": "$WBMP:1:123:1234567"
+          },
+          "file": {
+            "type": "string",
+            "format": "byte",
+            "minLength": 1,
+            "description": "Полное представление этикетки в заданном формате. (кодировка base64)",
+            "example": "U3dhZ2dlciByb2Nrcw=="
+          }
+        }
+      },
+      "Office": {
+        "type": "object",
+        "description": "Данные о складе WB",
+        "properties": {
+          "address": {
+            "type": "string",
+            "nullable": false,
+            "description": "Адрес",
+            "example": "ул. Троицкая, Подольск, Московская обл."
+          },
+          "name": {
+            "type": "string",
+            "nullable": false,
+            "description": "Название",
+            "example": "Москва (Коледино)"
+          },
+          "city": {
+            "type": "string",
+            "nullable": false,
+            "description": "Город",
+            "example": "Москва"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": false,
+            "description": "ID",
+            "example": 15
+          },
+          "longitude": {
+            "type": "number",
+            "format": "float64",
+            "nullable": false,
+            "description": "Долгота",
+            "example": 55.386871
+          },
+          "latitude": {
+            "type": "number",
+            "format": "float64",
+            "nullable": false,
+            "description": "Широта",
+            "example": 37.588898
+          },
+          "cargoType": {
+            "description": "<dl> <dt>Тип товара, который принимает склад:</dt> <dd>1 - обычный</dd> <dd>2 - СГТ (Сверхгабаритный товар)</dd> <dd>3 - КГТ (Крупногабаритный товар). Не используется на данный момент.</dd> </dl>\n",
+            "type": "integer",
+            "enum": [
+              1,
+              2,
+              3
+            ],
+            "example": 1
+          },
+          "deliveryType": {
+            "type": "integer",
+            "description": "<dl>\n<dt>Тип доставки, который принимает склад:</dt>\n<dd>1 - доставка на склад Wildberries</dd>\n<dd>2 - доставка силами продавца</dd>\n<dd>3 - доставка курьером WB</dd>\n</dl>\n",
+            "enum": [
+              1,
+              2,
+              3
+            ],
+            "example": 1
+          },
+          "selected": {
+            "type": "boolean",
+            "nullable": false,
+            "description": "Признак того, что склад уже выбран продавцом"
+          }
+        }
+      },
+      "Warehouse": {
+        "type": "object",
+        "description": "Данные о складе продавца",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": false,
+            "description": "Название склада продавца",
+            "example": "ул. Троицкая, Подольск, Московская обл."
+          },
+          "officeId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": false,
+            "description": "ID склада WB",
+            "example": 15
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": false,
+            "description": "ID склада продавца",
+            "example": 1
+          },
+          "cargoType": {
+            "description": "<dl> <dt>Тип товара, который принимает склад:</dt> <dd>1 - обычный</dd> <dd>2 - СГТ (Сверхгабаритный товар)</dd> <dd>3 - КГТ (Крупногабаритный товар). Не используется на данный момент.</dd> </dl>\n",
+            "type": "integer",
+            "enum": [
+              1,
+              2,
+              3
+            ],
+            "example": 1
+          },
+          "deliveryType": {
+            "type": "integer",
+            "description": "<dl>\n<dt>Тип доставки, который принимает склад:</dt>\n<dd>1 - доставка на склад Wildberries</dd>\n<dd>2 - доставка силами продавца</dd>\n<dd>3 - доставка курьером WB</dd>\n</dl>\n",
+            "enum": [
+              1,
+              2,
+              3
+            ],
+            "example": 1
+          }
+        }
+      },
+      "Meta": {
+        "type": "object",
+        "description": "Метаданные заказа",
+        "properties": {
+          "imei": {
+            "type": "string",
+            "nullable": true,
+            "description": "IMEI",
+            "example": 123456789012345
+          },
+          "uin": {
+            "type": "string",
+            "nullable": true,
+            "description": "УИН",
+            "example": 1234567890123456
+          },
+          "gtin": {
+            "type": "string",
+            "nullable": true,
+            "description": "GTIN",
+            "example": 1234567890123
+          },
+          "sgtin": {
+            "type": "string",
+            "nullable": true,
+            "description": "КиЗ (Маркировка честного знака)",
+            "example": 1234567890123456
+          }
+        }
+      },
+      "Pass": {
+        "type": "object",
+        "description": "Данные о пропуске продавца",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "nullable": false,
+            "description": "Имя водителя",
+            "example": "Александр"
+          },
+          "dateEnd": {
+            "type": "string",
+            "nullable": false,
+            "description": "Дата окончания действия пропуска",
+            "example": "2022-07-31T17:53:13.000Z"
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": false,
+            "description": "Фамилия водителя",
+            "example": "Петров"
+          },
+          "carModel": {
+            "type": "string",
+            "nullable": false,
+            "description": "Марка машины",
+            "example": "Lamborghini"
+          },
+          "carNumber": {
+            "type": "string",
+            "nullable": false,
+            "description": "Номер машины",
+            "example": "A456BC123"
+          },
+          "officeName": {
+            "type": "string",
+            "nullable": false,
+            "description": "Название склада",
+            "example": "Коледино"
+          },
+          "officeAddress": {
+            "type": "string",
+            "nullable": false,
+            "description": "Адрес склада",
+            "example": "г. Подольск, д. Коледино, ул. Троицкая"
+          },
+          "officeId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": false,
+            "description": "ID склада",
+            "example": 15
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": false,
+            "description": "ID пропуска",
+            "example": 1
+          }
+        }
+      }
+    }
+  }
+}
