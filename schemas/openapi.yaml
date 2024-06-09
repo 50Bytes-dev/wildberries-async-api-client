@@ -202,6 +202,7 @@ tags:
   - name: "Управление параметрами кампании в поиске и\_поиск\_+ каталог"
   - name: Управление параметрами автоматических кампаний
   - name: Словари
+  - name: Статистика
   - name: Медиа
     description: Публичный API для работы с медиакампаниями
   - name: Рекомендации
@@ -6583,7 +6584,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExciseReportResponse'
         '400':
-          $ref: '#/components/responses/400Response'
+          $ref: '#/components/responses/Response400'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -6688,7 +6689,7 @@ paths:
                 GetTasksResponseData:
                   $ref: '#/components/examples/GetTasksResponseData'
         '400':
-          $ref: '#/components/responses/400Response'
+          $ref: '#/components/responses/Response400'
         '404':
           $ref: '#/components/responses/NotFound'
         '429':
@@ -6746,7 +6747,7 @@ paths:
                   tariffFixDate: '2023-10-01'
                   tariffLowerDate: '2023-11-01'
         '400':
-          $ref: '#/components/responses/400Response'
+          $ref: '#/components/responses/Response400'
         '404':
           $ref: '#/components/responses/NotFound'
         '429':
@@ -21685,7 +21686,7 @@ components:
           example:
             code: InternalServerError
             message: Внутренняя ошибка сервиса
-    400Response:
+    Response400:
       description: Неправильный запрос
       content:
         application/json:

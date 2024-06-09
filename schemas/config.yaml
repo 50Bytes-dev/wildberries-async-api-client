@@ -1,3 +1,0 @@
-include:
-  ignore-conflict:
-    filter: 'NotFound.*'
