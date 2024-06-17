@@ -4,11 +4,12 @@ version = "0.1.0"
 description = ""
 authors = ["50bytes.dev <50bytes.dev@gmail.com>"]
 readme = "README.md"
-package-mode = true
+#package-mode = true
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"
 aiohttp = "^3.9.5"
+pydantic = "^1.10.2"
 
 [tool.poerty.dev-dependencies]
 openapi-python-generator = { path = "../openapi-python-generator", develop = true }

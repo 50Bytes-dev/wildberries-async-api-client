@@ -1,7 +1,7 @@
 import aiohttp
 from typing import Optional, Dict, Any
-from api_config import APIConfig
-from models import *
+from .api_config import APIConfig
+from .models import *
 
 
 class APIClient:
