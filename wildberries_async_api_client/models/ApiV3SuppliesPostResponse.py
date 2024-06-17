@@ -3,7 +3,7 @@ from typing import *
 from pydantic import BaseModel, Field
 
 
-class ApiV3SuppliesPostResponse(BaseModel):
+class NewSuppliesPostResponse(BaseModel):
     """
     None model
 

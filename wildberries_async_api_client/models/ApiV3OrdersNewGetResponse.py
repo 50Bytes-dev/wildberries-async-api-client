@@ -5,9 +5,9 @@ from pydantic import BaseModel, Field
 from .OrderNew import OrderNew
 
 
-class ApiV3OrdersNewGetResponse(BaseModel):
+class NewOrdersGetResponse(BaseModel):
     """
-    None model
+    Model for List of new orders
 
     """
 
