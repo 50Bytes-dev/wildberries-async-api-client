@@ -92,6 +92,51 @@ class APIClient:
         response_data = await self._request("PATCH", path, return_status=True)
         return response_data
 
+    async def fetch_all_products(self) -> List[Card]:
+        """Fetch all products of the seller
+
+        :return: List of products
+        """
+        path = "/content/v2/get/cards/list"
+        params = {'locale': 'ru'}
+        limit = 100
+        cursor = {'limit': limit}
+        all_products = []
+        while True:
+            data = {
+                "settings": {
+                    "sort": {
+                        "ascending": False
+                    },
+                    "filter": {
+                        "withPhoto": -1
+                    },
+                    "cursor": cursor
+                }
+            }
+            response_data = await self._request("POST", path, params=params, data=data)
+            cards = response_data.get('cards', [])
+            print(f"Fetched {len(cards)} products")
+            all_products.extend(Card(**card) for card in cards)
+
+            # Update cursor for the next request
+            cursor_data = response_data.get('cursor', {})
+            if 'updatedAt' not in cursor_data or 'nmID' not in cursor_data or 'total' not in cursor_data:
+                break
+
+            if cursor_data['total'] < limit:
+                print(f"Fetched {limit} products")
+                break
+
+            cursor = {
+                "updatedAt": cursor_data["updatedAt"],
+                "nmID": cursor_data["nmID"],
+                "limit": limit
+            }
+
+
+        return all_products
+
     async def get_product_info(self, barcode: str) -> Card:
         """Get product info by barcode
 
@@ -124,6 +169,7 @@ class APIClient:
         if cards:
             return Card(**cards[0])
         return None
+
 
     async def get_sticker_by_order(self, order_id: int) -> Sticker:
         """Get sticker by order id
