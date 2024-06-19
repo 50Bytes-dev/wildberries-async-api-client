@@ -46,7 +46,7 @@ class APIClient:
                 except aiohttp.ContentTypeError:
                     response_text = await response.text()
                     raise HTTPException(response.status, f"Invalid response from server: {response_text}")
-                if response.status != 200:
+                if response.status in {400, 401, 403, 429, 500}:
                     raise HTTPException(response.status, f"{response_data}")
                 return response_data
 
