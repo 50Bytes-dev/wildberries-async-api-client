@@ -51,7 +51,7 @@ class Characteristic(BaseModel):
     """
     id: Optional[int] = None
     name: Optional[str] = None
-    value: Union[str, int, List[str]]
+    value: Union[str, int, float, List[str]]
 
 
 class Size(BaseModel):
