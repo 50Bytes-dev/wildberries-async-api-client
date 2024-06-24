@@ -9,7 +9,9 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"
 aiohttp = "^3.9.5"
+
 pydantic = "^2.7.2"
+
 
 [tool.poerty.dev-dependencies]
 openapi-python-generator = { path = "../openapi-python-generator", develop = true }
