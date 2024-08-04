@@ -141,13 +141,13 @@ async def get_advv1searchset_plus(
             return None
 
 
-async def post_advv1searchset_plus(
+async def post_advv1searchset_phrase(
     id: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
-) -> List[str]:
+) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path
-    path = f"/adv/v1/search/set-plus"
+    path = f"/adv/v1/search/set-phrase"
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -168,7 +168,7 @@ async def post_advv1searchset_plus(
             if inital_response.status != 200:
                 raise HTTPException(inital_response.status, f"{ response }")
 
-            return response
+            return None
 
 
 async def post_advv1searchset_strong(

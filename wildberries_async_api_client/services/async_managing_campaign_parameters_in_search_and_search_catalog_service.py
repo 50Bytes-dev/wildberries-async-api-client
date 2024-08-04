@@ -7,13 +7,13 @@ from ..api_config import APIConfig, HTTPException
 from ..models import *
 
 
-async def post_advv1searchset_phrase(
+async def post_advv1searchset_plus(
     id: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
-) -> None:
+) -> List[str]:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path
-    path = f"/adv/v1/search/set-phrase"
+    path = f"/adv/v1/search/set-plus"
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -34,4 +34,4 @@ async def post_advv1searchset_phrase(
             if inital_response.status != 200:
                 raise HTTPException(inital_response.status, f"{ response }")
 
-            return None
+            return response
