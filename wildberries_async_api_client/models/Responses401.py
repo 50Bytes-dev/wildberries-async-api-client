@@ -1,5 +1,5 @@
-from .response_error import response_error
+from .response_error import ResponseError
 
 
-class Responses401(response_error):
+class Responses401(ResponseError):
     pass

@@ -1,5 +1,5 @@
-from .error import error
+from .error import Error
 
 
-class AccessDenied(error):
+class AccessDenied(Error):
     pass

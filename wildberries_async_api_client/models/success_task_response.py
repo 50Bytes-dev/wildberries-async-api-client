@@ -1,5 +1,5 @@
-from .task_created import task_created
+from .task_created import TaskCreated
 
 
-class SuccessTaskResponse(task_created):
+class SuccessTaskResponse(TaskCreated):
     pass

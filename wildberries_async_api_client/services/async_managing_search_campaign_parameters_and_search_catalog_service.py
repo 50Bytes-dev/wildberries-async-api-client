@@ -107,9 +107,9 @@ async def get_advv0active(
             return None
 
 
-async def get_advv1searchset_plus(
-    id: int, fixed: Optional[bool] = None, api_config_override: Optional[APIConfig] = None
-) -> None:
+async def post_advv1searchset_plus(
+    id: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+) -> List[str]:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path
@@ -120,16 +120,12 @@ async def get_advv1searchset_plus(
         "Authorization": f"Bearer { api_config.get_access_token() }",
     }
 
-    query_params: Dict[str, Any] = {"id": id, "fixed": fixed}
+    query_params: Dict[str, Any] = {"id": id}
 
     query_params = {key: value for (key, value) in query_params.items() if value is not None}
 
     async with aiohttp.ClientSession(headers=headers) as session:
-        async with session.request(
-            "get",
-            base_path + path,
-            params=query_params,
-        ) as inital_response:
+        async with session.request("post", base_path + path, params=query_params, json=data) as inital_response:
             try:
                 response = await inital_response.json()
             except aiohttp.ContentTypeError:
@@ -138,7 +134,7 @@ async def get_advv1searchset_plus(
             if inital_response.status != 200:
                 raise HTTPException(inital_response.status, f"{ response }")
 
-            return None
+            return response
 
 
 async def post_advv1searchset_phrase(
