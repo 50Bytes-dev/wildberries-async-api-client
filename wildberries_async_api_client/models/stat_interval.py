@@ -5,10 +5,12 @@ from pydantic import BaseModel, Field
 from .stats_blok1 import StatsBlok1
 
 
-class Stat(BaseModel):
+class StatInterval(BaseModel):
     """
     None model
 
     """
+
+    interval: Optional[Dict[str, Any]] = Field(alias="interval", default=None)
 
     stats: Optional[List[Optional[StatsBlok1]]] = Field(alias="stats", default=None)

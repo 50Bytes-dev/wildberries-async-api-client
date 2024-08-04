@@ -2,7 +2,7 @@ from typing import *
 
 from pydantic import BaseModel, Field
 
-from .RefundActionType import RefundActionType
+from .refund_action_type import RefundActionType
 
 
 class Refund(BaseModel):

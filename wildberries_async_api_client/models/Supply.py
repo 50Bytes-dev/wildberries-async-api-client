@@ -5,19 +5,7 @@ from pydantic import BaseModel, Field
 
 class Supply(BaseModel):
     """
-    Model for Supply
-
-    id: str Идентификатор поставки
-    done: bool Флаг закрытия поставки
-    createdAt: date-time Дата создания поставки (RFC3339)
-    closedAt: date-time Дата закрытия поставки  (RFC3339)
-    scanDt: date-time Дата сканирования поставки  (RFC3339)
-    name: str Наименование поставки
-    cargoType: int Тип поставки
-                0 - признак отсутствует
-                1 - обычная
-                2 - СГТ (Содержит сверхгабаритные товары)
-                3 - КГТ (Содержит крупногабаритные товары). Не используется на данный момент
+    None model
 
     """
 

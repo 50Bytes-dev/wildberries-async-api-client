@@ -2,9 +2,9 @@ from typing import *
 
 from pydantic import BaseModel, Field
 
-from .EventType import EventType
-from .Refund import Refund
-from .Sender import Sender
+from .event_type import EventType
+from .refund import Refund
+from .sender import Sender
 
 
 class Event(BaseModel):

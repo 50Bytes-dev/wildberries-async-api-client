@@ -7,9 +7,7 @@ from ..api_config import APIConfig, HTTPException
 from ..models import *
 
 
-async def get_apiv1sellerchats(
-    api_config_override: Optional[APIConfig] = None,
-) -> ChatsResponse:
+async def get_apiv1sellerchats(api_config_override: Optional[APIConfig] = None) -> ChatsResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path
@@ -22,9 +20,7 @@ async def get_apiv1sellerchats(
 
     query_params: Dict[str, Any] = {}
 
-    query_params = {
-        key: value for (key, value) in query_params.items() if value is not None
-    }
+    query_params = {key: value for (key, value) in query_params.items() if value is not None}
 
     async with aiohttp.ClientSession(headers=headers) as session:
         async with session.request(
@@ -36,16 +32,11 @@ async def get_apiv1sellerchats(
                 response = await inital_response.json()
             except aiohttp.ContentTypeError:
                 response_text = await inital_response.text()
-                raise HTTPException(
-                    inital_response.status,
-                    f"Invalid response from server: { response_text}",
-                )
+                raise HTTPException(inital_response.status, f"Invalid response from server: { response_text}")
             if inital_response.status != 200:
                 raise HTTPException(inital_response.status, f"{ response }")
 
-            return (
-                ChatsResponse(**response) if response is not None else ChatsResponse()
-            )
+            return ChatsResponse(**response) if response is not None else ChatsResponse()
 
 
 async def get_apiv1sellerevents(
@@ -63,9 +54,7 @@ async def get_apiv1sellerevents(
 
     query_params: Dict[str, Any] = {"next": next}
 
-    query_params = {
-        key: value for (key, value) in query_params.items() if value is not None
-    }
+    query_params = {key: value for (key, value) in query_params.items() if value is not None}
 
     async with aiohttp.ClientSession(headers=headers) as session:
         async with session.request(
@@ -77,16 +66,11 @@ async def get_apiv1sellerevents(
                 response = await inital_response.json()
             except aiohttp.ContentTypeError:
                 response_text = await inital_response.text()
-                raise HTTPException(
-                    inital_response.status,
-                    f"Invalid response from server: { response_text}",
-                )
+                raise HTTPException(inital_response.status, f"Invalid response from server: { response_text}")
             if inital_response.status != 200:
                 raise HTTPException(inital_response.status, f"{ response }")
 
-            return (
-                EventsResponse(**response) if response is not None else EventsResponse()
-            )
+            return EventsResponse(**response) if response is not None else EventsResponse()
 
 
 async def post_apiv1sellermessage(
@@ -104,9 +88,7 @@ async def post_apiv1sellermessage(
 
     query_params: Dict[str, Any] = {}
 
-    query_params = {
-        key: value for (key, value) in query_params.items() if value is not None
-    }
+    query_params = {key: value for (key, value) in query_params.items() if value is not None}
 
     async with aiohttp.ClientSession(headers=headers) as session:
         async with session.request(
@@ -118,18 +100,11 @@ async def post_apiv1sellermessage(
                 response = await inital_response.json()
             except aiohttp.ContentTypeError:
                 response_text = await inital_response.text()
-                raise HTTPException(
-                    inital_response.status,
-                    f"Invalid response from server: { response_text}",
-                )
+                raise HTTPException(inital_response.status, f"Invalid response from server: { response_text}")
             if inital_response.status != 200:
                 raise HTTPException(inital_response.status, f"{ response }")
 
-            return (
-                MessageResponse(**response)
-                if response is not None
-                else MessageResponse()
-            )
+            return MessageResponse(**response) if response is not None else MessageResponse()
 
 
 async def get_apiv1claims(
@@ -158,9 +133,7 @@ async def get_apiv1claims(
         "nm_id": nm_id,
     }
 
-    query_params = {
-        key: value for (key, value) in query_params.items() if value is not None
-    }
+    query_params = {key: value for (key, value) in query_params.items() if value is not None}
 
     async with aiohttp.ClientSession(headers=headers) as session:
         async with session.request(
@@ -172,18 +145,11 @@ async def get_apiv1claims(
                 response = await inital_response.json()
             except aiohttp.ContentTypeError:
                 response_text = await inital_response.text()
-                raise HTTPException(
-                    inital_response.status,
-                    f"Invalid response from server: { response_text}",
-                )
+                raise HTTPException(inital_response.status, f"Invalid response from server: { response_text}")
             if inital_response.status != 200:
                 raise HTTPException(inital_response.status, f"{ response }")
 
-            return (
-                GetClaimsSuccessResponse(**response)
-                if response is not None
-                else GetClaimsSuccessResponse()
-            )
+            return GetClaimsSuccessResponse(**response) if response is not None else GetClaimsSuccessResponse()
 
 
 async def patch_apiv1claim(
@@ -201,27 +167,16 @@ async def patch_apiv1claim(
 
     query_params: Dict[str, Any] = {}
 
-    query_params = {
-        key: value for (key, value) in query_params.items() if value is not None
-    }
+    query_params = {key: value for (key, value) in query_params.items() if value is not None}
 
     async with aiohttp.ClientSession(headers=headers) as session:
-        async with session.request(
-            "patch", base_path + path, params=query_params, json=data.dict()
-        ) as inital_response:
+        async with session.request("patch", base_path + path, params=query_params, json=data.dict()) as inital_response:
             try:
                 response = await inital_response.json()
             except aiohttp.ContentTypeError:
                 response_text = await inital_response.text()
-                raise HTTPException(
-                    inital_response.status,
-                    f"Invalid response from server: { response_text}",
-                )
+                raise HTTPException(inital_response.status, f"Invalid response from server: { response_text}")
             if inital_response.status != 200:
                 raise HTTPException(inital_response.status, f"{ response }")
 
-            return (
-                PatchClaimSuccessResponse(**response)
-                if response is not None
-                else PatchClaimSuccessResponse()
-            )
+            return PatchClaimSuccessResponse(**response) if response is not None else PatchClaimSuccessResponse()
