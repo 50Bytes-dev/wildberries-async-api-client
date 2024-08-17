@@ -73,7 +73,7 @@ async def post_apiv3supplies(
 
 async def patch_apiv3suppliessupplyIdordersorderId(
     supplyId: str, orderId: int, api_config_override: Optional[APIConfig] = None
-) -> None:
+) -> bool:  # TODO return bool - True or False
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path
