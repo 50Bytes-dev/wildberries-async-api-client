@@ -73,7 +73,7 @@ async def post_apiv3supplies(
 
 async def patch_apiv3suppliessupplyIdordersorderId(
     supplyId: str, orderId: int, api_config_override: Optional[APIConfig] = None
-) -> bool:  # TODO return bool - True or False
+) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path
@@ -94,13 +94,15 @@ async def patch_apiv3suppliessupplyIdordersorderId(
             base_path + path,
             params=query_params,
         ) as inital_response:
-            if inital_response.status == 204:
-                return True
-            # TODO исправить генератор - тут в случае успеха ответ 204 - и не нужно  овить ошибку aiohttp.ContentTypeError
-            response_text = await initial_response.text()
-            raise HTTPException(inital_response.status, f"{ response }")
+            try:
+                response = await inital_response.json()
+            except aiohttp.ContentTypeError:
+                response_text = await inital_response.text()
+                raise HTTPException(inital_response.status, f"Invalid response from server: { response_text}")
+            if inital_response.status != 204:
+                raise HTTPException(inital_response.status, f"{ response }")
 
-    return False
+            return None
 
 
 async def get_apiv3suppliessupplyId(supplyId: str, api_config_override: Optional[APIConfig] = None) -> Supply:

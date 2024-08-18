@@ -12,6 +12,6 @@ class ApiV3OrdersGetResponse(BaseModel):
 
     """
 
-    next: Optional[int] = Field(alias="next", default=None) # TODO correct async generator to fix model ApiV3OrdersGetResponse
+    next: Optional[Next] = Field(alias="next", default=None)
 
     orders: Optional[List[Optional[Order]]] = Field(alias="orders", default=None)

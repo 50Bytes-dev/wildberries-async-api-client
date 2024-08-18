@@ -7,18 +7,20 @@ from ..api_config import APIConfig, HTTPException
 from ..models import *
 
 
-async def get_apiv2historytasks(uploadID: int, api_config_override: Optional[APIConfig] = None) -> ResponseTaskHistory:
+async def get_apiv2historygoodstask(
+    limit: int, uploadID: int, offset: Optional[int] = None, api_config_override: Optional[APIConfig] = None
+) -> ResponseGoodHistories:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path
-    path = f"/api/v2/history/tasks"
+    path = f"/api/v2/history/goods/task"
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": f"Bearer { api_config.get_access_token() }",
     }
 
-    query_params: Dict[str, Any] = {"uploadID": uploadID}
+    query_params: Dict[str, Any] = {"limit": limit, "offset": offset, "uploadID": uploadID}
 
     query_params = {key: value for (key, value) in query_params.items() if value is not None}
 
@@ -36,7 +38,7 @@ async def get_apiv2historytasks(uploadID: int, api_config_override: Optional[API
             if inital_response.status != 200:
                 raise HTTPException(inital_response.status, f"{ response }")
 
-            return ResponseTaskHistory(**response) if response is not None else ResponseTaskHistory()
+            return ResponseGoodHistories(**response) if response is not None else ResponseGoodHistories()
 
 
 async def get_apiv2buffertasks(uploadID: int, api_config_override: Optional[APIConfig] = None) -> ResponseTaskBuffer:
