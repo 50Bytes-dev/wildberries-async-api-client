@@ -8,7 +8,6 @@ from .daily_stats2 import DailyStats2
 class StatsBlok2(BaseModel):
     """
     None model
-
     """
 
     item_id: Optional[int] = Field(alias="item_id", default=None)

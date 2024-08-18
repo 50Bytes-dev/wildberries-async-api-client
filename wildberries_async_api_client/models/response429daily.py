@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class Response429daily(BaseModel):
     """
     None model
-
     """
 
     data: Optional[List[Dict[str, Any]]] = Field(alias="data", default=None)

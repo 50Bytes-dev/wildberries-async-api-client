@@ -6,8 +6,8 @@ from pydantic import BaseModel, Field
 class GoodCard(BaseModel):
     """
     None model
-        Информация о заказе
 
+    Информация о заказе
     """
 
     date: Optional[str] = Field(alias="date", default=None)

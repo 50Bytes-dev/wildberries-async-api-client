@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class AdvV2AutoDailyWordsGetResponse(BaseModel):
     """
     None model
-
     """
 
     date: Optional[str] = Field(alias="date", default=None)

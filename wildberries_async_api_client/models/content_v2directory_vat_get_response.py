@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ContentV2DirectoryVatGetResponse(BaseModel):
     """
     None model
-
     """
 
     data: Optional[List[str]] = Field(alias="data", default=None)

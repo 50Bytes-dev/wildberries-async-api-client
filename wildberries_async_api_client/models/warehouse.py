@@ -6,8 +6,8 @@ from pydantic import BaseModel, Field
 class Warehouse(BaseModel):
     """
     None model
-        Данные о складе продавца
 
+    Данные о складе продавца
     """
 
     name: Optional[str] = Field(alias="name", default=None)

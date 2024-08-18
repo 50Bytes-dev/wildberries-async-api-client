@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class Chat(BaseModel):
     """
     None model
-
     """
 
     chatID: Optional[str] = Field(alias="chatID", default=None)

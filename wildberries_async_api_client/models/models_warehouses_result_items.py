@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ModelsWarehousesResultItems(BaseModel):
     """
     None model
-
     """
 
     ID: Optional[int] = Field(alias="ID", default=None)

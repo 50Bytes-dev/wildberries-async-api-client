@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ContentV2CardsRecoverPostResponse(BaseModel):
     """
     None model
-
     """
 
     data: Optional[Dict[str, Any]] = Field(alias="data", default=None)

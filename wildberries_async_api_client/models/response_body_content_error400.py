@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ResponseBodyContentError400(BaseModel):
     """
     None model
-
     """
 
     data: Optional[Dict[str, Any]] = Field(alias="data", default=None)

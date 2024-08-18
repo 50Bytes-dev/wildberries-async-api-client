@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ApiV1FeedbacksProductsRatingGetResponse(BaseModel):
     """
     None model
-
     """
 
     data: Optional[Dict[str, Any]] = Field(alias="data", default=None)

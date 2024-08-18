@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class AdvV1CountGetResponse(BaseModel):
     """
     None model
-
     """
 
     all: Optional[int] = Field(alias="all", default=None)

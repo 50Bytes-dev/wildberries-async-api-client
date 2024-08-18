@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ContentV3MediaSavePostResponse(BaseModel):
     """
     None model
-
     """
 
     data: Optional[Dict[str, Any]] = Field(alias="data", default=None)

@@ -8,7 +8,6 @@ from .supplier_task_metadata import SupplierTaskMetadata
 class ResponseTaskHistory(BaseModel):
     """
     None model
-
     """
 
     data: Optional[SupplierTaskMetadata] = Field(alias="data", default=None)

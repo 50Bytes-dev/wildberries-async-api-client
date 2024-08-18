@@ -8,8 +8,8 @@ from .refund_action_type import RefundActionType
 class Refund(BaseModel):
     """
     None model
-        Возврат товара
 
+    Возврат товара
     """
 
     actionType: Optional[RefundActionType] = Field(alias="actionType", default=None)

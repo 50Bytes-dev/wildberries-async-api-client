@@ -9,7 +9,6 @@ from .order import Order
 class ApiV3OrdersGetResponse(BaseModel):
     """
     None model
-
     """
 
     next: Optional[Next] = Field(alias="next", default=None)

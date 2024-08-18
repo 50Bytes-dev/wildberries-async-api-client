@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class NmReportRetryReportResponse(BaseModel):
     """
     None model
-
     """
 
     data: Optional[str] = Field(alias="data", default=None)

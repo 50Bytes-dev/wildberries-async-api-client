@@ -8,7 +8,6 @@ from .supplier_task_metadata_buffer import SupplierTaskMetadataBuffer
 class ResponseTaskBuffer(BaseModel):
     """
     None model
-
     """
 
     data: Optional[SupplierTaskMetadataBuffer] = Field(alias="data", default=None)

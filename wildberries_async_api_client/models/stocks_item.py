@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class StocksItem(BaseModel):
     """
     None model
-
     """
 
     lastChangeDate: Optional[str] = Field(alias="lastChangeDate", default=None)

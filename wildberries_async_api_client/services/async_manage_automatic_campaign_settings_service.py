@@ -7,13 +7,11 @@ from ..api_config import APIConfig, HTTPException
 from ..models import *
 
 
-async def post_advv1autoset_excluded(
-    id: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
-) -> None:
+async def get_advv1autogetnmtoadd(id: int, api_config_override: Optional[APIConfig] = None) -> List[int]:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path
-    path = f"/adv/v1/auto/set-excluded"
+    path = f"/adv/v1/auto/getnmtoadd"
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -25,7 +23,11 @@ async def post_advv1autoset_excluded(
     query_params = {key: value for (key, value) in query_params.items() if value is not None}
 
     async with aiohttp.ClientSession(headers=headers) as session:
-        async with session.request("post", base_path + path, params=query_params, json=data) as inital_response:
+        async with session.request(
+            "get",
+            base_path + path,
+            params=query_params,
+        ) as inital_response:
             try:
                 response = await inital_response.json()
             except aiohttp.ContentTypeError:
@@ -34,4 +36,4 @@ async def post_advv1autoset_excluded(
             if inital_response.status != 200:
                 raise HTTPException(inital_response.status, f"{ response }")
 
-            return None
+            return response

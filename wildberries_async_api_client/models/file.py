@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class File(BaseModel):
     """
     None model
-
     """
 
     contentType: Optional[str] = Field(alias="contentType", default=None)

@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ModelsErrorModel(BaseModel):
     """
     None model
-
     """
 
     status: Optional[int] = Field(alias="status", default=None)

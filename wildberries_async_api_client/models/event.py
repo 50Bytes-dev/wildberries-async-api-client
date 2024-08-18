@@ -10,7 +10,6 @@ from .sender import Sender
 class Event(BaseModel):
     """
     None model
-
     """
 
     chatID: Optional[str] = Field(alias="chatID", default=None)

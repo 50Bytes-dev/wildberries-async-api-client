@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class NmReportGroupedHistoryRequest(BaseModel):
     """
     None model
-
     """
 
     objectIDs: Optional[List[int]] = Field(alias="objectIDs", default=None)

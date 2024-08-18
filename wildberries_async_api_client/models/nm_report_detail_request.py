@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class NmReportDetailRequest(BaseModel):
     """
     None model
-
     """
 
     brandNames: Optional[List[str]] = Field(alias="brandNames", default=None)

@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ErrorRateLimit(BaseModel):
     """
     None model
-
     """
 
     code: Optional[int] = Field(alias="code", default=None)

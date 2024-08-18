@@ -8,7 +8,6 @@ from .good_status import GoodStatus
 class GoodHistory(BaseModel):
     """
     None model
-
     """
 
     nmID: Optional[int] = Field(alias="nmID", default=None)

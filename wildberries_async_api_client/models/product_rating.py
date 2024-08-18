@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ProductRating(BaseModel):
     """
     None model
-
     """
 
     nmId: Optional[int] = Field(alias="nmId", default=None)

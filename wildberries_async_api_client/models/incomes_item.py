@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class IncomesItem(BaseModel):
     """
     None model
-
     """
 
     incomeId: Optional[int] = Field(alias="incomeId", default=None)

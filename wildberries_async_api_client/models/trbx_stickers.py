@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class TrbxStickers(BaseModel):
     """
     None model
-
     """
 
     barcode: Optional[str] = Field(alias="barcode", default=None)

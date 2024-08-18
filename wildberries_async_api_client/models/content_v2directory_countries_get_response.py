@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ContentV2DirectoryCountriesGetResponse(BaseModel):
     """
     None model
-
     """
 
     data: Optional[Any] = Field(alias="data", default=None)

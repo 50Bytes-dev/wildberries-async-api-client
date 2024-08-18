@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ModelsWarehouseBoxRates(BaseModel):
     """
     None model
-
     """
 
     boxDeliveryAndStorageExpr: Optional[str] = Field(alias="boxDeliveryAndStorageExpr", default=None)

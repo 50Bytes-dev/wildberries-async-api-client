@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class TaskAlreadyExistsError(BaseModel):
     """
     None model
-
     """
 
     data: Optional[Dict[str, Any]] = Field(alias="data", default=None)

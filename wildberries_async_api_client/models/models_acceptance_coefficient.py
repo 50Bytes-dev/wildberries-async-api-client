@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ModelsAcceptanceCoefficient(BaseModel):
     """
     None model
-
     """
 
     date: Optional[str] = Field(alias="date", default=None)

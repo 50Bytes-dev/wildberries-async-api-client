@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ContentV2GetCardsTrashPostResponse(BaseModel):
     """
     None model
-
     """
 
     cards: Optional[List[Dict[str, Any]]] = Field(alias="cards", default=None)

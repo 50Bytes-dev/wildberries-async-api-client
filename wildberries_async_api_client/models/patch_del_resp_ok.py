@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class PatchDelRespOK(BaseModel):
     """
     None model
-
     """
 
     data: Optional[bool] = Field(alias="data", default=None)

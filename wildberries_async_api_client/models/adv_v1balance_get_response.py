@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class AdvV1BalanceGetResponse(BaseModel):
     """
     None model
-
     """
 
     balance: Optional[int] = Field(alias="balance", default=None)

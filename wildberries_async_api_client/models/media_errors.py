@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class MediaErrors(BaseModel):
     """
     None model
-
     """
 
     additionalErrors: Optional[Dict[str, Any]] = Field(alias="additionalErrors", default=None)

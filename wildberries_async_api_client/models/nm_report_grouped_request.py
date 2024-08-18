@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class NmReportGroupedRequest(BaseModel):
     """
     None model
-
     """
 
     objectIDs: Optional[List[int]] = Field(alias="objectIDs", default=None)

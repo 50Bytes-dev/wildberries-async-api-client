@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ResponseInfoAdvertType9(BaseModel):
     """
     None model
-
     """
 
     advertId: Optional[int] = Field(alias="advertId", default=None)

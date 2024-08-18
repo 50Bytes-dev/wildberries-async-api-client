@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class AdvV1SeacatStatGetResponse(BaseModel):
     """
     None model
-
     """
 
     totalViews: Optional[int] = Field(alias="totalViews", default=None)

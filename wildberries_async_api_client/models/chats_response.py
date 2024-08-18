@@ -8,7 +8,6 @@ from .chat import Chat
 class ChatsResponse(BaseModel):
     """
     None model
-
     """
 
     result: Optional[List[Optional[Chat]]] = Field(alias="result", default=None)

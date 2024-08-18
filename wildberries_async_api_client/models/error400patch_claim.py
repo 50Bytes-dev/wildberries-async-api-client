@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class Error400patchClaim(BaseModel):
     """
     None model
-
     """
 
     title: Optional[str] = Field(alias="title", default=None)

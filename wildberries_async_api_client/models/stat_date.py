@@ -8,7 +8,6 @@ from .stats_blok2 import StatsBlok2
 class StatDate(BaseModel):
     """
     None model
-
     """
 
     dates: Optional[List[str]] = Field(alias="dates", default=None)

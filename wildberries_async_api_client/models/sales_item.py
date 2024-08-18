@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class SalesItem(BaseModel):
     """
     None model
-
     """
 
     date: Optional[str] = Field(alias="date", default=None)

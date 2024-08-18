@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class NmReportDetailHistoryRequest(BaseModel):
     """
     None model
-
     """
 
     nmIDs: List[int] = Field(alias="nmIDs")

@@ -8,7 +8,6 @@ from .stats_blok1 import StatsBlok1
 class StatInterval(BaseModel):
     """
     None model
-
     """
 
     interval: Optional[Dict[str, Any]] = Field(alias="interval", default=None)

@@ -8,7 +8,6 @@ from .models_warehouses_box_rates import ModelsWarehousesBoxRates
 class ModelsTariffsBoxResponse(BaseModel):
     """
     None model
-
     """
 
     data: Optional[ModelsWarehousesBoxRates] = Field(alias="data", default=None)

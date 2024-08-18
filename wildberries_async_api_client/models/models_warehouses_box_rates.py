@@ -8,7 +8,6 @@ from .models_warehouse_box_rates import ModelsWarehouseBoxRates
 class ModelsWarehousesBoxRates(BaseModel):
     """
     None model
-
     """
 
     dtFromMin: Optional[str] = Field(alias="dtFromMin", default=None)

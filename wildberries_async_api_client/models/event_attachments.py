@@ -10,8 +10,8 @@ from .image import Image
 class EventAttachments(BaseModel):
     """
     None model
-        Вложения
 
+    Вложения
     """
 
     goodCard: Optional[GoodCard] = Field(alias="goodCard", default=None)

@@ -8,7 +8,6 @@ from .good_status_buffer import GoodStatusBuffer
 class GoodBufferHistory(BaseModel):
     """
     None model
-
     """
 
     nmID: Optional[int] = Field(alias="nmID", default=None)

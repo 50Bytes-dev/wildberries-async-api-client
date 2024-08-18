@@ -8,7 +8,6 @@ from .models_warehouses_return_rates import ModelsWarehousesReturnRates
 class ModelsReturnTariffsResponse(BaseModel):
     """
     None model
-
     """
 
     data: Optional[ModelsWarehousesReturnRates] = Field(alias="data", default=None)

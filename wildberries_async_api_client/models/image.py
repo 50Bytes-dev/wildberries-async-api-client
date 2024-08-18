@@ -6,8 +6,8 @@ from pydantic import BaseModel, Field
 class Image(BaseModel):
     """
     None model
-        Изображение
 
+    Изображение
     """
 
     date: Optional[str] = Field(alias="date", default=None)

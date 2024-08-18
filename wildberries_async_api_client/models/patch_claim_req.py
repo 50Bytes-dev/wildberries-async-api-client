@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class PatchClaimReq(BaseModel):
     """
     None model
-
     """
 
     id: Optional[str] = Field(alias="id", default=None)

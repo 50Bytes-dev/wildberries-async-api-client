@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ApiV1FeedbacksCountGetResponse(BaseModel):
     """
     None model
-
     """
 
     data: Optional[int] = Field(alias="data", default=None)

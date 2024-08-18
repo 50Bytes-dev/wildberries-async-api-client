@@ -10,7 +10,6 @@ from .task_status_buffer import TaskStatusBuffer
 class SupplierTaskMetadataBuffer(BaseModel):
     """
     None model
-
     """
 
     uploadID: Optional[int] = Field(alias="uploadID", default=None)

@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class Error(BaseModel):
     """
     None model
-
     """
 
     code: Optional[str] = Field(alias="code", default=None)

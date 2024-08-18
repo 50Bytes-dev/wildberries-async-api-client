@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class RequestMoveNmsImtConn(BaseModel):
     """
     None model
-
     """
 
     targetIMT: int = Field(alias="targetIMT")

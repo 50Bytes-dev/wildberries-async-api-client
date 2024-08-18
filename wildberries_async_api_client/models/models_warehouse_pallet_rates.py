@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ModelsWarehousePalletRates(BaseModel):
     """
     None model
-
     """
 
     palletDeliveryExpr: Optional[str] = Field(alias="palletDeliveryExpr", default=None)

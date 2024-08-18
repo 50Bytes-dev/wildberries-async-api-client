@@ -8,7 +8,6 @@ from .event import Event
 class EventsResult(BaseModel):
     """
     None model
-
     """
 
     next: Optional[int] = Field(alias="next", default=None)

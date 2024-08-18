@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class AdvV1BudgetGetResponse(BaseModel):
     """
     None model
-
     """
 
     cash: Optional[int] = Field(alias="cash", default=None)

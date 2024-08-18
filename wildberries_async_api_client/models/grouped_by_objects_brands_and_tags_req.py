@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class GroupedByObjectsBrandsAndTagsReq(BaseModel):
     """
     None model
-
     """
 
     id: str = Field(alias="id")

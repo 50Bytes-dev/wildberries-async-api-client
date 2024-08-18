@@ -9,7 +9,6 @@ from .supply import Supply
 class ApiV3SuppliesGetResponse(BaseModel):
     """
     None model
-
     """
 
     next: Optional[Next] = Field(alias="next", default=None)

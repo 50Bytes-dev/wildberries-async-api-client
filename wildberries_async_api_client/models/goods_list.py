@@ -6,8 +6,8 @@ from pydantic import BaseModel, Field
 class GoodsList(BaseModel):
     """
     None model
-        Размеры товара
 
+    Размеры товара
     """
 
     nmID: Optional[int] = Field(alias="nmID", default=None)

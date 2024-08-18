@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class AdvV1AutoStatGetResponse(BaseModel):
     """
     None model
-
     """
 
     views: Optional[int] = Field(alias="views", default=None)

@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class ModelsGood(BaseModel):
     """
     None model
-
     """
 
     quantity: Optional[int] = Field(alias="quantity", default=None)

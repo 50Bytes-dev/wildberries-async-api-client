@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class BySelectedNmIDReq(BaseModel):
     """
     None model
-
     """
 
     id: str = Field(alias="id")

@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class SizeGoodReq(BaseModel):
     """
     None model
-
     """
 
     nmID: int = Field(alias="nmID")

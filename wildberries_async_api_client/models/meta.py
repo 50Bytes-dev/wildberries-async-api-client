@@ -6,8 +6,8 @@ from pydantic import BaseModel, Field
 class Meta(BaseModel):
     """
     None model
-        Метаданные заказа
 
+    Метаданные заказа
     """
 
     imei: Optional[str] = Field(alias="imei", default=None)
