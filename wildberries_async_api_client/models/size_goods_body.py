@@ -2,8 +2,10 @@ from typing import *
 
 from pydantic import BaseModel, Field
 
+from .size_good_req import SizeGoodReq
 
-class SizeGoodsBody(BaseModel):
+
+class SizeGoodsBody(List[SizeGoodReq]):
     """
         None model
             Размеры и цены для них. Максимум 1 000 размеров

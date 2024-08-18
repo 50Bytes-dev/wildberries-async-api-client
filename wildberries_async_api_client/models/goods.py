@@ -2,8 +2,10 @@ from typing import *
 
 from pydantic import BaseModel, Field
 
+from .good import Good
 
-class Goods(BaseModel):
+
+class Goods(List[Good]):
     """
         None model
             Товары, цены и скидки для них. Максимум 1 000 товаров. Цена и скидка не могут быть пустыми одновременно.

@@ -3,7 +3,7 @@ from typing import *
 from pydantic import BaseModel, Field
 
 
-class TaskStatus(BaseModel):
+class TaskStatus(int):
     """
       None model
           Статус загрузки:

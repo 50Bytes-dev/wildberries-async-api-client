@@ -7,18 +7,20 @@ from ..api_config import APIConfig, HTTPException
 from ..models import *
 
 
-async def get_apiv3ordersnew(api_config_override: Optional[APIConfig] = None) -> ApiV3OrdersNewGetResponse:
+async def get_apiv1analyticsacceptance_report(
+    dateFrom: str, dateTo: str, api_config_override: Optional[APIConfig] = None
+) -> SuccessReceivingResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path
-    path = f"/api/v3/orders/new"
+    path = f"/api/v1/analytics/acceptance-report"
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": f"Bearer { api_config.get_access_token() }",
     }
 
-    query_params: Dict[str, Any] = {}
+    query_params: Dict[str, Any] = {"dateFrom": dateFrom, "dateTo": dateTo}
 
     query_params = {key: value for (key, value) in query_params.items() if value is not None}
 
@@ -36,4 +38,4 @@ async def get_apiv3ordersnew(api_config_override: Optional[APIConfig] = None) ->
             if inital_response.status != 200:
                 raise HTTPException(inital_response.status, f"{ response }")
 
-            return ApiV3OrdersNewGetResponse(**response) if response is not None else ApiV3OrdersNewGetResponse()
+            return SuccessReceivingResponse(**response) if response is not None else SuccessReceivingResponse()

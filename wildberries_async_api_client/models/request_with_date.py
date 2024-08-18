@@ -3,7 +3,7 @@ from typing import *
 from pydantic import BaseModel, Field
 
 
-class RequestWithDate(BaseModel):
+class RequestWithDate(List[Dict[str, Any]]):
     """
     None model
 

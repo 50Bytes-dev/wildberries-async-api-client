@@ -7,11 +7,13 @@ from ..api_config import APIConfig, HTTPException
 from ..models import *
 
 
-async def get_apiv3ordersnew(api_config_override: Optional[APIConfig] = None) -> ApiV3OrdersNewGetResponse:
+async def post_contentv2tagnomenclaturelink(
+    data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+) -> ResponseContentError6:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path
-    path = f"/api/v3/orders/new"
+    path = f"/content/v2/tag/nomenclature/link"
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -23,11 +25,7 @@ async def get_apiv3ordersnew(api_config_override: Optional[APIConfig] = None) ->
     query_params = {key: value for (key, value) in query_params.items() if value is not None}
 
     async with aiohttp.ClientSession(headers=headers) as session:
-        async with session.request(
-            "get",
-            base_path + path,
-            params=query_params,
-        ) as inital_response:
+        async with session.request("post", base_path + path, params=query_params, json=data) as inital_response:
             try:
                 response = await inital_response.json()
             except aiohttp.ContentTypeError:
@@ -36,4 +34,4 @@ async def get_apiv3ordersnew(api_config_override: Optional[APIConfig] = None) ->
             if inital_response.status != 200:
                 raise HTTPException(inital_response.status, f"{ response }")
 
-            return ApiV3OrdersNewGetResponse(**response) if response is not None else ApiV3OrdersNewGetResponse()
+            return ResponseContentError6(**response) if response is not None else ResponseContentError6()

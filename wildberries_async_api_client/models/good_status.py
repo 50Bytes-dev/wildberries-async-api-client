@@ -3,7 +3,7 @@ from typing import *
 from pydantic import BaseModel, Field
 
 
-class GoodStatus(BaseModel):
+class GoodStatus(int):
     """
       None model
           Статус товара:

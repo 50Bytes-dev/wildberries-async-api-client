@@ -7,11 +7,11 @@ from ..api_config import APIConfig, HTTPException
 from ..models import *
 
 
-async def get_apiv3ordersnew(api_config_override: Optional[APIConfig] = None) -> ApiV3OrdersNewGetResponse:
+async def get_advv1searchsupplier_subjects(api_config_override: Optional[APIConfig] = None) -> List[Dict[str, Any]]:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path
-    path = f"/api/v3/orders/new"
+    path = f"/adv/v1/search/supplier-subjects"
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -36,4 +36,4 @@ async def get_apiv3ordersnew(api_config_override: Optional[APIConfig] = None) ->
             if inital_response.status != 200:
                 raise HTTPException(inital_response.status, f"{ response }")
 
-            return ApiV3OrdersNewGetResponse(**response) if response is not None else ApiV3OrdersNewGetResponse()
+            return response
