@@ -13,7 +13,7 @@ dev = ["openapi-python-generator"]
 openapi-python-generator = { path = "../openapi-python-generator", editable = true }
 
 [tool.setuptools.packages.find]
-include = ["wildberries_async_api_client*"]
+include = ["src*"]
 exclude = ["schemas*", "scripts*"]
 
 [build-system]
