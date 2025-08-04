@@ -6,11 +6,16 @@ readme = "README.md"
 requires-python = ">=3.9"
 dependencies = ["aiohttp>=3.12.15", "pydantic>=2.11.7"]
 
-[tool.setuptools]
-package-dir = { "" = "src" }
-
 [dependency-groups]
 dev = ["openapi-python-generator"]
 
 [tool.uv.sources]
 openapi-python-generator = { path = "../openapi-python-generator", editable = true }
+
+[tool.setuptools.packages.find]
+include = ["wildberries_async_api_client*"]
+exclude = ["schemas*", "scripts*"]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
