@@ -1,22 +1,16 @@
-[tool.poetry]
+[project]
 name = "wildberries-async-api-client"
 version = "0.1.0"
-description = ""
-authors = ["50bytes.dev <50bytes.dev@gmail.com>"]
+description = "Add your description here"
 readme = "README.md"
-#package-mode = true
+requires-python = ">=3.9"
+dependencies = ["aiohttp>=3.12.15", "pydantic>=2.11.7"]
 
-[tool.poetry.dependencies]
-python = ">=3.11,<3.12"
-aiohttp = "^3.9.5"
+[tool.setuptools]
+package-dir = { "" = "src" }
 
-pydantic = "^2.7.2"
+[dependency-groups]
+dev = ["openapi-python-generator"]
 
-
-[tool.poerty.dev-dependencies]
-openapi-python-generator = { path = "../openapi-python-generator", develop = true }
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.uv.sources]
+openapi-python-generator = { path = "../openapi-python-generator", editable = true }
