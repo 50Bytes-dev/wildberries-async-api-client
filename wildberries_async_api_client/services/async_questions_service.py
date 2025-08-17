@@ -17,7 +17,7 @@ async def get_apiv1new_feedbacks_questions(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -55,7 +55,7 @@ async def get_apiv1questionscount_unanswered(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -96,7 +96,7 @@ async def get_apiv1questionscount(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"dateFrom": dateFrom, "dateTo": dateTo, "isAnswered": isAnswered}
@@ -123,10 +123,10 @@ async def get_apiv1questionscount(
 
 
 async def get_apiv1questions(
-    isAnswered: bool,
-    take: int,
-    skip: int,
+    isAnswered: Optional[bool] = None,
     nmId: Optional[int] = None,
+    take: Optional[int] = None,
+    skip: Optional[int] = None,
     order: Optional[str] = None,
     dateFrom: Optional[int] = None,
     dateTo: Optional[int] = None,
@@ -139,7 +139,7 @@ async def get_apiv1questions(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {
@@ -181,7 +181,7 @@ async def patch_apiv1questions(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -201,7 +201,9 @@ async def patch_apiv1questions(
             return ApiV1QuestionsPatchResponse(**response) if response is not None else ApiV1QuestionsPatchResponse()
 
 
-async def get_apiv1question(id: str, api_config_override: Optional[APIConfig] = None) -> ApiV1QuestionGetResponse:
+async def get_apiv1question(
+    id: Optional[str] = None, api_config_override: Optional[APIConfig] = None
+) -> ApiV1QuestionGetResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://feedbacks-api.wildberries.ru"
@@ -209,7 +211,7 @@ async def get_apiv1question(id: str, api_config_override: Optional[APIConfig] = 
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id}

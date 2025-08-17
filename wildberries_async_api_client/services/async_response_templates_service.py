@@ -8,7 +8,7 @@ from ..models import *
 
 
 async def get_apiv1templates(
-    templateType: int, api_config_override: Optional[APIConfig] = None
+    templateType: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> Union[Response200, ResponseErrorTemplate]:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -17,7 +17,7 @@ async def get_apiv1templates(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"templateType": templateType}
@@ -55,7 +55,7 @@ async def post_apiv1templates(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -89,7 +89,7 @@ async def delete_apiv1templates(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -123,7 +123,7 @@ async def patch_apiv1templates(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}

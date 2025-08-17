@@ -20,7 +20,7 @@ class GoodCard(BaseModel):
 
     priceCurrency: Optional[str] = Field(alias="priceCurrency", default=None)
 
-    rid: Optional[str] = Field(alias="rid", default=None)
+    rid: Optional[Union[str, int]] = Field(alias="rid", default=None)
 
     size: Optional[str] = Field(alias="size", default=None)
 

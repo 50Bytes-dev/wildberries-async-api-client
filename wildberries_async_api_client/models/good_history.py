@@ -28,4 +28,4 @@ class GoodHistory(BaseModel):
 
     status: Optional[GoodStatus] = Field(alias="status", default=None)
 
-    errorText: Optional[str] = Field(alias="errorText", default=None)
+    errorText: Optional[Union[str, int]] = Field(alias="errorText", default=None)

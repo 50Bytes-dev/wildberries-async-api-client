@@ -15,7 +15,7 @@ async def get_contentv2tags(api_config_override: Optional[APIConfig] = None) -> 
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -49,7 +49,7 @@ async def post_contentv2tag(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -70,7 +70,7 @@ async def post_contentv2tag(
 
 
 async def delete_contentv2tagid(
-    id: int, api_config_override: Optional[APIConfig] = None
+    id: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> Union[ResponseContentError6, ResponseContentError5]:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -79,7 +79,7 @@ async def delete_contentv2tagid(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -108,7 +108,7 @@ async def delete_contentv2tagid(
 
 
 async def patch_contentv2tagid(
-    id: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+    data: Dict[str, Any], id: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> Union[ResponseContentError6, ResponseContentError4]:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -117,7 +117,7 @@ async def patch_contentv2tagid(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -151,7 +151,7 @@ async def post_contentv2tagnomenclaturelink(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}

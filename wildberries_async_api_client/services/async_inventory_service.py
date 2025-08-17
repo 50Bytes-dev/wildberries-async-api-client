@@ -7,8 +7,8 @@ from ..api_config import APIConfig, HTTPException
 from ..models import *
 
 
-async def post_apiv3stockswarehouseId(
-    warehouseId: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+async def post_apiv3stockswarehouse_id(
+    data: Dict[str, Any], warehouseId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> ApiV3StocksWarehouseIdPostResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -17,7 +17,7 @@ async def post_apiv3stockswarehouseId(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -41,8 +41,8 @@ async def post_apiv3stockswarehouseId(
             )
 
 
-async def put_apiv3stockswarehouseId(
-    warehouseId: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+async def put_apiv3stockswarehouse_id(
+    data: Dict[str, Any], warehouseId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -51,7 +51,7 @@ async def put_apiv3stockswarehouseId(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -71,8 +71,8 @@ async def put_apiv3stockswarehouseId(
             return None
 
 
-async def delete_apiv3stockswarehouseId(
-    warehouseId: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+async def delete_apiv3stockswarehouse_id(
+    data: Dict[str, Any], warehouseId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -81,7 +81,7 @@ async def delete_apiv3stockswarehouseId(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}

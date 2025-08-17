@@ -17,7 +17,7 @@ async def get_contentv2objectparentall(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"locale": locale}
@@ -60,7 +60,7 @@ async def get_contentv2objectall(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {
@@ -92,8 +92,8 @@ async def get_contentv2objectall(
             )
 
 
-async def get_contentv2objectcharcssubjectId(
-    subjectId: int, locale: Optional[str] = None, api_config_override: Optional[APIConfig] = None
+async def get_contentv2objectcharcssubject_id(
+    subjectId: Optional[int] = None, locale: Optional[str] = None, api_config_override: Optional[APIConfig] = None
 ) -> ContentV2ObjectCharcsSubjectIdGetResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -102,7 +102,7 @@ async def get_contentv2objectcharcssubjectId(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"locale": locale}
@@ -140,7 +140,7 @@ async def get_contentv2directorycolors(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"locale": locale}
@@ -178,7 +178,7 @@ async def get_contentv2directorykinds(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"locale": locale}
@@ -216,7 +216,7 @@ async def get_contentv2directorycountries(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"locale": locale}
@@ -254,7 +254,7 @@ async def get_contentv2directoryseasons(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"locale": locale}
@@ -292,7 +292,7 @@ async def get_contentv2directoryvat(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"locale": locale}
@@ -321,7 +321,7 @@ async def get_contentv2directoryvat(
 
 
 async def get_contentv2directorytnved(
-    subjectID: int,
+    subjectID: Optional[int] = None,
     search: Optional[int] = None,
     locale: Optional[str] = None,
     api_config_override: Optional[APIConfig] = None,
@@ -333,7 +333,7 @@ async def get_contentv2directorytnved(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"subjectID": subjectID, "search": search, "locale": locale}

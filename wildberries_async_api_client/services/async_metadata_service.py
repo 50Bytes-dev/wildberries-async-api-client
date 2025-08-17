@@ -7,8 +7,8 @@ from ..api_config import APIConfig, HTTPException
 from ..models import *
 
 
-async def get_apiv3ordersorderIdmeta(
-    orderId: int, api_config_override: Optional[APIConfig] = None
+async def get_apiv3ordersorder_idmeta(
+    orderId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> ApiV3OrdersOrderIdMetaGetResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -17,7 +17,7 @@ async def get_apiv3ordersorderIdmeta(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -45,8 +45,8 @@ async def get_apiv3ordersorderIdmeta(
             )
 
 
-async def delete_apiv3ordersorderIdmeta(
-    orderId: int, key: Optional[str] = None, api_config_override: Optional[APIConfig] = None
+async def delete_apiv3ordersorder_idmeta(
+    orderId: Optional[int] = None, key: Optional[str] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -55,7 +55,7 @@ async def delete_apiv3ordersorderIdmeta(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"key": key}
@@ -79,8 +79,8 @@ async def delete_apiv3ordersorderIdmeta(
             return None
 
 
-async def put_apiv3ordersorderIdmetasgtin(
-    orderId: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+async def put_apiv3ordersorder_idmetasgtin(
+    data: Dict[str, Any], orderId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -89,7 +89,7 @@ async def put_apiv3ordersorderIdmetasgtin(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -109,8 +109,8 @@ async def put_apiv3ordersorderIdmetasgtin(
             return None
 
 
-async def put_apiv3ordersorderIdmetauin(
-    orderId: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+async def put_apiv3ordersorder_idmetauin(
+    data: Dict[str, Any], orderId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -119,7 +119,7 @@ async def put_apiv3ordersorderIdmetauin(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -139,8 +139,8 @@ async def put_apiv3ordersorderIdmetauin(
             return None
 
 
-async def put_apiv3ordersorderIdmetaimei(
-    orderId: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+async def put_apiv3ordersorder_idmetaimei(
+    data: Dict[str, Any], orderId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -149,7 +149,7 @@ async def put_apiv3ordersorderIdmetaimei(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -169,8 +169,8 @@ async def put_apiv3ordersorderIdmetaimei(
             return None
 
 
-async def put_apiv3ordersorderIdmetagtin(
-    orderId: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+async def put_apiv3ordersorder_idmetagtin(
+    data: Dict[str, Any], orderId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -179,7 +179,7 @@ async def put_apiv3ordersorderIdmetagtin(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -199,8 +199,8 @@ async def put_apiv3ordersorderIdmetagtin(
             return None
 
 
-async def put_apiv3ordersorderIdmetaexpiration(
-    orderId: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+async def put_apiv3ordersorder_idmetaexpiration(
+    data: Dict[str, Any], orderId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -209,7 +209,7 @@ async def put_apiv3ordersorderIdmetaexpiration(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}

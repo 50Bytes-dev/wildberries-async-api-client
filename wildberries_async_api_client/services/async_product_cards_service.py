@@ -17,7 +17,7 @@ async def post_contentv2getcardslist(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"locale": locale}
@@ -51,7 +51,7 @@ async def get_contentv2cardserrorlist(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"locale": locale}
@@ -89,7 +89,7 @@ async def post_contentv2cardsupdate(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -111,7 +111,7 @@ async def post_contentv2cardsupdate(
             return ResponseCardCreate(**response) if response is not None else ResponseCardCreate()
 
 
-async def post_contentv2cardsmoveNm(
+async def post_contentv2cardsmove_nm(
     data: Union[RequestMoveNmsImtConn, RequestMoveNmsImtDisconn], api_config_override: Optional[APIConfig] = None
 ) -> ResponseCardCreate:
     api_config = api_config_override if api_config_override else APIConfig()
@@ -121,7 +121,7 @@ async def post_contentv2cardsmoveNm(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -151,7 +151,7 @@ async def post_contentv2cardsdeletetrash(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -185,7 +185,7 @@ async def post_contentv2cardsrecover(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -219,7 +219,7 @@ async def post_contentv2getcardstrash(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"locale": locale}

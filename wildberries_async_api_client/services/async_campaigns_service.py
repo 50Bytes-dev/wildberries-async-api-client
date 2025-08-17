@@ -15,7 +15,7 @@ async def get_advv1promotioncount(api_config_override: Optional[APIConfig] = Non
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -56,7 +56,7 @@ async def post_advv1promotionadverts(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"status": status, "type": type, "order": order, "direction": direction}

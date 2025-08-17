@@ -19,5 +19,5 @@ python schemas/repair_schema.py
 
 ### Step 4
 ```shell
-openapi-python-generator --library aiohttp ./schemas/openapi.yaml wildberries_async_api_client
+openapi-python-generator --library aiohttp ./schemas/openapi.yaml wildberries_async_api_client --custom-template-path ./templates
 ```

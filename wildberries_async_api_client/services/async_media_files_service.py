@@ -8,7 +8,10 @@ from ..models import *
 
 
 async def post_contentv3mediafile(
-    X_Nm_Id: str, X_Photo_Number: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+    data: Dict[str, Any],
+    X_Nm_Id: Optional[str] = None,
+    X_Photo_Number: Optional[int] = None,
+    api_config_override: Optional[APIConfig] = None,
 ) -> ContentV3MediaFilePostResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -17,7 +20,7 @@ async def post_contentv3mediafile(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
         "X-Nm-Id": X_Nm_Id,
         "X-Photo-Number": X_Photo_Number,
     }
@@ -55,7 +58,7 @@ async def post_contentv3mediasave(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}

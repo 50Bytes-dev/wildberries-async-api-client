@@ -15,7 +15,7 @@ async def get_apiv3offices(api_config_override: Optional[APIConfig] = None) -> L
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -47,7 +47,7 @@ async def get_apiv3warehouses(api_config_override: Optional[APIConfig] = None) -
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -81,7 +81,7 @@ async def post_apiv3warehouses(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -101,8 +101,8 @@ async def post_apiv3warehouses(
             return ApiV3WarehousesPostResponse(**response) if response is not None else ApiV3WarehousesPostResponse()
 
 
-async def put_apiv3warehouseswarehouseId(
-    warehouseId: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+async def put_apiv3warehouseswarehouse_id(
+    data: Dict[str, Any], warehouseId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -111,7 +111,7 @@ async def put_apiv3warehouseswarehouseId(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -131,7 +131,9 @@ async def put_apiv3warehouseswarehouseId(
             return None
 
 
-async def delete_apiv3warehouseswarehouseId(warehouseId: int, api_config_override: Optional[APIConfig] = None) -> None:
+async def delete_apiv3warehouseswarehouse_id(
+    warehouseId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
+) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://marketplace-api.wildberries.ru"
@@ -139,7 +141,7 @@ async def delete_apiv3warehouseswarehouseId(warehouseId: int, api_config_overrid
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}

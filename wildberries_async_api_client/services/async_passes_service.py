@@ -15,7 +15,7 @@ async def get_apiv3passesoffices(api_config_override: Optional[APIConfig] = None
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -47,7 +47,7 @@ async def get_apiv3passes(api_config_override: Optional[APIConfig] = None) -> Li
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -81,7 +81,7 @@ async def post_apiv3passes(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -101,8 +101,8 @@ async def post_apiv3passes(
             return ApiV3PassesPostResponse(**response) if response is not None else ApiV3PassesPostResponse()
 
 
-async def put_apiv3passespassId(
-    passId: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+async def put_apiv3passespass_id(
+    data: Dict[str, Any], passId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -111,7 +111,7 @@ async def put_apiv3passespassId(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -131,7 +131,9 @@ async def put_apiv3passespassId(
             return None
 
 
-async def delete_apiv3passespassId(passId: int, api_config_override: Optional[APIConfig] = None) -> None:
+async def delete_apiv3passespass_id(
+    passId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
+) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://marketplace-api.wildberries.ru"
@@ -139,7 +141,7 @@ async def delete_apiv3passespassId(passId: int, api_config_override: Optional[AP
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}

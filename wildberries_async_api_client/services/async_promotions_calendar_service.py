@@ -8,9 +8,9 @@ from ..models import *
 
 
 async def get_apiv1calendarpromotions(
-    startDateTime: str,
-    endDateTime: str,
-    allPromo: bool,
+    startDateTime: Optional[str] = None,
+    endDateTime: Optional[str] = None,
+    allPromo: Optional[bool] = None,
     limit: Optional[int] = None,
     offset: Optional[int] = None,
     api_config_override: Optional[APIConfig] = None,
@@ -22,7 +22,7 @@ async def get_apiv1calendarpromotions(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {
@@ -53,7 +53,7 @@ async def get_apiv1calendarpromotions(
 
 
 async def get_apiv1calendarpromotionsdetails(
-    promotionIDs: str, api_config_override: Optional[APIConfig] = None
+    promotionIDs: Optional[str] = None, api_config_override: Optional[APIConfig] = None
 ) -> PromotionsGetByIDSuccessResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -62,7 +62,7 @@ async def get_apiv1calendarpromotionsdetails(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"promotionIDs": promotionIDs}
@@ -91,8 +91,8 @@ async def get_apiv1calendarpromotionsdetails(
 
 
 async def get_apiv1calendarpromotionsnomenclatures(
-    promotionID: int,
-    inAction: bool,
+    promotionID: Optional[int] = None,
+    inAction: Optional[bool] = None,
     limit: Optional[int] = None,
     offset: Optional[int] = None,
     api_config_override: Optional[APIConfig] = None,
@@ -104,7 +104,7 @@ async def get_apiv1calendarpromotionsnomenclatures(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"promotionID": promotionID, "inAction": inAction, "limit": limit, "offset": offset}
@@ -138,7 +138,7 @@ async def post_apiv1calendarpromotionsupload(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}

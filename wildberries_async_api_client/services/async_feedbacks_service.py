@@ -17,7 +17,7 @@ async def get_apiv1feedbackscount_unanswered(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -58,7 +58,7 @@ async def get_apiv1feedbackscount(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"dateFrom": dateFrom, "dateTo": dateTo, "isAnswered": isAnswered}
@@ -85,10 +85,10 @@ async def get_apiv1feedbackscount(
 
 
 async def get_apiv1feedbacks(
-    isAnswered: bool,
-    take: int,
-    skip: int,
+    isAnswered: Optional[bool] = None,
     nmId: Optional[int] = None,
+    take: Optional[int] = None,
+    skip: Optional[int] = None,
     order: Optional[str] = None,
     dateFrom: Optional[int] = None,
     dateTo: Optional[int] = None,
@@ -101,7 +101,7 @@ async def get_apiv1feedbacks(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {
@@ -143,7 +143,7 @@ async def get_apiv1supplier_valuations(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
         "X-Locale": X_Locale,
     }
 
@@ -180,7 +180,7 @@ async def post_apiv1feedbacksactions(data: Dict[str, Any], api_config_override: 
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -208,7 +208,7 @@ async def post_apiv1feedbacksanswer(data: Dict[str, Any], api_config_override: O
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -236,7 +236,7 @@ async def patch_apiv1feedbacksanswer(data: Dict[str, Any], api_config_override: 
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -266,7 +266,7 @@ async def post_apiv1feedbacksorderreturn(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -290,7 +290,9 @@ async def post_apiv1feedbacksorderreturn(
             )
 
 
-async def get_apiv1feedback(id: str, api_config_override: Optional[APIConfig] = None) -> ApiV1FeedbackGetResponse:
+async def get_apiv1feedback(
+    id: Optional[str] = None, api_config_override: Optional[APIConfig] = None
+) -> ApiV1FeedbackGetResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://feedbacks-api.wildberries.ru"
@@ -298,7 +300,7 @@ async def get_apiv1feedback(id: str, api_config_override: Optional[APIConfig] = 
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id}
@@ -323,9 +325,9 @@ async def get_apiv1feedback(id: str, api_config_override: Optional[APIConfig] = 
 
 
 async def get_apiv1feedbacksarchive(
-    take: int,
-    skip: int,
     nmId: Optional[int] = None,
+    take: Optional[int] = None,
+    skip: Optional[int] = None,
     order: Optional[str] = None,
     api_config_override: Optional[APIConfig] = None,
 ) -> ApiV1FeedbacksArchiveGetResponse:
@@ -336,7 +338,7 @@ async def get_apiv1feedbacksarchive(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"nmId": nmId, "take": take, "skip": skip, "order": order}

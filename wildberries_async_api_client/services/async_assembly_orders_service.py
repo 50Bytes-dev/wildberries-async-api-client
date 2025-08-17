@@ -15,7 +15,7 @@ async def get_apiv3ordersnew(api_config_override: Optional[APIConfig] = None) ->
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -40,8 +40,8 @@ async def get_apiv3ordersnew(api_config_override: Optional[APIConfig] = None) ->
 
 
 async def get_apiv3orders(
-    limit: int,
-    next: int,
+    limit: Optional[int] = None,
+    next: Optional[int] = None,
     dateFrom: Optional[int] = None,
     dateTo: Optional[int] = None,
     api_config_override: Optional[APIConfig] = None,
@@ -53,7 +53,7 @@ async def get_apiv3orders(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"limit": limit, "next": next, "dateFrom": dateFrom, "dateTo": dateTo}
@@ -87,7 +87,7 @@ async def post_apiv3ordersstatus(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -119,7 +119,7 @@ async def get_apiv3suppliesordersreshipment(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -147,7 +147,9 @@ async def get_apiv3suppliesordersreshipment(
             )
 
 
-async def patch_apiv3ordersorderIdcancel(orderId: int, api_config_override: Optional[APIConfig] = None) -> None:
+async def patch_apiv3ordersorder_idcancel(
+    orderId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
+) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://marketplace-api.wildberries.ru"
@@ -155,7 +157,7 @@ async def patch_apiv3ordersorderIdcancel(orderId: int, api_config_override: Opti
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -180,7 +182,11 @@ async def patch_apiv3ordersorderIdcancel(orderId: int, api_config_override: Opti
 
 
 async def post_apiv3ordersstickers(
-    type: str, width: int, height: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+    data: Dict[str, Any],
+    type: Optional[str] = None,
+    width: Optional[int] = None,
+    height: Optional[int] = None,
+    api_config_override: Optional[APIConfig] = None,
 ) -> ApiV3OrdersStickersPostResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -189,7 +195,7 @@ async def post_apiv3ordersstickers(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"type": type, "width": width, "height": height}
@@ -223,7 +229,7 @@ async def post_apiv3filesordersexternal_stickers(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -257,7 +263,7 @@ async def post_apiv3ordersstatushistory(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -291,7 +297,7 @@ async def post_apiv3ordersclient(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}

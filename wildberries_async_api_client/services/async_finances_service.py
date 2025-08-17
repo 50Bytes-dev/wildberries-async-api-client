@@ -15,7 +15,7 @@ async def get_advv1balance(api_config_override: Optional[APIConfig] = None) -> A
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -39,7 +39,9 @@ async def get_advv1balance(api_config_override: Optional[APIConfig] = None) -> A
             return AdvV1BalanceGetResponse(**response) if response is not None else AdvV1BalanceGetResponse()
 
 
-async def get_advv1budget(id: int, api_config_override: Optional[APIConfig] = None) -> AdvV1BudgetGetResponse:
+async def get_advv1budget(
+    id: Optional[int] = None, api_config_override: Optional[APIConfig] = None
+) -> AdvV1BudgetGetResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://advert-api.wildberries.ru"
@@ -47,7 +49,7 @@ async def get_advv1budget(id: int, api_config_override: Optional[APIConfig] = No
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id}
@@ -72,7 +74,7 @@ async def get_advv1budget(id: int, api_config_override: Optional[APIConfig] = No
 
 
 async def post_advv1budgetdeposit(
-    id: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+    data: Dict[str, Any], id: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> ResponseWithReturn:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -81,7 +83,7 @@ async def post_advv1budgetdeposit(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id}
@@ -101,7 +103,9 @@ async def post_advv1budgetdeposit(
             return ResponseWithReturn(**response) if response is not None else ResponseWithReturn()
 
 
-async def get_advv1upd(from_: str, to: str, api_config_override: Optional[APIConfig] = None) -> List[Dict[str, Any]]:
+async def get_advv1upd(
+    from_: Optional[str] = None, to: Optional[str] = None, api_config_override: Optional[APIConfig] = None
+) -> List[Dict[str, Any]]:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://advert-api.wildberries.ru"
@@ -109,7 +113,7 @@ async def get_advv1upd(from_: str, to: str, api_config_override: Optional[APICon
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"from": from_, "to": to}
@@ -143,7 +147,7 @@ async def get_advv1payments(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"from": from_, "to": to}

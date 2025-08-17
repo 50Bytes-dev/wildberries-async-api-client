@@ -7,7 +7,9 @@ from ..api_config import APIConfig, HTTPException
 from ..models import *
 
 
-async def patch_apiv3ordersorderIdconfirm(orderId: int, api_config_override: Optional[APIConfig] = None) -> None:
+async def patch_apiv3ordersorder_idconfirm(
+    orderId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
+) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://marketplace-api.wildberries.ru"
@@ -15,7 +17,7 @@ async def patch_apiv3ordersorderIdconfirm(orderId: int, api_config_override: Opt
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -39,7 +41,9 @@ async def patch_apiv3ordersorderIdconfirm(orderId: int, api_config_override: Opt
             return None
 
 
-async def patch_apiv3ordersorderIdassemble(orderId: int, api_config_override: Optional[APIConfig] = None) -> None:
+async def patch_apiv3ordersorder_idassemble(
+    orderId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
+) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://marketplace-api.wildberries.ru"
@@ -47,7 +51,7 @@ async def patch_apiv3ordersorderIdassemble(orderId: int, api_config_override: Op
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -71,8 +75,8 @@ async def patch_apiv3ordersorderIdassemble(orderId: int, api_config_override: Op
             return None
 
 
-async def get_apiv3warehouseswarehouseIdcontacts(
-    warehouseId: int, api_config_override: Optional[APIConfig] = None
+async def get_apiv3warehouseswarehouse_idcontacts(
+    warehouseId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> List[StoreContactResponseBody]:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -81,7 +85,7 @@ async def get_apiv3warehouseswarehouseIdcontacts(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -105,8 +109,8 @@ async def get_apiv3warehouseswarehouseIdcontacts(
             return [StoreContactResponseBody(**item) for item in response]
 
 
-async def put_apiv3warehouseswarehouseIdcontacts(
-    warehouseId: int, data: StoreContactRequestBody, api_config_override: Optional[APIConfig] = None
+async def put_apiv3warehouseswarehouse_idcontacts(
+    data: StoreContactRequestBody, warehouseId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -115,7 +119,7 @@ async def put_apiv3warehouseswarehouseIdcontacts(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}

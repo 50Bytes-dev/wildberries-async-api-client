@@ -15,7 +15,7 @@ async def get_advv1count(api_config_override: Optional[APIConfig] = None) -> Adv
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -55,7 +55,7 @@ async def get_advv1adverts(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {
@@ -86,7 +86,9 @@ async def get_advv1adverts(
             return response
 
 
-async def get_advv1advert(id: int, api_config_override: Optional[APIConfig] = None) -> AdvV1AdvertGetResponse:
+async def get_advv1advert(
+    id: Optional[int] = None, api_config_override: Optional[APIConfig] = None
+) -> AdvV1AdvertGetResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://advert-media-api.wildberries.ru"
@@ -94,7 +96,7 @@ async def get_advv1advert(id: int, api_config_override: Optional[APIConfig] = No
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id}

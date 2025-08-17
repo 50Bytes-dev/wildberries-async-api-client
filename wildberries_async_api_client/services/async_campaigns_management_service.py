@@ -15,7 +15,7 @@ async def post_advv0cpm(data: Dict[str, Any], api_config_override: Optional[APIC
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -43,7 +43,7 @@ async def patch_advv0bids(data: Dict[str, Any], api_config_override: Optional[AP
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -63,7 +63,7 @@ async def patch_advv0bids(data: Dict[str, Any], api_config_override: Optional[AP
             return None
 
 
-async def get_advv0delete(id: int, api_config_override: Optional[APIConfig] = None) -> None:
+async def get_advv0delete(id: Optional[int] = None, api_config_override: Optional[APIConfig] = None) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://advert-api.wildberries.ru"
@@ -71,7 +71,7 @@ async def get_advv0delete(id: int, api_config_override: Optional[APIConfig] = No
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id}
@@ -103,7 +103,7 @@ async def post_advv0rename(data: Dict[str, Any], api_config_override: Optional[A
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -123,7 +123,7 @@ async def post_advv0rename(data: Dict[str, Any], api_config_override: Optional[A
             return None
 
 
-async def get_advv0start(id: int, api_config_override: Optional[APIConfig] = None) -> None:
+async def get_advv0start(id: Optional[int] = None, api_config_override: Optional[APIConfig] = None) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://advert-api.wildberries.ru"
@@ -131,7 +131,7 @@ async def get_advv0start(id: int, api_config_override: Optional[APIConfig] = Non
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id}
@@ -155,7 +155,7 @@ async def get_advv0start(id: int, api_config_override: Optional[APIConfig] = Non
             return None
 
 
-async def get_advv0pause(id: int, api_config_override: Optional[APIConfig] = None) -> None:
+async def get_advv0pause(id: Optional[int] = None, api_config_override: Optional[APIConfig] = None) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://advert-api.wildberries.ru"
@@ -163,7 +163,7 @@ async def get_advv0pause(id: int, api_config_override: Optional[APIConfig] = Non
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id}
@@ -187,7 +187,7 @@ async def get_advv0pause(id: int, api_config_override: Optional[APIConfig] = Non
             return None
 
 
-async def get_advv0stop(id: int, api_config_override: Optional[APIConfig] = None) -> None:
+async def get_advv0stop(id: Optional[int] = None, api_config_override: Optional[APIConfig] = None) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://advert-api.wildberries.ru"
@@ -195,7 +195,7 @@ async def get_advv0stop(id: int, api_config_override: Optional[APIConfig] = None
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id}

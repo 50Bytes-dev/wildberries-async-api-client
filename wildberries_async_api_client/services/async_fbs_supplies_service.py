@@ -8,7 +8,7 @@ from ..models import *
 
 
 async def get_apiv3supplies(
-    limit: int, next: int, api_config_override: Optional[APIConfig] = None
+    limit: Optional[int] = None, next: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> ApiV3SuppliesGetResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -17,7 +17,7 @@ async def get_apiv3supplies(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"limit": limit, "next": next}
@@ -51,7 +51,7 @@ async def post_apiv3supplies(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -71,8 +71,8 @@ async def post_apiv3supplies(
             return ApiV3SuppliesPostResponse(**response) if response is not None else ApiV3SuppliesPostResponse()
 
 
-async def patch_apiv3suppliessupplyIdordersorderId(
-    supplyId: str, orderId: int, api_config_override: Optional[APIConfig] = None
+async def patch_apiv3suppliessupply_idordersorder_id(
+    supplyId: Optional[str] = None, orderId: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -81,7 +81,7 @@ async def patch_apiv3suppliessupplyIdordersorderId(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -105,7 +105,9 @@ async def patch_apiv3suppliessupplyIdordersorderId(
             return None
 
 
-async def get_apiv3suppliessupplyId(supplyId: str, api_config_override: Optional[APIConfig] = None) -> Supply:
+async def get_apiv3suppliessupply_id(
+    supplyId: Optional[str] = None, api_config_override: Optional[APIConfig] = None
+) -> Supply:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://marketplace-api.wildberries.ru"
@@ -113,7 +115,7 @@ async def get_apiv3suppliessupplyId(supplyId: str, api_config_override: Optional
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -137,7 +139,9 @@ async def get_apiv3suppliessupplyId(supplyId: str, api_config_override: Optional
             return Supply(**response) if response is not None else Supply()
 
 
-async def delete_apiv3suppliessupplyId(supplyId: str, api_config_override: Optional[APIConfig] = None) -> None:
+async def delete_apiv3suppliessupply_id(
+    supplyId: Optional[str] = None, api_config_override: Optional[APIConfig] = None
+) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://marketplace-api.wildberries.ru"
@@ -145,7 +149,7 @@ async def delete_apiv3suppliessupplyId(supplyId: str, api_config_override: Optio
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -169,8 +173,8 @@ async def delete_apiv3suppliessupplyId(supplyId: str, api_config_override: Optio
             return None
 
 
-async def get_apiv3suppliessupplyIdorders(
-    supplyId: str, api_config_override: Optional[APIConfig] = None
+async def get_apiv3suppliessupply_idorders(
+    supplyId: Optional[str] = None, api_config_override: Optional[APIConfig] = None
 ) -> ApiV3SuppliesSupplyIdOrdersGetResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -179,7 +183,7 @@ async def get_apiv3suppliessupplyIdorders(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -207,7 +211,9 @@ async def get_apiv3suppliessupplyIdorders(
             )
 
 
-async def patch_apiv3suppliessupplyIddeliver(supplyId: str, api_config_override: Optional[APIConfig] = None) -> None:
+async def patch_apiv3suppliessupply_iddeliver(
+    supplyId: Optional[str] = None, api_config_override: Optional[APIConfig] = None
+) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://marketplace-api.wildberries.ru"
@@ -215,7 +221,7 @@ async def patch_apiv3suppliessupplyIddeliver(supplyId: str, api_config_override:
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -239,8 +245,8 @@ async def patch_apiv3suppliessupplyIddeliver(supplyId: str, api_config_override:
             return None
 
 
-async def get_apiv3suppliessupplyIdbarcode(
-    supplyId: str, type: str, api_config_override: Optional[APIConfig] = None
+async def get_apiv3suppliessupply_idbarcode(
+    supplyId: Optional[str] = None, type: Optional[str] = None, api_config_override: Optional[APIConfig] = None
 ) -> ApiV3SuppliesSupplyIdBarcodeGetResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -249,7 +255,7 @@ async def get_apiv3suppliessupplyIdbarcode(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"type": type}
@@ -277,8 +283,8 @@ async def get_apiv3suppliessupplyIdbarcode(
             )
 
 
-async def get_apiv3suppliessupplyIdtrbx(
-    supplyId: str, api_config_override: Optional[APIConfig] = None
+async def get_apiv3suppliessupply_idtrbx(
+    supplyId: Optional[str] = None, api_config_override: Optional[APIConfig] = None
 ) -> ApiV3SuppliesSupplyIdTrbxGetResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -287,7 +293,7 @@ async def get_apiv3suppliessupplyIdtrbx(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -315,8 +321,8 @@ async def get_apiv3suppliessupplyIdtrbx(
             )
 
 
-async def post_apiv3suppliessupplyIdtrbx(
-    supplyId: str, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+async def post_apiv3suppliessupply_idtrbx(
+    data: Dict[str, Any], supplyId: Optional[str] = None, api_config_override: Optional[APIConfig] = None
 ) -> ApiV3SuppliesSupplyIdTrbxPostResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -325,7 +331,7 @@ async def post_apiv3suppliessupplyIdtrbx(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -349,8 +355,8 @@ async def post_apiv3suppliessupplyIdtrbx(
             )
 
 
-async def delete_apiv3suppliessupplyIdtrbx(
-    supplyId: str, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+async def delete_apiv3suppliessupply_idtrbx(
+    data: Dict[str, Any], supplyId: Optional[str] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -359,7 +365,7 @@ async def delete_apiv3suppliessupplyIdtrbx(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -379,8 +385,11 @@ async def delete_apiv3suppliessupplyIdtrbx(
             return None
 
 
-async def patch_apiv3suppliessupplyIdtrbxtrbxId(
-    supplyId: str, trbxId: str, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+async def patch_apiv3suppliessupply_idtrbxtrbx_id(
+    data: Dict[str, Any],
+    supplyId: Optional[str] = None,
+    trbxId: Optional[str] = None,
+    api_config_override: Optional[APIConfig] = None,
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -389,7 +398,7 @@ async def patch_apiv3suppliessupplyIdtrbxtrbxId(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -409,8 +418,11 @@ async def patch_apiv3suppliessupplyIdtrbxtrbxId(
             return None
 
 
-async def delete_apiv3suppliessupplyIdtrbxtrbxIdordersorderId(
-    supplyId: str, trbxId: str, orderId: int, api_config_override: Optional[APIConfig] = None
+async def delete_apiv3suppliessupply_idtrbxtrbx_idordersorder_id(
+    supplyId: Optional[str] = None,
+    trbxId: Optional[str] = None,
+    orderId: Optional[int] = None,
+    api_config_override: Optional[APIConfig] = None,
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -419,7 +431,7 @@ async def delete_apiv3suppliessupplyIdtrbxtrbxIdordersorderId(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -443,8 +455,11 @@ async def delete_apiv3suppliessupplyIdtrbxtrbxIdordersorderId(
             return None
 
 
-async def post_apiv3suppliessupplyIdtrbxstickers(
-    supplyId: str, type: str, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+async def post_apiv3suppliessupply_idtrbxstickers(
+    data: Dict[str, Any],
+    supplyId: Optional[str] = None,
+    type: Optional[str] = None,
+    api_config_override: Optional[APIConfig] = None,
 ) -> ApiV3SuppliesSupplyIdTrbxStickersPostResponse:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -453,7 +468,7 @@ async def post_apiv3suppliessupplyIdtrbxstickers(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"type": type}

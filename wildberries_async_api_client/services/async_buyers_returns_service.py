@@ -8,9 +8,9 @@ from ..models import *
 
 
 async def get_apiv1claims(
-    is_archive: bool,
-    limit: int,
+    is_archive: Optional[bool] = None,
     id: Optional[str] = None,
+    limit: Optional[int] = None,
     offset: Optional[int] = None,
     nm_id: Optional[int] = None,
     api_config_override: Optional[APIConfig] = None,
@@ -22,7 +22,7 @@ async def get_apiv1claims(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {
@@ -60,7 +60,7 @@ async def patch_apiv1claim(data: PatchClaimReq, api_config_override: Optional[AP
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}

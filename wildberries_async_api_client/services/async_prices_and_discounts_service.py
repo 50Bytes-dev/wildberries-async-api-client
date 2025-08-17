@@ -17,7 +17,7 @@ async def post_apiv2uploadtask(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -47,7 +47,7 @@ async def post_apiv2uploadtasksize(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -77,7 +77,7 @@ async def post_apiv2uploadtaskclub_discount(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {}
@@ -97,7 +97,9 @@ async def post_apiv2uploadtaskclub_discount(
             return SuccessTaskResponse(**response) if response is not None else SuccessTaskResponse()
 
 
-async def get_apiv2historytasks(uploadID: int, api_config_override: Optional[APIConfig] = None) -> ResponseTaskHistory:
+async def get_apiv2historytasks(
+    uploadID: Optional[int] = None, api_config_override: Optional[APIConfig] = None
+) -> ResponseTaskHistory:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://discounts-prices-api.wildberries.ru"
@@ -105,7 +107,7 @@ async def get_apiv2historytasks(uploadID: int, api_config_override: Optional[API
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"uploadID": uploadID}
@@ -130,7 +132,10 @@ async def get_apiv2historytasks(uploadID: int, api_config_override: Optional[API
 
 
 async def get_apiv2historygoodstask(
-    limit: int, uploadID: int, offset: Optional[int] = None, api_config_override: Optional[APIConfig] = None
+    limit: Optional[int] = None,
+    offset: Optional[int] = None,
+    uploadID: Optional[int] = None,
+    api_config_override: Optional[APIConfig] = None,
 ) -> ResponseGoodHistories:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -139,7 +144,7 @@ async def get_apiv2historygoodstask(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"limit": limit, "offset": offset, "uploadID": uploadID}
@@ -163,7 +168,9 @@ async def get_apiv2historygoodstask(
             return ResponseGoodHistories(**response) if response is not None else ResponseGoodHistories()
 
 
-async def get_apiv2buffertasks(uploadID: int, api_config_override: Optional[APIConfig] = None) -> ResponseTaskBuffer:
+async def get_apiv2buffertasks(
+    uploadID: Optional[int] = None, api_config_override: Optional[APIConfig] = None
+) -> ResponseTaskBuffer:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://discounts-prices-api.wildberries.ru"
@@ -171,7 +178,7 @@ async def get_apiv2buffertasks(uploadID: int, api_config_override: Optional[APIC
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"uploadID": uploadID}
@@ -196,7 +203,10 @@ async def get_apiv2buffertasks(uploadID: int, api_config_override: Optional[APIC
 
 
 async def get_apiv2buffergoodstask(
-    limit: int, uploadID: int, offset: Optional[int] = None, api_config_override: Optional[APIConfig] = None
+    limit: Optional[int] = None,
+    offset: Optional[int] = None,
+    uploadID: Optional[int] = None,
+    api_config_override: Optional[APIConfig] = None,
 ) -> ResponseGoodBufferHistories:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -205,7 +215,7 @@ async def get_apiv2buffergoodstask(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"limit": limit, "offset": offset, "uploadID": uploadID}
@@ -230,7 +240,7 @@ async def get_apiv2buffergoodstask(
 
 
 async def get_apiv2listgoodsfilter(
-    limit: int,
+    limit: Optional[int] = None,
     offset: Optional[int] = None,
     filterNmID: Optional[int] = None,
     api_config_override: Optional[APIConfig] = None,
@@ -242,7 +252,7 @@ async def get_apiv2listgoodsfilter(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"limit": limit, "offset": offset, "filterNmID": filterNmID}
@@ -267,7 +277,10 @@ async def get_apiv2listgoodsfilter(
 
 
 async def get_apiv2listgoodssizenm(
-    limit: int, nmID: int, offset: Optional[int] = None, api_config_override: Optional[APIConfig] = None
+    limit: Optional[int] = None,
+    offset: Optional[int] = None,
+    nmID: Optional[int] = None,
+    api_config_override: Optional[APIConfig] = None,
 ) -> ResponseSizeLists:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -276,7 +289,7 @@ async def get_apiv2listgoodssizenm(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"limit": limit, "offset": offset, "nmID": nmID}
@@ -301,7 +314,7 @@ async def get_apiv2listgoodssizenm(
 
 
 async def get_apiv2quarantinegoods(
-    limit: int, offset: Optional[int] = None, api_config_override: Optional[APIConfig] = None
+    limit: Optional[int] = None, offset: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> ResponseQuarantineGoods:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -310,7 +323,7 @@ async def get_apiv2quarantinegoods(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"limit": limit, "offset": offset}

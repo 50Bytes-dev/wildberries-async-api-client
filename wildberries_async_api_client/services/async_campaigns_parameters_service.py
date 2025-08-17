@@ -8,7 +8,7 @@ from ..models import *
 
 
 async def get_advv1searchset_plus(
-    id: int, fixed: Optional[bool] = None, api_config_override: Optional[APIConfig] = None
+    id: Optional[int] = None, fixed: Optional[bool] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -17,7 +17,7 @@ async def get_advv1searchset_plus(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id, "fixed": fixed}
@@ -42,7 +42,7 @@ async def get_advv1searchset_plus(
 
 
 async def post_advv1searchset_plus(
-    id: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+    data: Dict[str, Any], id: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> List[str]:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -51,7 +51,7 @@ async def post_advv1searchset_plus(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id}
@@ -72,7 +72,7 @@ async def post_advv1searchset_plus(
 
 
 async def post_advv1searchset_phrase(
-    id: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+    data: Dict[str, Any], id: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -81,7 +81,7 @@ async def post_advv1searchset_phrase(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id}
@@ -102,7 +102,7 @@ async def post_advv1searchset_phrase(
 
 
 async def post_advv1searchset_strong(
-    id: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+    data: Dict[str, Any], id: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -111,7 +111,7 @@ async def post_advv1searchset_strong(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id}
@@ -132,7 +132,7 @@ async def post_advv1searchset_strong(
 
 
 async def post_advv1searchset_excluded(
-    id: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+    data: Dict[str, Any], id: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -141,7 +141,7 @@ async def post_advv1searchset_excluded(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id}
@@ -162,7 +162,7 @@ async def post_advv1searchset_excluded(
 
 
 async def post_advv1autoset_excluded(
-    id: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+    data: Dict[str, Any], id: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -171,7 +171,7 @@ async def post_advv1autoset_excluded(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id}
@@ -191,7 +191,9 @@ async def post_advv1autoset_excluded(
             return None
 
 
-async def get_advv1autogetnmtoadd(id: int, api_config_override: Optional[APIConfig] = None) -> List[int]:
+async def get_advv1autogetnmtoadd(
+    id: Optional[int] = None, api_config_override: Optional[APIConfig] = None
+) -> List[int]:
     api_config = api_config_override if api_config_override else APIConfig()
 
     base_path = api_config.base_path or "https://advert-api.wildberries.ru"
@@ -199,7 +201,7 @@ async def get_advv1autogetnmtoadd(id: int, api_config_override: Optional[APIConf
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id}
@@ -224,7 +226,7 @@ async def get_advv1autogetnmtoadd(id: int, api_config_override: Optional[APIConf
 
 
 async def post_advv1autoupdatenm(
-    id: int, data: Dict[str, Any], api_config_override: Optional[APIConfig] = None
+    data: Dict[str, Any], id: Optional[int] = None, api_config_override: Optional[APIConfig] = None
 ) -> None:
     api_config = api_config_override if api_config_override else APIConfig()
 
@@ -233,7 +235,7 @@ async def post_advv1autoupdatenm(
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f"Bearer { api_config.get_access_token() }",
+        "Authorization": f"{ api_config.access_token }",
     }
 
     query_params: Dict[str, Any] = {"id": id}
